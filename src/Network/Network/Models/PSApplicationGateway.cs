@@ -47,13 +47,19 @@ namespace Microsoft.Azure.Commands.Network.Models
 
         public List<PSApplicationGatewayBackendHttpSettings> BackendHttpSettingsCollection { get; set; }
 
+        public List<PSApplicationGatewayBackendSettings> BackendSettingsCollection { get; set; }
+
         public List<PSApplicationGatewaySslProfile> SslProfiles { get; set; }
 
         public List<PSApplicationGatewayHttpListener> HttpListeners { get; set; }
 
+        public List<PSApplicationGatewayListener> Listeners { get; set; }
+
         public List<PSApplicationGatewayUrlPathMap> UrlPathMaps { get; set; }
 
         public List<PSApplicationGatewayRequestRoutingRule> RequestRoutingRules { get; set; }
+
+        public List<PSApplicationGatewayRoutingRule> RoutingRules { get; set; }
 
         public List<PSApplicationGatewayRewriteRuleSet> RewriteRuleSets { get; set; }
 
@@ -90,6 +96,9 @@ namespace Microsoft.Azure.Commands.Network.Models
 
         [Ps1Xml(Target = ViewControl.Table)]
         public PSManagedServiceIdentity Identity { get; set; }
+
+        [Ps1Xml(Target = ViewControl.Table)]
+        public string DefaultPredefinedSslPolicy { get; private set; }
 
         [JsonIgnore]
         public string GatewayIpConfigurationsText
@@ -140,6 +149,12 @@ namespace Microsoft.Azure.Commands.Network.Models
         }
 
         [JsonIgnore]
+        public string BackendSettingsCollectionText
+        {
+            get { return JsonConvert.SerializeObject(BackendSettingsCollection, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+        }
+
+        [JsonIgnore]
         public string SslProfilesText
         {
             get { return JsonConvert.SerializeObject(SslProfiles, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
@@ -152,6 +167,12 @@ namespace Microsoft.Azure.Commands.Network.Models
         }
 
         [JsonIgnore]
+        public string ListenersText
+        {
+            get { return JsonConvert.SerializeObject(Listeners, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+        }
+
+        [JsonIgnore]
         public string RewriteRuleSetsText
         {
             get { return JsonConvert.SerializeObject(RewriteRuleSets, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
@@ -161,6 +182,12 @@ namespace Microsoft.Azure.Commands.Network.Models
         public string RequestRoutingRulesText
         {
             get { return JsonConvert.SerializeObject(RequestRoutingRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
+        }
+
+        [JsonIgnore]
+        public string RoutingRulesText
+        {
+            get { return JsonConvert.SerializeObject(RoutingRules, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore }); }
         }
 
         [JsonIgnore]

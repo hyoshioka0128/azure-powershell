@@ -6,7 +6,7 @@
 namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Support
 {
 
-    /// <summary>Status of the job stage.</summary>
+    /// <summary>Holds the device erasure completion status</summary>
     [System.ComponentModel.TypeConverter(typeof(Microsoft.Azure.PowerShell.Cmdlets.DataBox.Support.StageStatusTypeConverter))]
     public partial struct StageStatus :
         System.Management.Automation.IArgumentCompleter
@@ -28,39 +28,55 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Support
         {
             if (global::System.String.IsNullOrEmpty(wordToComplete) || "None".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new global::System.Management.Automation.CompletionResult("None", "None", global::System.Management.Automation.CompletionResultType.ParameterValue, "None");
+                yield return new global::System.Management.Automation.CompletionResult("'None'", "None", global::System.Management.Automation.CompletionResultType.ParameterValue, "None");
             }
             if (global::System.String.IsNullOrEmpty(wordToComplete) || "InProgress".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new global::System.Management.Automation.CompletionResult("InProgress", "InProgress", global::System.Management.Automation.CompletionResultType.ParameterValue, "InProgress");
+                yield return new global::System.Management.Automation.CompletionResult("'InProgress'", "InProgress", global::System.Management.Automation.CompletionResultType.ParameterValue, "InProgress");
             }
             if (global::System.String.IsNullOrEmpty(wordToComplete) || "Succeeded".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new global::System.Management.Automation.CompletionResult("Succeeded", "Succeeded", global::System.Management.Automation.CompletionResultType.ParameterValue, "Succeeded");
+                yield return new global::System.Management.Automation.CompletionResult("'Succeeded'", "Succeeded", global::System.Management.Automation.CompletionResultType.ParameterValue, "Succeeded");
             }
             if (global::System.String.IsNullOrEmpty(wordToComplete) || "Failed".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new global::System.Management.Automation.CompletionResult("Failed", "Failed", global::System.Management.Automation.CompletionResultType.ParameterValue, "Failed");
+                yield return new global::System.Management.Automation.CompletionResult("'Failed'", "Failed", global::System.Management.Automation.CompletionResultType.ParameterValue, "Failed");
             }
             if (global::System.String.IsNullOrEmpty(wordToComplete) || "Cancelled".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new global::System.Management.Automation.CompletionResult("Cancelled", "Cancelled", global::System.Management.Automation.CompletionResultType.ParameterValue, "Cancelled");
+                yield return new global::System.Management.Automation.CompletionResult("'Cancelled'", "Cancelled", global::System.Management.Automation.CompletionResultType.ParameterValue, "Cancelled");
             }
             if (global::System.String.IsNullOrEmpty(wordToComplete) || "Cancelling".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new global::System.Management.Automation.CompletionResult("Cancelling", "Cancelling", global::System.Management.Automation.CompletionResultType.ParameterValue, "Cancelling");
+                yield return new global::System.Management.Automation.CompletionResult("'Cancelling'", "Cancelling", global::System.Management.Automation.CompletionResultType.ParameterValue, "Cancelling");
             }
             if (global::System.String.IsNullOrEmpty(wordToComplete) || "SucceededWithErrors".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new global::System.Management.Automation.CompletionResult("SucceededWithErrors", "SucceededWithErrors", global::System.Management.Automation.CompletionResultType.ParameterValue, "SucceededWithErrors");
+                yield return new global::System.Management.Automation.CompletionResult("'SucceededWithErrors'", "SucceededWithErrors", global::System.Management.Automation.CompletionResultType.ParameterValue, "SucceededWithErrors");
             }
             if (global::System.String.IsNullOrEmpty(wordToComplete) || "WaitingForCustomerAction".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new global::System.Management.Automation.CompletionResult("WaitingForCustomerAction", "WaitingForCustomerAction", global::System.Management.Automation.CompletionResultType.ParameterValue, "WaitingForCustomerAction");
+                yield return new global::System.Management.Automation.CompletionResult("'WaitingForCustomerAction'", "WaitingForCustomerAction", global::System.Management.Automation.CompletionResultType.ParameterValue, "WaitingForCustomerAction");
             }
             if (global::System.String.IsNullOrEmpty(wordToComplete) || "SucceededWithWarnings".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new global::System.Management.Automation.CompletionResult("SucceededWithWarnings", "SucceededWithWarnings", global::System.Management.Automation.CompletionResultType.ParameterValue, "SucceededWithWarnings");
+                yield return new global::System.Management.Automation.CompletionResult("'SucceededWithWarnings'", "SucceededWithWarnings", global::System.Management.Automation.CompletionResultType.ParameterValue, "SucceededWithWarnings");
+            }
+            if (global::System.String.IsNullOrEmpty(wordToComplete) || "WaitingForCustomerActionForKek".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                yield return new global::System.Management.Automation.CompletionResult("'WaitingForCustomerActionForKek'", "WaitingForCustomerActionForKek", global::System.Management.Automation.CompletionResultType.ParameterValue, "WaitingForCustomerActionForKek");
+            }
+            if (global::System.String.IsNullOrEmpty(wordToComplete) || "WaitingForCustomerActionForCleanUp".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                yield return new global::System.Management.Automation.CompletionResult("'WaitingForCustomerActionForCleanUp'", "WaitingForCustomerActionForCleanUp", global::System.Management.Automation.CompletionResultType.ParameterValue, "WaitingForCustomerActionForCleanUp");
+            }
+            if (global::System.String.IsNullOrEmpty(wordToComplete) || "CustomerActionPerformedForCleanUp".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                yield return new global::System.Management.Automation.CompletionResult("'CustomerActionPerformedForCleanUp'", "CustomerActionPerformedForCleanUp", global::System.Management.Automation.CompletionResultType.ParameterValue, "CustomerActionPerformedForCleanUp");
+            }
+            if (global::System.String.IsNullOrEmpty(wordToComplete) || "CustomerActionPerformed".StartsWith(wordToComplete, global::System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                yield return new global::System.Management.Automation.CompletionResult("'CustomerActionPerformed'", "CustomerActionPerformed", global::System.Management.Automation.CompletionResultType.ParameterValue, "CustomerActionPerformed");
             }
         }
     }

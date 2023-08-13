@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.Migrate
-online version: https://docs.microsoft.com/powershell/module/az.migrate/get-azmigratereplicationpolicy
+online version: https://learn.microsoft.com/powershell/module/az.migrate/get-azmigratereplicationpolicy
 schema: 2.0.0
 ---
 
@@ -31,8 +31,10 @@ Gets the details of a replication policy.
 
 ### Example 1: Get all policies in a vault
 ```powershell
-PS C:\> Get-AzMigrateReplicationPolicy -ResourceGroupName azmigratepwshtestasr13072020 -ResourceName AzMigrateTestProjectPWSH02aarsvault
+Get-AzMigrateReplicationPolicy -ResourceGroupName azmigratepwshtestasr13072020 -ResourceName AzMigrateTestProjectPWSH02aarsvault
+```
 
+```output
 Location Name                                Type
 -------- ----                                ----
          samplepolicy2                       Microsoft.RecoveryServices/vaults/replicationPolicies
@@ -45,8 +47,10 @@ Get all policies.
 
 ### Example 2: Get a specific policy
 ```powershell
-PS C:\> Get-AzMigrateReplicationPolicy -ResourceGroupName azmigratepwshtestasr13072020 -ResourceName AzMigrateTestProjectPWSH02aarsvault -PolicyName  migrateAzMigratePWSHTc8d1sitepolicy
+Get-AzMigrateReplicationPolicy -ResourceGroupName azmigratepwshtestasr13072020 -ResourceName AzMigrateTestProjectPWSH02aarsvault -PolicyName  migrateAzMigratePWSHTc8d1sitepolicy
+```
 
+```output
 Location Name                                Type
 -------- ----                                ----
          migrateAzMigratePWSHTc8d1sitepolicy Microsoft.RecoveryServices/vaults/replicationPolicies
@@ -57,7 +61,8 @@ Get a specific one.
 ## PARAMETERS
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -138,7 +143,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Migrate.Models.Api20210210.IPolicy
+### Microsoft.Azure.PowerShell.Cmdlets.Migrate.Models.Api202301.IPolicy
 
 ## NOTES
 

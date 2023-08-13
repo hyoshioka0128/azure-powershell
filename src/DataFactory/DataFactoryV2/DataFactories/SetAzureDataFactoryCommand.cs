@@ -415,6 +415,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
         public string LastCommitId { get; set; }
 
         #region Attributes
+        [Parameter(Mandatory = false, HelpMessage = Constants.HelpRepoConfigurationDisablePublish)]
+        #endregion
+        public SwitchParameter DisablePublish { get; set; }
+
+        #region Attributes
         [Parameter(
             ParameterSetName = ParameterSetNames.ByInputObjectFactoryRepoVstsConfig,
             Mandatory = true,
@@ -493,6 +498,11 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 repoConfiguration.LastCommitId = this.LastCommitId;
                 repoConfiguration.RootFolder = this.RootFolder;
                 repoConfiguration.RepositoryName = this.RepositoryName;
+
+                if (this.DisablePublish.IsPresent)
+                {
+                    repoConfiguration.DisablePublish = true;
+                }
             }
 
             string factoryIdentityType = FactoryIdentityType.SystemAssigned;
@@ -501,7 +511,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 factoryIdentityType = this.IdentityType;
             }
 
-            if(this.UserAssignedIdentity != null && this.UserAssignedIdentity.Count > 0)
+            if (this.UserAssignedIdentity != null && this.UserAssignedIdentity.Count > 0)
             {
                 if (!factoryIdentityType.ToLower().Contains(FactoryIdentityType.UserAssigned.ToLower()))
                 {
@@ -511,7 +521,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
             FactoryIdentity factoryIdentity = new FactoryIdentity(factoryIdentityType, userAssignedIdentities: this.UserAssignedIdentity);
 
             EncryptionConfiguration encryption = null;
-            if(!string.IsNullOrWhiteSpace(this.EncryptionVaultBaseUrl) && !string.IsNullOrWhiteSpace(this.EncryptionKeyName))
+            if (!string.IsNullOrWhiteSpace(this.EncryptionVaultBaseUrl) && !string.IsNullOrWhiteSpace(this.EncryptionKeyName))
             {
                 CMKIdentityDefinition cmkIdentity = null;
                 if (!string.IsNullOrWhiteSpace(this.EncryptionUserAssignedIdentity))
@@ -552,14 +562,15 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                 this.ResourceGroupName = InputObject.ResourceGroupName;
                 this.Name = InputObject.DataFactoryName;
                 this.Location = this.Location ?? InputObject.Location;
+                this.PublicNetworkAccess = this.PublicNetworkAccess ?? InputObject.PublicNetworkAccess;
                 this.Tag = this.Tag ?? new Hashtable((IDictionary)InputObject.Tags);
 
-                if(InputObject.Identity != null)
+                if (InputObject.Identity != null)
                 {
                     this.IdentityType = InputObject.Identity.Type;
                     this.UserAssignedIdentity = InputObject.Identity.UserAssignedIdentities;
                 }
-                if(InputObject.Encryption != null)
+                if (InputObject.Encryption != null)
                 {
                     this.EncryptionVaultBaseUrl = InputObject.Encryption.VaultBaseUrl;
                     this.EncryptionKeyName = InputObject.Encryption.KeyName;
@@ -574,6 +585,12 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                     this.LastCommitId = this.LastCommitId ?? InputObject.RepoConfiguration.LastCommitId;
                     this.RepositoryName = this.RepositoryName ?? InputObject.RepoConfiguration.RepositoryName;
                     this.RootFolder = this.RootFolder ?? InputObject.RepoConfiguration.RootFolder;
+
+                    if (InputObject.RepoConfiguration.DisablePublish.HasValue)
+                    {
+                        this.DisablePublish = this.DisablePublish.IsPresent ? true : InputObject.RepoConfiguration.DisablePublish.Value;
+                    }
+
 
                     var factoryVSTSConfiguration = InputObject.RepoConfiguration as FactoryVSTSConfiguration;
                     if (factoryVSTSConfiguration != null)
@@ -590,7 +607,7 @@ namespace Microsoft.Azure.Commands.DataFactoryV2
                         }
                     }
                 }
-                
+
                 this.GlobalParameterDefinition = InputObject.GlobalParameters;
             }
 

@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.RedisEnterpriseCache
-online version: https://docs.microsoft.com/powershell/module/az.redisenterprisecache/update-azredisenterprisecachedatabase
+online version: https://learn.microsoft.com/powershell/module/az.redisenterprisecache/update-azredisenterprisecachedatabase
 schema: 2.0.0
 ---
 
@@ -36,8 +36,10 @@ Updates an existing Redis Enterprise database
 
 ### Example 1: Update client protocol property of a database
 ```powershell
-PS C:\> Update-AzRedisEnterpriseCacheDatabase -Name "MyCache" -ResourceGroupName "MyGroup" -ClientProtocol "Plaintext"
+Update-AzRedisEnterpriseCacheDatabase -Name "MyCache" -ResourceGroupName "MyGroup" -ClientProtocol "Plaintext"
+```
 
+```output
 Name    Type
 ----    ----
 default Microsoft.Cache/redisEnterprise/databases
@@ -48,8 +50,10 @@ This command updates the client protocol of the database for the Redis Enterpris
 
 ### Example 2: Update client protocol and eviction policy properties of a database
 ```powershell
-PS C:\> Update-AzRedisEnterpriseCacheDatabase -Name "MyCache" -ResourceGroupName "MyGroup" -ClientProtocol "Encrypted" -EvictionPolicy "NoEviction"
+Update-AzRedisEnterpriseCacheDatabase -Name "MyCache" -ResourceGroupName "MyGroup" -ClientProtocol "Encrypted" -EvictionPolicy "NoEviction"
+```
 
+```output
 Name    Type
 ----    ----
 default Microsoft.Cache/redisEnterprise/databases
@@ -305,7 +309,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.RedisEnterpriseCache.Models.Api20210301.IDatabase
+### Microsoft.Azure.PowerShell.Cmdlets.RedisEnterpriseCache.Models.Api20230301Preview.IDatabase
 
 ## NOTES
 
@@ -316,12 +320,12 @@ COMPLEX PARAMETER PROPERTIES
 To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
 
 
-INPUTOBJECT <IRedisEnterpriseCacheIdentity>: Identity Parameter
+`INPUTOBJECT <IRedisEnterpriseCacheIdentity>`: Identity Parameter
   - `[ClusterName <String>]`: The name of the RedisEnterprise cluster.
   - `[DatabaseName <String>]`: The name of the database.
   - `[Id <String>]`: Resource identity path
-  - `[Location <String>]`: The region the operation is in.
-  - `[OperationId <String>]`: The operation's unique identifier.
+  - `[Location <String>]`: The name of Azure region.
+  - `[OperationId <String>]`: The ID of an ongoing async operation.
   - `[PrivateEndpointConnectionName <String>]`: The name of the private endpoint connection associated with the Azure resource
   - `[ResourceGroupName <String>]`: The name of the resource group. The name is case insensitive.
   - `[SubscriptionId <String>]`: The ID of the target subscription.

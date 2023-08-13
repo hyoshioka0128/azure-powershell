@@ -165,6 +165,7 @@ function Test-StorageBlobContainerEncryptionScope
 		$containerName2 = "container2"+ $rgname
 		$scopeName = "testscope"
 		$scopeName2 = "testscope2"
+		$scopeName3 = "filtertestscope3"
 
         Write-Verbose "RGName: $rgname | Loc: $loc"
         New-AzResourceGroup -Name $rgname -Location $loc;
@@ -190,8 +191,20 @@ function Test-StorageBlobContainerEncryptionScope
 		
 		#List Scope
 		New-AzStorageEncryptionScope -ResourceGroupName $rgname -StorageAccountName $stoname -EncryptionScopeName $scopeName2 -StorageEncryption
+		New-AzStorageEncryptionScope -ResourceGroupName $rgname -StorageAccountName $stoname -EncryptionScopeName $scopeName3 -StorageEncryption
+		Update-AzStorageEncryptionScope -ResourceGroupName $rgname -StorageAccountName $stoname -EncryptionScopeName $scopeName3 -State Disabled 
 		$scopes = Get-AzStorageEncryptionScope -ResourceGroupName $rgname -StorageAccountName $stoname 
+		Assert-AreEqual 3 $scopes.Count
+		$scopes = Get-AzStorageEncryptionScope -ResourceGroupName $rgname -StorageAccountName $stoname -MaxPageSize 1 -Include Disabled 
+		Assert-AreEqual 1 $scopes.Count
+		Assert-AreEqual "Disabled" $scopes[0].State
+		$scopes = Get-AzStorageEncryptionScope -ResourceGroupName $rgname -StorageAccountName $stoname -Include All -Filter "startswith(name, filter)"
+		Assert-AreEqual 1 $scopes.Count
+		Assert-AreEqual $scopeName3  $scopes[0].Name 
+		$scopes = Get-AzStorageEncryptionScope -ResourceGroupName $rgname -StorageAccountName $stoname -Include Enabled 
 		Assert-AreEqual 2 $scopes.Count
+		Assert-AreEqual "Enabled" $scopes[0].State
+		Assert-AreEqual "Enabled" $scopes[1].State
 
 		#create container
 		New-AzRmStorageContainer -ResourceGroupName $rgname -StorageAccountName $stoname -Name $containerName -DefaultEncryptionScope $scopename -PreventEncryptionScopeOverride $true 
@@ -269,7 +282,7 @@ function Test-StorageBlobContainerLegalHold
 		Assert-AreNotEqual $null $container.LegalHold.Tags[0].Timestamp
 		Assert-AreNotEqual $null $container.LegalHold.Tags[0].ObjectIdentifier
 
-		Add-AzRmStorageContainerLegalHold -ResourceGroupName $rgname -StorageAccountName $stoname -Name $containerName -Tag tag1
+		$stos | Add-AzRmStorageContainerLegalHold -Name $containerName -Tag tag1
 		$container = Get-AzRmStorageContainer -ResourceGroupName $rgname -StorageAccountName $stoname -Name $containerName
 		Assert-AreEqual $containerName $container.Name
 		Assert-AreEqual 2 $container.LegalHold.Tags.Count
@@ -280,7 +293,7 @@ function Test-StorageBlobContainerLegalHold
 		Assert-AreNotEqual $null $container.LegalHold.Tags[1].Timestamp
 		Assert-AreNotEqual $null $container.LegalHold.Tags[1].ObjectIdentifier
 
-		Remove-AzRmStorageContainerLegalHold -ResourceGroupName $rgname -StorageAccountName $stoname -Name $containerName -Tag tag1,tag3
+		$stos | Remove-AzRmStorageContainerLegalHold -Name $containerName -Tag tag1,tag3
 		$container = Get-AzRmStorageContainer -ResourceGroupName $rgname -StorageAccountName $stoname -Name $containerName
 		Assert-AreEqual $containerName $container.Name
 		Assert-AreEqual 0 $container.LegalHold.Tags.Count
@@ -550,6 +563,17 @@ function Test-StorageBlobServiceProperties
         $stotype = 'Standard_GRS';
         $loc = Get-ProviderLocation ResourceManagement;
         $kind = 'StorageV2'
+
+		$CorsRules = (@{
+			AllowedHeaders=@("x-ms-blob-content-type","x-ms-blob-content-disposition"); 
+			AllowedOrigins=@("*");
+			AllowedMethods=@("Get","Connect")},
+			@{
+			AllowedOrigins=@("http://www.fabrikam.com","http://www.contoso.com"); 
+			ExposedHeaders=@("x-ms-meta-data*","x-ms-meta-customheader"); 
+			AllowedHeaders=@("x-ms-meta-target*","x-ms-meta-customheader");
+			MaxAgeInSeconds=30;
+			AllowedMethods=@("PUT")})
 	
         Write-Verbose "RGName: $rgname | Loc: $loc"
         New-AzResourceGroup -Name $rgname -Location $loc;
@@ -564,9 +588,10 @@ function Test-StorageBlobServiceProperties
 		Assert-AreEqual '2018-03-28' $property.DefaultServiceVersion
 		
 		# Enable and Disable Blob Delete Retention Policy
-		$policy = Enable-AzStorageBlobDeleteRetentionPolicy -ResourceGroupName $rgname -StorageAccountName $stoname -PassThru -RetentionDays 3
+		$policy = Enable-AzStorageBlobDeleteRetentionPolicy -ResourceGroupName $rgname -StorageAccountName $stoname -PassThru -RetentionDays 3 -AllowPermanentDelete
 		Assert-AreEqual $true $policy.Enabled
 		Assert-AreEqual 3 $policy.Days
+		Assert-AreEqual $true $policy.AllowPermanentDelete
 		$property = Get-AzStorageBlobServiceProperty -ResourceGroupName $rgname -StorageAccountName $stoname
 		Assert-AreEqual '2018-03-28' $property.DefaultServiceVersion
 		Assert-AreEqual $true $property.DeleteRetentionPolicy.Enabled
@@ -579,6 +604,34 @@ function Test-StorageBlobServiceProperties
 		Assert-AreEqual '2018-03-28' $property.DefaultServiceVersion
 		Assert-AreEqual $false $property.DeleteRetentionPolicy.Enabled
 		Assert-AreEqual $null $property.DeleteRetentionPolicy.Days
+
+		$property = Update-AzStorageBlobServiceProperty -ResourceGroupName $rgname -StorageAccountName $stoname -CorsRule $CorsRules
+		Assert-AreEqual "*" $property.Cors.CorsRulesProperty[0].AllowedOrigins
+		Assert-AreEqual "GET" $property.Cors.CorsRulesProperty[0].AllowedMethods[0]
+		Assert-AreEqual "CONNECT" $property.Cors.CorsRulesProperty[0].AllowedMethods[1]
+		Assert-AreEqual 0 $property.Cors.CorsRulesProperty[0].MaxAgeInSeconds
+		Assert-AreEqual "x-ms-blob-content-type" $property.Cors.CorsRulesProperty[0].AllowedHeaders[0]
+		Assert-AreEqual "x-ms-blob-content-disposition" $property.Cors.CorsRulesProperty[0].AllowedHeaders[1]
+		Assert-AreEqual "http://www.fabrikam.com" $property.Cors.CorsRulesProperty[1].AllowedOrigins[0]
+		Assert-AreEqual "PUT" $property.Cors.CorsRulesProperty[1].AllowedMethods[0]
+		Assert-AreEqual 30 $property.Cors.CorsRulesProperty[1].MaxAgeInSeconds
+
+		$property = Get-AzStorageBlobServiceProperty -ResourceGroupName $rgname -StorageAccountName $stoname
+		Assert-AreEqual "*" $property.Cors.CorsRulesProperty[0].AllowedOrigins
+		Assert-AreEqual "GET" $property.Cors.CorsRulesProperty[0].AllowedMethods[0]
+		Assert-AreEqual "CONNECT" $property.Cors.CorsRulesProperty[0].AllowedMethods[1]
+		Assert-AreEqual 0 $property.Cors.CorsRulesProperty[0].MaxAgeInSeconds
+		Assert-AreEqual "x-ms-blob-content-type" $property.Cors.CorsRulesProperty[0].AllowedHeaders[0]
+		Assert-AreEqual "x-ms-blob-content-disposition" $property.Cors.CorsRulesProperty[0].AllowedHeaders[1]
+		Assert-AreEqual "http://www.fabrikam.com" $property.Cors.CorsRulesProperty[1].AllowedOrigins[0]
+		Assert-AreEqual "PUT" $property.Cors.CorsRulesProperty[1].AllowedMethods[0]
+		Assert-AreEqual 30 $property.Cors.CorsRulesProperty[1].MaxAgeInSeconds
+		
+		$property = Update-AzStorageBlobServiceProperty -ResourceGroupName $rgname -StorageAccountName $stoname -CorsRule @()
+		Assert-AreEqual 0 $property.Cors.CorsRulesProperty.Count
+
+		$property = Get-AzStorageBlobServiceProperty -ResourceGroupName $rgname -StorageAccountName $stoname
+		Assert-AreEqual 0 $property.Cors.CorsRulesProperty.Count
 
         Remove-AzStorageAccount -Force -ResourceGroupName $rgname -Name $stoname;
     }
@@ -868,7 +921,7 @@ function Test-StorageBlobContainerSoftDelete
         $stos = Get-AzStorageAccount -ResourceGroupName $rgname;
 
         # Enable Blob Delete Retention Policy
-        $policy = Enable-AzStorageContainerDeleteRetentionPolicy -ResourceGroupName $rgname -StorageAccountName $stoname -PassThru -RetentionDays 30
+        $policy = Enable-AzStorageContainerDeleteRetentionPolicy -ResourceGroupName $rgname -StorageAccountName $stoname -PassThru -RetentionDays 30 
         Assert-AreEqual $true $policy.Enabled
         Assert-AreEqual 30 $policy.Days
         $property = Get-AzStorageBlobServiceProperty -ResourceGroupName $rgname -StorageAccountName $stoname

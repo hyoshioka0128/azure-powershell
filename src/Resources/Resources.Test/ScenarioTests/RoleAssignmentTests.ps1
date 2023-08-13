@@ -45,10 +45,10 @@ function Test-RaClassicAdminsWithScope
 
 <#
 .SYNOPSIS
-Tests retrieval of assignments to deleted principals/Users/Groups
-This test will fail if the objectId is changed or the role assignment deleted
+Tests retrieval of assignments to unknown principals/Users/Groups
+This test will fail if the objectId is changed, the role assignment deleted or user is unable to know the type of 
 #>
-function Test-RaDeletedPrincipals
+function Test-UnknowndPrincipals
 {
     $objectId = "6f58a770-c06e-4012-b9f9-e5479c03d43f"
     $assignment = Get-AzRoleAssignment -ObjectId $objectId
@@ -91,24 +91,21 @@ Tests verifies delete scenario for RoleAssignments by using PSRoleAssignment Obj
 function Test-RaDeleteByPSRoleAssignment
 {
     # Setup
-    $definitionName = 'Backup Contributor'
-    $users = Get-AzADUser | Select-Object -First 1 -Wait
+    $definitionName = 'Reader'
+    $principalId = "3ca07eea-188c-4b0b-988a-ef610a51a316" # Change this if testing in another tenant
     $subscription = $(Get-AzContext).Subscription
-    $resourceGroups = Get-AzResourceGroup | Select-Object -Last 1 -Wait
-    $scope = '/subscriptions/'+ $subscription[0].Id +'/resourceGroups/' + $resourceGroups[0].ResourceGroupName
-    Assert-AreEqual 1 $users.Count "There should be at least one user to run the test."
+    $scope = '/subscriptions/'+ $subscription[0].Id +'/resourceGroups/PowershellTest'
+
+    $expectedMessage = "Succesfully removed role assignment for AD object '3ca07eea-188c-4b0b-988a-ef610a51a316' on scope '/subscriptions/" + $subscription[0].Id + "/resourceGroups/PowershellTest' with role definition 'Reader'"
 
     # Test
-    $newAssignment = New-AzRoleAssignmentWithId `
-                        -ObjectId $users[0].Id `
-                        -RoleDefinitionName $definitionName `
-                        -Scope $scope `
-                        -RoleAssignmentId c7acc224-7df3-461a-8640-85d7bd15b5da
+    $newAssignment = New-AzRoleAssignmentWithId -ObjectId $principalId -RoleDefinitionName $definitionName -Scope $scope -RoleAssignmentId 305df7f7-c560-4577-8f38-257fdfa1f93e
 
-    Remove-AzRoleAssignment $newAssignment
+    $result = Remove-AzRoleAssignment $newAssignment
 
     # Assert
     VerifyRoleAssignmentDeleted $newAssignment
+    Assert-AreEqual $result $expectedMessage
 }
 
 <#
@@ -127,11 +124,7 @@ function Test-RaByScope
     Assert-AreEqual 1 $users.Count "There should be at least one user to run the test."
 
     # Test
-    $newAssignment = New-AzRoleAssignmentWithId `
-                        -ObjectId $users[0].Id `
-                        -RoleDefinitionName $definitionName `
-                        -Scope $assignmentScope `
-                        -RoleAssignmentId 54e1188f-65ba-4b58-9bc3-a252adedcc7b
+    $newAssignment = New-AzRoleAssignment -ObjectId $users[0].Id -RoleDefinitionName $definitionName -Scope $assignmentScope
 
     # cleanup
     DeleteRoleAssignment $newAssignment
@@ -163,11 +156,7 @@ function Test-RaById
     Assert-AreEqual 1 $users.Count "There should be at least one user to run the test."
 
     # Test
-    $newAssignment = New-AzRoleAssignmentWithId `
-                        -ObjectId $users[0].Id `
-                        -RoleDefinitionName $definitionName `
-                        -Scope $assignmentScope `
-                        -RoleAssignmentId 93cb604e-14dc-426b-834e-bf7bb3826cbc
+    $newAssignment = New-AzRoleAssignment -ObjectId $users[0].Id -RoleDefinitionName $definitionName -Scope $assignmentScope
 
     $assignments = Get-AzRoleAssignment -RoleDefinitionId "acdd72a7-3385-48ef-bd42-f606fba81ae7"
     Assert-NotNull $assignments
@@ -199,11 +188,7 @@ function Test-RaByResourceGroup
     Assert-AreEqual 1 $resourceGroups.Count "No resource group found. Unable to run the test."
 
     # Test
-    $newAssignment = New-AzRoleAssignmentWithId `
-                        -ObjectId $users[0].Id `
-                        -RoleDefinitionName $definitionName `
-                        -ResourceGroupName $resourceGroups[0].ResourceGroupName `
-                        -RoleAssignmentId 8748e3e7-2cc7-41a9-81ed-b704b6d328a5
+    $newAssignment = New-AzRoleAssignment -ObjectId $users[0].Id -RoleDefinitionName $definitionName -ResourceGroupName $resourceGroups[0].ResourceGroupName
 
     # cleanup
     DeleteRoleAssignment $newAssignment
@@ -234,13 +219,7 @@ function Test-RaByResource
     Assert-NotNull $resource "Cannot find any resource to continue test execution."
 
     # Test
-    $newAssignment = New-AzRoleAssignmentWithId `
-                        -ObjectId $groups[0].Id `
-                        -RoleDefinitionName $definitionName `
-                        -ResourceGroupName $resource.ResourceGroupName `
-                        -ResourceType $resource.ResourceType `
-                        -ResourceName $resource.Name `
-                        -RoleAssignmentId db6e0231-1be9-4bcd-bf16-79de537439fe
+    $newAssignment = New-AzRoleAssignment -ObjectId $groups[0].Id -RoleDefinitionName $definitionName -ResourceGroupName $resource.ResourceGroupName -ResourceType $resource.ResourceType -ResourceName $resource.Name
 
 
     # cleanup
@@ -360,11 +339,9 @@ function Test-RaByUpn
     Assert-AreEqual 1 $resourceGroups.Count "No resource group found. Unable to run the test."
 
     # Test
-    $newAssignment = New-AzRoleAssignmentWithId `
-                        -SignInName $users[0].UserPrincipalName `
+    $newAssignment = New-AzRoleAssignment -SignInName $users[0].UserPrincipalName `
                         -RoleDefinitionName $definitionName `
-                        -ResourceGroupName $resourceGroups[0].ResourceGroupName `
-                        -RoleAssignmentId f8dac632-b879-42f9-b4ab-df2aab22a149
+                        -ResourceGroupName $resourceGroups[0].ResourceGroupName
 
     # cleanup
     DeleteRoleAssignment $newAssignment
@@ -391,11 +368,9 @@ function Test-RaGetByUPNWithExpandPrincipalGroups
     Assert-AreEqual 1 $resourceGroups.Count "No resource group found. Unable to run the test."
 
     # Test
-    $newAssignment = New-AzRoleAssignmentWithId `
-                        -SignInName $users[0].UserPrincipalName `
+    $newAssignment = New-AzRoleAssignment -SignInName $users[0].UserPrincipalName `
                         -RoleDefinitionName $definitionName `
-                        -ResourceGroupName $resourceGroups[0].ResourceGroupName `
-                        -RoleAssignmentId 355f2d24-c0e6-43d2-89a7-027e51161d0b
+                        -ResourceGroupName $resourceGroups[0].ResourceGroupName
 
     $assignments = Get-AzRoleAssignment -SignInName $users[0].UserPrincipalName -ExpandPrincipalGroups
 
@@ -514,7 +489,7 @@ function Test-RaPropertiesValidation
     $roleDef.Description = "Read, monitor and restart virtual machines"
     $roleDef.AssignableScopes[0] = "/subscriptions/4004a9fd-d58e-48dc-aeb2-4a4aec58606f"
 
-    New-AzRoleDefinitionWithId -Role $roleDef -RoleDefinitionId ff9cd1ab-d763-486f-b253-51a816c92bbf
+    New-AzRoleDefinition -Role $roleDef -RoleDefinitionId ff9cd1ab-d763-486f-b253-51a816c92bbf
     $rd = Get-AzRoleDefinition -Name "Custom Reader Properties Test"
 
     $newAssignment = New-AzRoleAssignmentWithId `
@@ -559,12 +534,10 @@ function Test-RaDelegation
     Assert-AreEqual 1 $users.Count "There should be at least one user to run the test."
 
     # Test
-    $newAssignment = New-AzRoleAssignmentWithId `
-                        -ObjectId $users[0].Id `
+    $newAssignment = New-AzRoleAssignment -ObjectId $users[0].Id `
                         -RoleDefinitionName $definitionName `
                         -Scope $assignmentScope `
-                        -AllowDelegation `
-                        -RoleAssignmentId 4dae20f3-6f62-442f-ab84-3b5a6f89e51f
+                        -AllowDelegation
 
     # Assert
     Assert-NotNull $newAssignment

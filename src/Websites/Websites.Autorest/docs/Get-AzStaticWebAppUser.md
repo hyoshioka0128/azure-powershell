@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.Websites
-online version: https://docs.microsoft.com/powershell/module/az.websites/get-azstaticwebappuser
+online version: https://learn.microsoft.com/powershell/module/az.websites/get-azstaticwebappuser
 schema: 2.0.0
 ---
 
@@ -24,8 +24,10 @@ Description for Gets the list of users of a static site.
 
 ### Example 1: Get the list of users of a static site
 ```powershell
-PS C:\> Get-AzStaticWebAppUser -ResourceGroupName azure-rg-test -Name staticweb-portal04 -Authprovider all
+Get-AzStaticWebAppUser -ResourceGroupName azure-rg-test -Name staticweb-portal04 -Authprovider all
+```
 
+```output
 Kind Name                             Type
 ---- ----                             ----
      c387198f0a7f44748184c9da92cbe241 Microsoft.Web/staticSites/users
@@ -51,7 +53,8 @@ Accept wildcard characters: False
 ```
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject

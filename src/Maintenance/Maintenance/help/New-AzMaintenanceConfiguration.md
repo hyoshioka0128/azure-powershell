@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Maintenance.dll-Help.xml
 Module Name: Az.Maintenance
-online version: https://docs.microsoft.com/powershell/module/az.maintenance/new-azmaintenanceconfiguration
+online version: https://learn.microsoft.com/powershell/module/az.maintenance/new-azmaintenanceconfiguration
 schema: 2.0.0
 ---
 
@@ -13,14 +13,19 @@ Create or Update configuration record
 ## SYNTAX
 
 ```
-New-AzMaintenanceConfiguration [-ResourceGroupName] <string> [-Name] <string> [-Location] <string> [-Tag <hashtable>]
-    [-ExtensionProperty <hashtable>] [-MaintenanceScope <string>] [-StartDateTime <string>] [-ExpirationDateTime <string>]
-    [-Timezone <string>] [-Duration <timespan>] [-Visibility <string>] [-RecurEvery <string>]
-    [-LinuxParameterPackageNameMaskToInclude <HashSet[string]>] [-LinuxParameterPackageNameMaskToExclude <HashSet[string]>]
-    [-LinuxParameterClassificationToInclude <HashSet[string]>] [-WindowParameterKbNumberToInclude <HashSet[string]>]
-    [-WindowParameterKbNumberToExclude <HashSet[string]>] [-WindowParameterClassificationToInclude <HashSet[string]>]
-    [-WindowParameterExcludeKbRequiringReboot <bool>] [-PreTask <string>] [-PostTask <string>] [-InstallPatchRebootSetting
-    <string>] [-AsJob] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
+New-AzMaintenanceConfiguration [-ResourceGroupName] <String> [-Name] <String> [-Location] <String>
+ [-Tag <Hashtable>] [-ExtensionProperty <Hashtable>] [-MaintenanceScope <String>] [-StartDateTime <String>]
+ [-ExpirationDateTime <String>] [-Timezone <String>] [-Duration <TimeSpan>] [-Visibility <String>]
+ [-RecurEvery <String>]
+ [-LinuxParameterPackageNameMaskToInclude <System.Collections.Generic.HashSet`1[System.String]>]
+ [-LinuxParameterPackageNameMaskToExclude <System.Collections.Generic.HashSet`1[System.String]>]
+ [-LinuxParameterClassificationToInclude <System.Collections.Generic.HashSet`1[System.String]>]
+ [-WindowParameterKbNumberToInclude <System.Collections.Generic.HashSet`1[System.String]>]
+ [-WindowParameterKbNumberToExclude <System.Collections.Generic.HashSet`1[System.String]>]
+ [-WindowParameterClassificationToInclude <System.Collections.Generic.HashSet`1[System.String]>]
+ [-WindowParameterExcludeKbRequiringReboot <Boolean>] [-InstallPatchRebootSetting <String>] [-PreTask <String>]
+ [-PostTask <String>] [-AsJob] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,9 +35,10 @@ Create or Update configuration record
 
 ### Example 1
 ```powershell
-PS C:\> New-AzMaintenanceConfiguration -ResourceGroupName smdtest -Name workervmscentralus -MaintenanceScope Host -Location centralus -StartDateTime 2020-08-01 00:00 -ExpirationDateTime 2021-08-04 00:00 -TimeZone Pacific Standard Time -Duration 05:00 -RecurEvery Day
+New-AzMaintenanceConfiguration -ResourceGroupName smdtest -Name workervmscentralus -MaintenanceScope Host -Location centralus -StartDateTime "2020-08-01 00:00" -ExpirationDateTime "2021-08-04 00:00" -Timezone "Pacific Standard Time" -Duration 05:00 -RecurEvery Day
+```
 
-
+```output
 Location            : centralus
 Tags                : {}
 ExtensionProperties : {}
@@ -133,7 +139,7 @@ Accept wildcard characters: False
 Install Patch Reboot Option. Allowed values Never, IfRequired, Always
 
 ```yaml
-Type: string
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -148,7 +154,7 @@ Accept wildcard characters: False
 List of linux patch classifications
 
 ```yaml
-Type: HashSet[string]
+Type: System.Collections.Generic.HashSet`1[System.String]
 Parameter Sets: (All)
 Aliases:
 
@@ -163,7 +169,7 @@ Accept wildcard characters: False
 List of packages to exclude during vm patch operation
 
 ```yaml
-Type: HashSet[string]
+Type: System.Collections.Generic.HashSet`1[System.String]
 Parameter Sets: (All)
 Aliases:
 
@@ -178,7 +184,7 @@ Accept wildcard characters: False
 List of packages to include during vm patch operation
 
 ```yaml
-Type: HashSet[string]
+Type: System.Collections.Generic.HashSet`1[System.String]
 Parameter Sets: (All)
 Aliases:
 
@@ -234,11 +240,11 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -PreTask
-List of tasks executed before schedule. e.g. [{'source' :'runbook', 'taskScope': 'Resource', 'parameters': { 'arg1': 'value1'}}]
+### -PostTask
+List of tasks executed after schedule. [{'source' :'runbook', 'taskScope': 'Resource', 'parameters': { 'arg1': 'value1'}}]. This parameter is used to specify a command or script that should be run after the maintenance tasks are performed. This can be used to perform any necessary follow-up actions after the maintenance tasks are completed. This parameter accepts a string value that specifies the command or script to be run. The command or script can be specified as a simple string or as an array of strings. If an array of strings is specified, each element in the array will be treated as a separate command or script.
 
 ```yaml
-Type: string
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -249,11 +255,11 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -PostTask
-List of tasks executed after schedule. e.g. [{'source' :'runbook', 'taskScope': 'Resource', 'parameters': { 'arg1': 'value1'}}]
+### -PreTask
+List of tasks executed before schedule. e.g. [{'source' :'runbook', 'taskScope': 'Global', 'parameters': { 'arg1': 'value1'}}]. This parameter is used to specify a command or script that should be run before the maintenance tasks are performed. This can be used to perform any necessary preparations or cleanup actions before the maintenance tasks are run. This parameter accepts a string value that specifies the command or script to be run. The command or script can be specified as a simple string or as an array of strings. If an array of strings is specified, each element in the array will be treated as a separate command or script.
 
 ```yaml
-Type: string
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -358,7 +364,7 @@ Accept wildcard characters: False
 List of windows patch classification
 
 ```yaml
-Type: HashSet[string]
+Type: System.Collections.Generic.HashSet`1[System.String]
 Parameter Sets: (All)
 Aliases:
 
@@ -373,7 +379,7 @@ Accept wildcard characters: False
 Exclude KBs which require reboot
 
 ```yaml
-Type: bool
+Type: System.Nullable`1[System.Boolean]
 Parameter Sets: (All)
 Aliases:
 
@@ -388,7 +394,7 @@ Accept wildcard characters: False
 List of KBs to exclude during vm patch operation
 
 ```yaml
-Type: HashSet[string]
+Type: System.Collections.Generic.HashSet`1[System.String]
 Parameter Sets: (All)
 Aliases:
 
@@ -403,7 +409,7 @@ Accept wildcard characters: False
 List of KBs to include during vm patch operation
 
 ```yaml
-Type: HashSet[string]
+Type: System.Collections.Generic.HashSet`1[System.String]
 Parameter Sets: (All)
 Aliases:
 

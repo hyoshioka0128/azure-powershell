@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.DataBox
-online version: https://docs.microsoft.com/powershell/module/az.databox/stop-azdataboxjob
+online version: https://learn.microsoft.com/powershell/module/az.databox/stop-azdataboxjob
 schema: 2.0.0
 ---
 
@@ -22,22 +22,25 @@ CancelJob.
 
 ## EXAMPLES
 
-### Example 1:  {{ Cancel a Job }}
+### Example 1:  Cancel a Job 
 ```powershell
-PS C:\> Stop-AzDataBoxJob -Name "Powershell10" -ResourceGroupName "resourceGroupName" -Reason "Powershell demo job"
-PS C:\> Get-AzDataBoxJob -Name "Powershell10" -ResourceGroupName "resourceGroupName"
+Stop-AzDataBoxJob -Name "Powershell10" -ResourceGroupName "resourceGroupName" -Reason "Powershell demo job"
+Get-AzDataBoxJob -Name "Powershell10" -ResourceGroupName "resourceGroupName"
+```
 
+```output
 Name         Location Status    TransferType  SkuName IdentityType DeliveryType Detail
 ----         -------- ------    ------------  ------- ------------ ------------ ------
 Powershell10 WestUS   Cancelled ImportToAzure DataBox UserAssigned NonScheduled Microsoft.Azure.PowerShell.Cmdlets.DataBox.Models.Api20210301.DataBoxJobDetails
 ```
 
-{{ Cancel a job }}
+Cancel a job
 
 ## PARAMETERS
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject

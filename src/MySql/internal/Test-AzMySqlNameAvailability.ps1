@@ -20,13 +20,9 @@ Check the availability of name for resource
 .Description
 Check the availability of name for resource
 .Example
-PS C:\> {{ Add code here }}
-
-{{ Add output here }}
+{{ Add code here }}
 .Example
-PS C:\> {{ Add code here }}
-
-{{ Add output here }}
+{{ Add code here }}
 
 .Inputs
 Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.INameAvailabilityRequest
@@ -56,7 +52,7 @@ NAMEAVAILABILITYREQUEST <INameAvailabilityRequest>: Request from client to check
   Name <String>: Resource name to verify.
   [Type <String>]: Resource type used for verification.
 .Link
-https://docs.microsoft.com/powershell/module/az.mysql/test-azmysqlnameavailability
+https://learn.microsoft.com/powershell/module/az.mysql/test-azmysqlnameavailability
 #>
 function Test-AzMySqlNameAvailability {
 [OutputType([Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.INameAvailability])]
@@ -105,7 +101,8 @@ param(
     [ValidateNotNull()]
     [Microsoft.Azure.PowerShell.Cmdlets.MySql.Category('Azure')]
     [System.Management.Automation.PSObject]
-    # The credentials, account, tenant, and subscription used for communication with Azure.
+    # The DefaultProfile parameter is not functional.
+    # Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
     ${DefaultProfile},
 
     [Parameter(DontShow)]
@@ -155,6 +152,7 @@ begin {
             $PSBoundParameters['OutBuffer'] = 1
         }
         $parameterSet = $PSCmdlet.ParameterSetName
+
         $mapping = @{
             Test = 'Az.MySql.private\Test-AzMySqlNameAvailability_Test';
             TestExpanded = 'Az.MySql.private\Test-AzMySqlNameAvailability_TestExpanded';
@@ -170,6 +168,7 @@ begin {
         $steppablePipeline = $scriptCmd.GetSteppablePipeline($MyInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     } catch {
+
         throw
     }
 }
@@ -178,15 +177,18 @@ process {
     try {
         $steppablePipeline.Process($_)
     } catch {
+
         throw
     }
-}
 
+}
 end {
     try {
         $steppablePipeline.End()
+
     } catch {
+
         throw
     }
-}
+} 
 }

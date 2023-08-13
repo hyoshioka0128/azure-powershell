@@ -1,24 +1,25 @@
-### Example 1: Update AllowForwardedTraffic of vnet peering
+### Example 1: Update AllowForwardedTraffic of vnet peering.
 ```powershell
-PS C:\> Update-AzDatabricksVNetPeering -WorkspaceName databricks-test01 -ResourceGroupName lucas-manual-test -Name vnetpeering-t01 -AllowForwardedTraffic $True
+Update-AzDatabricksVNetPeering -Name vnet-peering-t1 -WorkspaceName azps-databricks-workspace-t1 -ResourceGroupName azps_test_gp_db -AllowForwardedTraffic $True
+```
 
-Name            Type
-----            ----
-vnetpeering-t01
+```output
+Name            ResourceGroupName
+----            -----------------
+vnet-peering-t1 azps_test_gp_db
 ```
 
 This command updates AllowForwardedTraffic of vnet peering.
 
-### Example 2: Update AllowForwardedTraffic of vnet peering by object
+### Example 2: Update AllowForwardedTraffic of vnet peering by object.
 ```powershell
-PS C:\> Get-AzDatabricksVNetPeering -WorkspaceName databricks-test01 -ResourceGroupName lucas-manual-test -Name vnetpeering-t01 | Update-AzDatabricksVNetPeering -AllowGatewayTransit $true
+Get-AzDatabricksVNetPeering -WorkspaceName azps-databricks-workspace-t1 -ResourceGroupName azps_test_gp_db -Name vnet-peering-t1 | Update-AzDatabricksVNetPeering -AllowGatewayTransit $true
+```
 
-Name            Type
-----            ----
-vnetpeering-t01
-
+```output
+Name            ResourceGroupName
+----            -----------------
+vnet-peering-t1 azps_test_gp_db
 ```
 
 This command updates AllowForwardedTraffic of vnet peering by object.
-
-

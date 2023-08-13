@@ -16,7 +16,6 @@ using Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models;
 using Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.ProviderModel;
 using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 using Microsoft.Azure.Management.Internal.Resources.Utilities.Models;
-using Microsoft.WindowsAzure.Commands.Common.CustomAttributes;
 using System;
 using System.Collections.Generic;
 using System.Management.Automation;
@@ -26,7 +25,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
     /// <summary>
     /// Fetches containers registered to the vault according to the filters passed via the cmdlet parameters.
     /// </summary>
-    [GenericBreakingChange("Please avoid using BackupManagementType MARS, it will be removed in upcoming breaking change release, instead use BackupManagementType MAB", "5.0.0")]
     [Cmdlet("Get", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "RecoveryServicesBackupContainer"), OutputType(typeof(ContainerBase))]
     public class GetAzureRmRecoveryServicesBackupContainer : RSBackupVaultCmdletBase
     {
@@ -42,8 +40,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
         /// </summary>
         [Parameter(Mandatory = false, Position = 2,
             HelpMessage = ParamHelpMsgs.Container.BackupManagementType)]
-        [ValidateNotNullOrEmpty]
-        [ValidateSet("AzureVM", "MARS", "AzureStorage", "AzureWorkload", "MAB")]
+        [ValidateSet("AzureVM", "AzureStorage", "AzureWorkload", "MAB")]
         public string BackupManagementType { get; set; }
 
         /// <summary>
@@ -61,15 +58,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
             HelpMessage = ParamHelpMsgs.Container.ResourceGroupName)]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
-        public string ResourceGroupName { get; set; }
-
-        /// <summary>
-        /// Status of the registration of the container with the recovery services vault.
-        /// </summary>
-        [Parameter(Mandatory = false, Position = 5,
-            HelpMessage = ParamHelpMsgs.Container.Status)]
-        [ValidateNotNullOrEmpty]
-        public ContainerRegistrationStatus Status { get; set; }
+        public string ResourceGroupName { get; set; }        
 
         public override void ExecuteCmdlet()
         {
@@ -89,9 +78,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     backupManagementTypeNullable = backupManagementType;
                 }
 
-                // Forcing this cmdlet to return only Registered containers for now. 
-                // Once we support containers returning other status types, one can undo this behavior.
-                Status = ContainerRegistrationStatus.Registered;
+                // Currently the containers API doesn't support any status level filtering 
+                // Also the NotRegitered container isn't a valid scenario, so we're not allowing client filtering too
+                // If the filtering is required in future we can add client side filtering                 
+                // Status = ContainerRegistrationStatus.Registered;
 
                 PsBackupProviderManager providerManager =
                     new PsBackupProviderManager(new Dictionary<Enum, object>()
@@ -101,8 +91,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                         { ContainerParams.ContainerType, ContainerType },
                         { ContainerParams.BackupManagementType, backupManagementTypeNullable },
                         { ContainerParams.FriendlyName, FriendlyName },
-                        { ContainerParams.ResourceGroupName, ResourceGroupName },
-                        { ContainerParams.Status, Status },
+                        { ContainerParams.ResourceGroupName, ResourceGroupName },                        
                     }, ServiceClientAdapter);
 
                 IPsBackupProvider psBackupProvider =

@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Network.dll-Help.xml
 Module Name: Az.Network
-online version: https://docs.microsoft.com/powershell/module/az.network/remove-azvirtualnetworkgatewaynatrule
+online version: https://learn.microsoft.com/powershell/module/az.network/remove-azvirtualnetworkgatewaynatrule
 schema: 2.0.0
 ---
 
@@ -37,8 +37,10 @@ Remove-AzVirtualNetworkGatewayNatRule -InputObject <PSVirtualNetworkGatewayNatRu
 
 ### Example 1
 ```powershell
-PS C:\> Remove-AzVirtualNetworkGatewayNatRule -ResourceGroupName rg1 -ParentResourceName gw1 -Name natRule3
+Remove-AzVirtualNetworkGatewayNatRule -ResourceGroupName rg1 -ParentResourceName gw1 -Name natRule3
+```
 
+```output
 Confirm
 Are you sure you want to remove resource 'natRule3'
 [Y] Yes  [N] No  [S] Suspend  [?] Help (default is "Y"): Y
@@ -46,26 +48,11 @@ Are you sure you want to remove resource 'natRule3'
 
 ## PARAMETERS
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -DefaultProfile
 The credentials, account, tenant, and subscription used for communication with Azure.
 
 ```yaml
-Type: IAzureContextContainer
+Type: Microsoft.Azure.Commands.Common.Authentication.Abstractions.Core.IAzureContextContainer
 Parameter Sets: (All)
 Aliases: AzContext, AzureRmContext, AzureCredential
 
@@ -80,7 +67,7 @@ Accept wildcard characters: False
 Do not ask for confirmation if you want to delete a resource
 
 ```yaml
-Type: SwitchParameter
+Type: System.Management.Automation.SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -95,7 +82,7 @@ Accept wildcard characters: False
 The VirtualNetworkGatewayNatRule object to update.
 
 ```yaml
-Type: PSVirtualNetworkGatewayNatRule
+Type: Microsoft.Azure.Commands.Network.Models.PSVirtualNetworkGatewayNatRule
 Parameter Sets: ByVirtualNetworkGatewayNatRuleObject
 Aliases: VirtualNetworkGatewayNatRule
 
@@ -110,7 +97,7 @@ Accept wildcard characters: False
 The resource name.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ByVirtualNetworkGatewayNatRuleName
 Aliases: ResourceName, VirtualNetworkGatewayNatRuleName
 
@@ -125,7 +112,7 @@ Accept wildcard characters: False
 The parent resource name.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ByVirtualNetworkGatewayNatRuleName
 Aliases: ParentVirtualNetworkGatewayName, VirtualNetworkGatewayName
 
@@ -140,7 +127,7 @@ Accept wildcard characters: False
 Returns an object representing the item on which this operation is being performed.
 
 ```yaml
-Type: SwitchParameter
+Type: System.Management.Automation.SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -155,7 +142,7 @@ Accept wildcard characters: False
 The resource group name.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ByVirtualNetworkGatewayNatRuleName
 Aliases:
 
@@ -170,7 +157,7 @@ Accept wildcard characters: False
 The resource id of the VirtualNetworkGatewayNatRule object to delete.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ByVirtualNetworkGatewayNatRuleResourceId
 Aliases: VirtualNetworkGatewayNatRuleId
 
@@ -181,12 +168,27 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -WhatIf
 Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
 ```yaml
-Type: SwitchParameter
+Type: System.Management.Automation.SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
 

@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Azure.Storage.Files.Shares;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
     using Microsoft.Azure.Storage;
@@ -31,6 +33,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
     using global::Azure.Storage.Blobs;
     using global::Azure.Storage;
     using global::Azure.Storage.Files.Shares.Models;
+    using global::Azure.Storage.Files.DataLake;
+    using global::Azure.Storage.Files.Shares;
+    using global::Azure.Storage.Queues;
 
     internal static class Util
     {
@@ -285,17 +290,35 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         }
 
         /// <summary>
-        /// Get snapshot Time of a blob Uri.
+        /// Get snapshot Time of a blob/file Uri.
         /// </summary>
-        public static DateTimeOffset? GetSnapshotTimeFromBlobUri(Uri BlobUri)
+        public static DateTimeOffset? GetSnapshotTimeFromUri(Uri itemUri)
+        {
+            string snapshotTimeString = GetSnapshotTimeStringFromUri(itemUri);
+            if (snapshotTimeString != null)
+            {
+                return DateTimeOffset.Parse(snapshotTimeString).ToUniversalTime();
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Get snapshot Time string of a blob/file Uri.
+        /// </summary>
+        public static string GetSnapshotTimeStringFromUri(Uri itemUri)
         {
             string snapshotQueryParameter = "snapshot=";
-            string[] queryBlocks = BlobUri.Query.Split(new char[] { '&', '?' });
+            string shareSnapshotQueryParameter = "sharesnapshot=";
+            string[] queryBlocks = itemUri.Query.Split(new char[] { '&', '?' });
             foreach (string block in queryBlocks)
             {
                 if (block.StartsWith(snapshotQueryParameter))
                 {
-                    return DateTimeOffset.Parse(System.Web.HttpUtility.UrlDecode(block.Replace(snapshotQueryParameter, ""))).ToUniversalTime();
+                    return System.Web.HttpUtility.UrlDecode(block.Replace(snapshotQueryParameter, ""));
+                }
+                if (block.StartsWith(shareSnapshotQueryParameter))
+                {
+                    return System.Web.HttpUtility.UrlDecode(block.Replace(shareSnapshotQueryParameter, ""));
                 }
             }
             return null;
@@ -380,10 +403,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             }
         }
 
-        public static BlobBaseClient GetTrack2BlobClient(BlobContainerClient track2container, string blobName, AzureStorageContext context, string versionId = null, bool? IsCurrentVersion = null, string snapshot = null, BlobClientOptions options = null, global::Azure.Storage.Blobs.Models.BlobType? blobType = null)
+        public static BlobBaseClient GetTrack2BlobClient(BlobContainerClient track2container, string blobName, AzureStorageContext context, string versionId = null, bool? IsCurrentVersion = null, string snapshot = null, BlobClientOptions options = null, global::Azure.Storage.Blobs.Models.BlobType? blobType = null, bool shouldTrimSlash = true)
         {
             //Get Track2 Blob Client Uri
-            BlobUriBuilder blobUriBuilder = new BlobUriBuilder(track2container.Uri)
+            BlobUriBuilder blobUriBuilder = new BlobUriBuilder(track2container.Uri, trimBlobNameSlashes: shouldTrimSlash)
             {
                 BlobName = blobName
             };
@@ -394,6 +417,14 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             if (snapshot != null)
             {
                 blobUriBuilder.Snapshot = snapshot;
+            }
+            if (shouldTrimSlash == false)
+            {
+                if (options == null)
+                {
+                    options = new BlobClientOptions();
+                }
+                options.TrimBlobNameSlashes = shouldTrimSlash;
             }
 
             return GetTrack2BlobClient(blobUriBuilder.ToUri(), context, options, blobType);
@@ -406,7 +437,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 options = new BlobClientOptions();
             }
-            if (context.StorageAccount.Credentials.IsToken) //Oauth
+            if (context != null && context.StorageAccount != null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsToken) //Oauth
             {
                 if (blobType == null)
                 {
@@ -428,7 +459,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                     }
                 }
             }
-            else if (context.StorageAccount.Credentials.IsSharedKey) //Shared Key
+            else if (context != null && context.StorageAccount != null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsSharedKey) //Shared Key
             {
                 if (blobType == null)
                 {
@@ -483,7 +514,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         public static BlobServiceClient GetTrack2BlobServiceClient(AzureStorageContext context, BlobClientOptions options = null)
         {
             BlobServiceClient blobServiceClient;
-            if (context.StorageAccount.Credentials.IsToken) //Oauth
+            if (context != null && context.StorageAccount != null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsToken) //Oauth
             {
                 blobServiceClient = new BlobServiceClient(context.StorageAccount.BlobEndpoint, context.Track2OauthToken, options);
             }
@@ -492,7 +523,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                 string connectionString = context.ConnectionString;
 
                 // remove the "?" at the begin of SAS if any
-                if (context.StorageAccount.Credentials.IsSAS)
+                if (context != null && context.StorageAccount != null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsSAS)
                 {
                     connectionString = connectionString.Replace("SharedAccessSignature=?", "SharedAccessSignature=");
                 }
@@ -501,6 +532,27 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             return blobServiceClient;
         }
 
+        public static DataLakeServiceClient GetTrack2DataLakeServiceClient(AzureStorageContext context, DataLakeClientOptions options = null)
+        {
+            DataLakeServiceClient serviceClient;
+            if (context != null && context.StorageAccount != null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsToken) //Oauth
+            {
+                serviceClient = new DataLakeServiceClient(context.StorageAccount.BlobEndpoint, context.Track2OauthToken, options);
+            }
+            else if (context != null && context.StorageAccount != null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsSharedKey) //key 
+            {
+                serviceClient = new DataLakeServiceClient(context.StorageAccount.BlobEndpoint, new StorageSharedKeyCredential(context.StorageAccountName, context.StorageAccount.Credentials.ExportBase64EncodedKey()), options);
+            }
+            else if (context != null && context.StorageAccount != null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsSAS) //sas 
+            {
+                serviceClient = new DataLakeServiceClient(new Uri(context.StorageAccount.BlobEndpoint.ToString() + context.StorageAccount.Credentials.SASToken), options);
+            }
+            else // Anonymous
+            {
+                serviceClient = new DataLakeServiceClient(context.StorageAccount.BlobEndpoint, options);
+            }
+            return serviceClient;
+        }
         /// <summary>
         /// Validate if Start Time and Expire time meet the requirement of userDelegationKey
         /// </summary>
@@ -515,7 +567,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             {
                 throw new ArgumentException(string.Format("Expiry time {0} is earlier than now.", userDelegationKeyEndTime.ToString()));
             }
-            else if (userDelegationKeyStartTime >= userDelegationKeyEndTime)
+            else if (userDelegationKeyStartTime != null && userDelegationKeyStartTime >= userDelegationKeyEndTime)
             {
                 throw new ArgumentException(string.Format("Start time {0} is later than expiry time {1}.", userDelegationKeyStartTime.ToString(), userDelegationKeyEndTime.ToString()));
             }
@@ -534,7 +586,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                 return null;
             }
 
-            switch(pageBlobTier)
+            switch (pageBlobTier)
             {
                 case PremiumPageBlobTier.P4:
                     return global::Azure.Storage.Blobs.Models.AccessTier.P4;
@@ -687,6 +739,121 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                 sas = sas.Substring(1);
             }
             return sas;
+        }
+
+        /// <summary>
+        /// When request doesn't container a proper bearer token, server will return 401 error include the audience of the required bearer token.
+        /// This function will get the audience of bearer token from SDK exception message.
+        /// If server not return audience, will output null.
+        /// </summary>
+        public static string GetAudienceFrom401ExceptionMessage(string exceptionMessage)
+        {
+            string authenticateHeaderName = "WWW-Authenticate";
+            string audienceName = "resource_id=";
+            string[] exceptionMessageTexts = exceptionMessage.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string messageText in exceptionMessageTexts)
+            {
+                if (messageText.StartsWith(authenticateHeaderName))
+                {
+                    string[] authTexts = messageText.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string authText in authTexts)
+                    {
+                        if (authText.StartsWith(audienceName))
+                        {
+                            return authText.Substring(audienceName.Length);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static ShareServiceClient GetTrack2FileServiceClient(AzureStorageContext context, ShareClientOptions options = null)
+        {
+            if (context == null || string.IsNullOrEmpty(context.ConnectionString))
+            {
+                throw new ArgumentException(Resources.DefaultStorageCredentialsNotFound);
+            }
+
+            ShareServiceClient shareServiceClient;
+            if (context.StorageAccount!= null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsToken) //Oauth
+            {
+                if (context.ShareTokenIntent != null)
+                {
+                    options.ShareTokenIntent = context.ShareTokenIntent.Value;   
+                }
+                shareServiceClient = new ShareServiceClient(context.StorageAccount.FileEndpoint, context.Track2OauthToken, options);
+            }
+            else  //sas , key or Anonymous, use connection string
+            {
+                string connectionString = context.ConnectionString;
+
+                // remove the "?" at the begin of SAS if any
+                if (context != null && context.StorageAccount != null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsSAS)
+                {
+                    connectionString = connectionString.Replace("SharedAccessSignature=?", "SharedAccessSignature=");
+                }
+                shareServiceClient = new ShareServiceClient(connectionString, options);
+            }
+            return shareServiceClient;
+        }
+
+        public static ShareClient GetTrack2ShareReference(string shareName, AzureStorageContext context, string snapshotTime = null, ShareClientOptions options = null)
+        {
+            ShareClient shareClient = GetTrack2FileServiceClient(context, options).GetShareClient(shareName);
+            if (snapshotTime != null)
+            {
+                return shareClient.WithSnapshot(snapshotTime);
+            }
+            else
+            {
+                return shareClient;
+            }
+        }
+
+        public static QueueClient GetTrack2QueueClient(string queueName, AzureStorageContext context, QueueClientOptions options)
+        {
+            if (context == null || string.IsNullOrEmpty(context.ConnectionString))
+            {
+                throw new ArgumentException(Resources.DefaultStorageCredentialsNotFound);
+            }
+
+            string connectionString = context.ConnectionString;
+            if (context != null && context.StorageAccount != null && context.StorageAccount.Credentials != null && context.StorageAccount.Credentials.IsSAS)
+            {
+                connectionString = connectionString.Replace("SharedAccessSignature=?", "SharedAccessSignature=");
+            }
+
+            QueueClient queueClient;
+
+            queueClient = new QueueClient(connectionString, queueName, options);
+            return queueClient;
+        }
+
+        /// <summary>
+        /// Get SnapshotQualifiedUri without credential from a blob/file service item Uri.
+        /// </summary>
+        public static string GetSnapshotQualifiedUri(Uri itemUri)
+        {
+            string snapshotQueryParameter = "snapshot=";
+            string shareSnapshotQueryParameter = "sharesnapshot=";
+            string blobVersionQueryParameter = "versionid=";
+            if (!string.IsNullOrEmpty(itemUri.Query))
+            {
+                string[] queryBlocks = itemUri.Query.Split(new char[] { '&', '?' });
+                foreach (string block in queryBlocks)
+                {
+                    if (block.StartsWith(snapshotQueryParameter) || block.StartsWith(shareSnapshotQueryParameter) || block.StartsWith(blobVersionQueryParameter))
+                    {
+                        return itemUri.ToString().Replace(itemUri.Query, "?" + block);
+                    }
+                }
+                return itemUri.ToString().Replace(itemUri.Query, "");
+            }
+            else
+            {
+                return itemUri.ToString();
+            }
         }
     }
 }

@@ -31,7 +31,8 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201
         /// <summary>
         /// <c>BeforeDeserializeDictionary</c> will be called before the deserialization has commenced, allowing complete customization
         /// of the object before it is deserialized.
-        /// If you wish to disable the default deserialization entirely, return <c>true</c> in the <see "returnNow" /> output parameter.
+        /// If you wish to disable the default deserialization entirely, return <c>true</c> in the <paramref name="returnNow" /> output
+        /// parameter.
         /// Implement this method in a partial class to enable this behavior.
         /// </summary>
         /// <param name="content">The global::System.Collections.IDictionary content that should be used.</param>
@@ -43,7 +44,8 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201
         /// <summary>
         /// <c>BeforeDeserializePSObject</c> will be called before the deserialization has commenced, allowing complete customization
         /// of the object before it is deserialized.
-        /// If you wish to disable the default deserialization entirely, return <c>true</c> in the <see "returnNow" /> output parameter.
+        /// If you wish to disable the default deserialization entirely, return <c>true</c> in the <paramref name="returnNow" /> output
+        /// parameter.
         /// Implement this method in a partial class to enable this behavior.
         /// </summary>
         /// <param name="content">The global::System.Management.Automation.PSObject content that should be used.</param>
@@ -82,7 +84,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201
         /// Creates a new instance of <see cref="LogFileProperties" />, deserializing the content from a json string.
         /// </summary>
         /// <param name="jsonText">a string containing a JSON serialized instance of this model.</param>
-        /// <returns>an instance of the <see cref="className" /> model class.</returns>
+        /// <returns>an instance of the <see cref="LogFileProperties" /> model class.</returns>
         public static Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFileProperties FromJsonString(string jsonText) => FromJson(Microsoft.Azure.PowerShell.Cmdlets.MySql.Runtime.Json.JsonNode.Parse(jsonText));
 
         /// <summary>
@@ -99,11 +101,26 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201
                 return;
             }
             // actually deserialize
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).SizeInKb = (long?) content.GetValueForProperty("SizeInKb",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).SizeInKb, (__y)=> (long) global::System.Convert.ChangeType(__y, typeof(long)));
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).CreatedTime = (global::System.DateTime?) content.GetValueForProperty("CreatedTime",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).CreatedTime, (v) => v is global::System.DateTime _v ? _v : global::System.Xml.XmlConvert.ToDateTime( v.ToString() , global::System.Xml.XmlDateTimeSerializationMode.Unspecified));
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).LastModifiedTime = (global::System.DateTime?) content.GetValueForProperty("LastModifiedTime",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).LastModifiedTime, (v) => v is global::System.DateTime _v ? _v : global::System.Xml.XmlConvert.ToDateTime( v.ToString() , global::System.Xml.XmlDateTimeSerializationMode.Unspecified));
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Type = (string) content.GetValueForProperty("Type",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Type, global::System.Convert.ToString);
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Url = (string) content.GetValueForProperty("Url",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Url, global::System.Convert.ToString);
+            if (content.Contains("SizeInKb"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).SizeInKb = (long?) content.GetValueForProperty("SizeInKb",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).SizeInKb, (__y)=> (long) global::System.Convert.ChangeType(__y, typeof(long)));
+            }
+            if (content.Contains("CreatedTime"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).CreatedTime = (global::System.DateTime?) content.GetValueForProperty("CreatedTime",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).CreatedTime, (v) => v is global::System.DateTime _v ? _v : global::System.Xml.XmlConvert.ToDateTime( v.ToString() , global::System.Xml.XmlDateTimeSerializationMode.Unspecified));
+            }
+            if (content.Contains("LastModifiedTime"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).LastModifiedTime = (global::System.DateTime?) content.GetValueForProperty("LastModifiedTime",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).LastModifiedTime, (v) => v is global::System.DateTime _v ? _v : global::System.Xml.XmlConvert.ToDateTime( v.ToString() , global::System.Xml.XmlDateTimeSerializationMode.Unspecified));
+            }
+            if (content.Contains("Type"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Type = (string) content.GetValueForProperty("Type",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Type, global::System.Convert.ToString);
+            }
+            if (content.Contains("Url"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Url = (string) content.GetValueForProperty("Url",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Url, global::System.Convert.ToString);
+            }
             AfterDeserializeDictionary(content);
         }
 
@@ -121,11 +138,26 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201
                 return;
             }
             // actually deserialize
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).SizeInKb = (long?) content.GetValueForProperty("SizeInKb",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).SizeInKb, (__y)=> (long) global::System.Convert.ChangeType(__y, typeof(long)));
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).CreatedTime = (global::System.DateTime?) content.GetValueForProperty("CreatedTime",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).CreatedTime, (v) => v is global::System.DateTime _v ? _v : global::System.Xml.XmlConvert.ToDateTime( v.ToString() , global::System.Xml.XmlDateTimeSerializationMode.Unspecified));
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).LastModifiedTime = (global::System.DateTime?) content.GetValueForProperty("LastModifiedTime",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).LastModifiedTime, (v) => v is global::System.DateTime _v ? _v : global::System.Xml.XmlConvert.ToDateTime( v.ToString() , global::System.Xml.XmlDateTimeSerializationMode.Unspecified));
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Type = (string) content.GetValueForProperty("Type",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Type, global::System.Convert.ToString);
-            ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Url = (string) content.GetValueForProperty("Url",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Url, global::System.Convert.ToString);
+            if (content.Contains("SizeInKb"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).SizeInKb = (long?) content.GetValueForProperty("SizeInKb",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).SizeInKb, (__y)=> (long) global::System.Convert.ChangeType(__y, typeof(long)));
+            }
+            if (content.Contains("CreatedTime"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).CreatedTime = (global::System.DateTime?) content.GetValueForProperty("CreatedTime",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).CreatedTime, (v) => v is global::System.DateTime _v ? _v : global::System.Xml.XmlConvert.ToDateTime( v.ToString() , global::System.Xml.XmlDateTimeSerializationMode.Unspecified));
+            }
+            if (content.Contains("LastModifiedTime"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).LastModifiedTime = (global::System.DateTime?) content.GetValueForProperty("LastModifiedTime",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).LastModifiedTime, (v) => v is global::System.DateTime _v ? _v : global::System.Xml.XmlConvert.ToDateTime( v.ToString() , global::System.Xml.XmlDateTimeSerializationMode.Unspecified));
+            }
+            if (content.Contains("Type"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Type = (string) content.GetValueForProperty("Type",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Type, global::System.Convert.ToString);
+            }
+            if (content.Contains("Url"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Url = (string) content.GetValueForProperty("Url",((Microsoft.Azure.PowerShell.Cmdlets.MySql.Models.Api20171201.ILogFilePropertiesInternal)this).Url, global::System.Convert.ToString);
+            }
             AfterDeserializePSObject(content);
         }
 

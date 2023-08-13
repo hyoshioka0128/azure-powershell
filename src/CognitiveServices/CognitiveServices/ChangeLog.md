@@ -19,6 +19,30 @@
 -->
 ## Upcoming Release
 
+## Version 1.14.0
+* Updated CognitiveServices PowerShell to use 2023-05-01 version.
+
+## Version 1.13.1
+* Removed notice and attestation from `New-AzCognitiveServicesAccount`.
+
+## Version 1.13.0
+* Updated CognitiveServices PowerShell to use 2022-12-01 version.
+* Added new CognitiveServices CommitmentPlan and Association cmdlets.
+* Added MultiRegionSetting support for CognitiveServices Account cmdlets.
+
+## Version 1.12.0
+* Updated CognitiveServices PowerShell to use 2022-10-01 version.
+
+## Version 1.11.0
+* Updated CognitiveServices PowerShell to use 2022-03-01 version.
+* Added `Get-AzCognitiveServicesAccountModel` cmdlet.
+
+## Version 1.10.0
+* Updated PowerShell to use 2021-10-01 version.
+* Added CommitmentTier and CommitmentPlan cmdlets.
+* Added Deployment cmdlets.
+* Added `New-AzCognitiveServicesObject` cmdlet for generating CommitmentPlan/Deployment objects.
+
 ## Version 1.9.0
 * [Breaking Change] Changed type of PSCognitiveServicesAccount.Identity.Type from IdentityType to ResourceIdentityType.
 * [Breaking Change] Changed type of PSCognitiveServicesAccount.Sku.Tier from SkuTier to string.

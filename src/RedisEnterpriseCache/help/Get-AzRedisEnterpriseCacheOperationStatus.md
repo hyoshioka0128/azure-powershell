@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.RedisEnterpriseCache
-online version: https://docs.microsoft.com/powershell/module/az.redisenterprisecache/get-azredisenterprisecacheoperationstatus
+online version: https://learn.microsoft.com/powershell/module/az.redisenterprisecache/get-azredisenterprisecacheoperationstatus
 schema: 2.0.0
 ---
 
@@ -24,8 +24,10 @@ Gets the status of operation.
 
 ### Example 1: Get operation status
 ```powershell
-PS C:\> Get-AzRedisEnterpriseCacheOperationStatus -Location "East US" -OperationId "6432a8f9-0fe6-4339-9303-772c92f35d02"
+Get-AzRedisEnterpriseCacheOperationStatus -Location "East US" -OperationId "6432a8f9-0fe6-4339-9303-772c92f35d02"
+```
 
+```output
 EndTime                           Name                                 StartTime                         Status
 -------                           ----                                 ---------                         ------
 2020-12-01T00:12:45.7107366+00:00 6432a8f9-0fe6-4339-9303-772c92f35d02 2020-12-01T00:04:35.7061294+00:00 Succeeded
@@ -37,7 +39,8 @@ This command gets the status of an operation.
 ## PARAMETERS
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -52,7 +55,7 @@ Accept wildcard characters: False
 ```
 
 ### -Location
-The region the operation is in.
+The name of Azure region.
 
 ```yaml
 Type: System.String
@@ -67,7 +70,7 @@ Accept wildcard characters: False
 ```
 
 ### -OperationId
-The operation's unique identifier.
+The ID of an ongoing async operation.
 
 ```yaml
 Type: System.String
@@ -103,7 +106,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.RedisEnterpriseCache.Models.Api20210301.IOperationStatus
+### Microsoft.Azure.PowerShell.Cmdlets.RedisEnterpriseCache.Models.Api20230301Preview.IOperationStatus
 
 ## NOTES
 

@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.CosmosDB.dll-Help.xml
 Module Name: Az.CosmosDB
-online version: https://docs.microsoft.com/powershell/module/az.cosmosdb/restore-azcosmosdbaccount
+online version: https://learn.microsoft.com/powershell/module/az.cosmosdb/restore-azcosmosdbaccount
 schema: 2.0.0
 ---
 
@@ -15,7 +15,8 @@ Restores an existing CosmosDB account (live or deleted) to a given timestamp to 
 ```
 Restore-AzCosmosDBAccount -RestoreTimestampInUtc <DateTime> -SourceDatabaseAccountName <String>
  -Location <String> -TargetResourceGroupName <String> -TargetDatabaseAccountName <String>
- [-DatabasesToRestore <PSDatabaseToRestore[]>] [-AsJob] [-DefaultProfile <IAzureContextContainer>] [-WhatIf]
+ [-DatabasesToRestore <PSDatabaseToRestore[]>] [-GremlinDatabasesToRestore <PSGremlinDatabaseToRestore[]>]
+ [-TablesToRestore <PSTablesToRestore>] [-AsJob] [-DefaultProfile <IAzureContextContainer>] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
@@ -26,8 +27,10 @@ Creates a new CosmosDB account by restoring an existing account with the given n
 
 ### Example 1
 ```powershell
-PS C:\> Restore-AzCosmosDBAccount -TargetResourceGroupName resourceGroupName -TargetDatabaseAccountName restored-account-name  -SourceDatabaseAccountName sourceDatabaseAccountName -RestoreTimestampInUtc 2020-07-20T17:19:25+0000 -Location "West US"
+Restore-AzCosmosDBAccount -TargetResourceGroupName resourceGroupName -TargetDatabaseAccountName restored-account-name  -SourceDatabaseAccountName sourceDatabaseAccountName -RestoreTimestampInUtc 2020-07-20T17:19:25+0000 -Location "West US"
+```
 
+```output
 Id                                 : /subscriptions/259fbb24-9bcd-4cfc-865c-fc33b22fe38a/resourceGroups/resourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/restored-account-name
 Name                               : restored-account-name
 InstanceId                         : eeb45f7f-4c05-4b52-9f42-6807d8eb8703
@@ -81,21 +84,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: System.Management.Automation.SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -DatabasesToRestore
 The list of PSDatabaseToRestore objects which specify the subset of databases and collections to restore from the source account. (If not provided, all the databases will be restored)
 
@@ -118,6 +106,21 @@ The credentials, account, tenant, and subscription used for communication with A
 Type: Microsoft.Azure.Commands.Common.Authentication.Abstractions.Core.IAzureContextContainer
 Parameter Sets: (All)
 Aliases: AzContext, AzureRmContext, AzureCredential
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -GremlinDatabasesToRestore
+The list of PSGremlinDatabaseToRestore objects which specify the subset of databases and graphs to restore from the source account. (If not provided, all the databases will be restored)
+
+```yaml
+Type: Microsoft.Azure.Commands.CosmosDB.Models.PSGremlinDatabaseToRestore[]
+Parameter Sets: (All)
+Aliases:
 
 Required: False
 Position: Named
@@ -172,6 +175,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -TablesToRestore
+The list of PSTableToRestore objects which specify the subset of tables to restore from the source account. (If not provided, all the tables will be restored)
+
+```yaml
+Type: Microsoft.Azure.Commands.CosmosDB.Models.PSTablesToRestore
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -TargetDatabaseAccountName
 Name of the Cosmos DB database account.
 
@@ -196,6 +214,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

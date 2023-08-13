@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.Websites
-online version: https://docs.microsoft.com/powershell/module/az.websites/get-azstaticwebappfunctionappsetting
+online version: https://learn.microsoft.com/powershell/module/az.websites/get-azstaticwebappfunctionappsetting
 schema: 2.0.0
 ---
 
@@ -24,8 +24,10 @@ Description for Gets the application settings of a static site.
 
 ### Example 1: Get the application settings of a static site 
 ```powershell
-PS C:\> Get-AzStaticWebAppFunctionAppSetting -ResourceGroupName azure-rg-test -Name staticweb-portal04
+Get-AzStaticWebAppFunctionAppSetting -ResourceGroupName azure-rg-test -Name staticweb-portal04
+```
 
+```output
 Kind Name        Type
 ---- ----        ----
      appsettings Microsoft.Web/staticSites/config/functionappsettings
@@ -36,7 +38,8 @@ This command gets the application settings of a static site.
 ## PARAMETERS
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject

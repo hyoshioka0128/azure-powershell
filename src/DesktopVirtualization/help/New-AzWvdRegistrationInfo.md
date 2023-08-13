@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.DesktopVirtualization
-online version: https://docs.microsoft.com/powershell/module/az.desktopvirtualization/new-azwvdregistrationinfo
+online version: https://learn.microsoft.com/powershell/module/az.desktopvirtualization/new-azwvdregistrationinfo
 schema: 2.0.0
 ---
 
@@ -22,16 +22,18 @@ Create Windows virtual desktop registration info.
 
 ## EXAMPLES
 
-### Example 1: Create a Windows Virtual Desktop Registration Token
+### Example 1: Create a Registration Info for a HostPool
 ```powershell
-PS C:\> New-AzWvdRegistrationInfo -ResourceGroupName ResourceGroupName -HostPoolName HostPoolName -ExpirationTime $((get-date).ToUniversalTime().AddDays(1).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
-
-ExpirationTime       RegistrationTokenOperation Token
---------------       -------------------------- -----
-4/1/2020 10:19:33 PM Update                       eyJhbGciOiJSUzI1NiIsImtpZCI6IkMyRjU1RUYxNzg0MEFCNzkzMDk2RUYzRjdEMkNBRDk0NThGNDhEOTQiLCJ0eXAiOiJKV1QifQ.eyJSZWdpc3RyYXRpb25JZCI6IjU5NGJjZWUwLTk5MjQtNDg3ZC1iOW...
+New-AzWvdRegistrationInfo -ResourceGroupName rgName -HostPoolName hpName -ExpirationTime "2050-02-14 12:00"
 ```
 
-This command creates a Windows Virtual Desktop Registration Token in a Host Pool.
+```output
+ExpirationTime         RegistrationTokenOperation Token
+--------------         -------------------------- -----
+02/14/2050 12:00:00 PM Update                     <base64 encoded string>
+```
+
+Creates a new Registration Info object for the selected HostPool
 
 ## PARAMETERS
 
@@ -148,7 +150,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api20210712.IRegistrationInfo
+### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api202209.IRegistrationInfo
 
 ## NOTES
 

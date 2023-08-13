@@ -36,13 +36,14 @@ function Test-PoolCRUD
         $vmSize = "standard_d1_v2"
         $publisher = "microsoft-azure-batch"
         $offer = "ubuntu-server-container"
-        $osSKU = "16-04-lts"
-        $nodeAgent = "batch.node.ubuntu 16.04"
+        $osSKU = "20-04-lts"
+        $nodeAgent = "batch.node.ubuntu 20.04"
         $imageRef = New-Object Microsoft.Azure.Commands.Batch.Models.PSImageReference -ArgumentList @($offer, $publisher, $osSKU)
         $iaasConfiguration = New-Object Microsoft.Azure.Commands.Batch.Models.PSVirtualMachineConfiguration -ArgumentList @($imageRef, $nodeAgent)
         $iaasConfiguration.ContainerConfiguration = New-Object Microsoft.Azure.Commands.Batch.Models.PSContainerConfiguration
         $iaasConfiguration.ContainerConfiguration.ContainerImageNames = New-Object System.Collections.Generic.List[string]
         $iaasConfiguration.ContainerConfiguration.ContainerImageNames.Add("test")
+        $iaasConfiguration.ContainerConfiguration.type = "dockerCompatible"
         New-AzBatchPool $poolId2 -VirtualMachineConfiguration $iaasConfiguration -TargetDedicated $targetDedicated -VirtualMachineSize $vmSize -BatchContext $context
 
         # List the pools to ensure they were created

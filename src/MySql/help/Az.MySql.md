@@ -1,7 +1,7 @@
 ---
 Module Name: Az.MySql
 Module Guid: 0b8ac9f4-b926-4ac8-b73f-937a0d218521
-Download Help Link: https://docs.microsoft.com/powershell/module/az.mysql
+Download Help Link: https://learn.microsoft.com/powershell/module/az.mysql
 Help Version: 1.0.0.0
 Locale: en-US
 ---
@@ -63,7 +63,7 @@ Creates a new database or updates an existing database.
 Creates a new firewall rule for MySQL flexible server
 
 ### [New-AzMySqlFlexibleServerReplica](New-AzMySqlFlexibleServerReplica.md)
-Creates a new replica from an existing database.
+Creates a replica server for a MySQL flexible server
 
 ### [New-AzMySqlReplica](New-AzMySqlReplica.md)
 Creates a new replica from an existing database.

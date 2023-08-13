@@ -21,6 +21,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage
     using System;
     using System.Collections.Generic;
     using Microsoft.WindowsAzure.Commands.Storage.Common;
+    using global::Azure.Storage.Files.Shares.Models;
 
     /// <summary>
     /// Storage context
@@ -78,6 +79,11 @@ namespace Microsoft.WindowsAzure.Commands.Storage
         /// Storage Library Track2 Oauth credential
         /// </summary>
         public virtual AzureSessionCredential Track2OauthToken { get; set; }
+
+        /// <summary>
+        /// Share File Request Intent, only for file oauth
+        /// </summary>
+        public virtual ShareTokenIntent? ShareTokenIntent { get; set; }
 
         /// <summary>
         /// Endpoint suffix (everything after "table.", "blob." or "queue.")
@@ -142,6 +148,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage
         /// Create a storage context usign cloud storage account
         /// </summary>
         /// <param name="account">cloud storage account</param>
+        /// <param name="accountName">Storage account name</param>
+        /// <param name="DefaultContext"></param>
+        /// <param name="logWriter"></param>
         public AzureStorageContext(CloudStorageAccount account, string accountName = null, IAzureContext DefaultContext = null, DebugLogWriter logWriter = null)
         {
             StorageAccount = account;
@@ -167,26 +176,28 @@ namespace Microsoft.WindowsAzure.Commands.Storage
                 FileEndPoint = account.FileEndpoint.ToString();
             }
 
-            StorageAccountName = string.IsNullOrEmpty(accountName) ? account.Credentials.AccountName : accountName;
+            StorageAccountName = string.IsNullOrEmpty(accountName) ?
+                (account.Credentials is null ? null : account.Credentials.AccountName)
+                : accountName;
             Context = this;
             Name = String.Empty;
 
             if (string.IsNullOrEmpty(StorageAccountName))
             {
-                if (account.Credentials.IsSAS)
+                if (account.Credentials != null && account.Credentials.IsSAS)
                 {
                     StorageAccountName = "[SasToken]";
                 }
-                else if (account.Credentials.IsToken)
+                else if (account.Credentials != null && account.Credentials.IsToken)
                 {
                     StorageAccountName = "[AccessToken]";
                 }
-                else
+                else if (account.Credentials != null && account.Credentials.IsAnonymous)
                 {
                     StorageAccountName = "[Anonymous]";
                 }
             }
-            if (account.Credentials.IsToken)
+            if (account.Credentials != null && account.Credentials.IsToken)
             {
                 Track2OauthToken = new AzureSessionCredential(DefaultContext, logWriter);
             }

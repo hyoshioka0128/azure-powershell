@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.DesktopVirtualization
-online version: https://docs.microsoft.com/powershell/module/az.desktopvirtualization/new-azwvdworkspace
+online version: https://learn.microsoft.com/powershell/module/az.desktopvirtualization/new-azwvdworkspace
 schema: 2.0.0
 ---
 
@@ -29,13 +29,15 @@ Create or update a workspace.
 
 ### Example 1: Create a Windows Virtual Desktop Workspace by name
 ```powershell
-PS C:\> New-AzWvdWorkspace -ResourceGroupName ResourceGroupName `
+New-AzWvdWorkspace -ResourceGroupName ResourceGroupName `
                         -Name WorkspaceName `
                         -Location 'eastus' `
                         -FriendlyName 'Friendly Name' `
                         -ApplicationGroupReference $null `
                         -Description 'Description'
+```
 
+```output
 Location   Name                 Type
 --------   ----                 ----
 eastus     WorkspaceName Microsoft.DesktopVirtualization/workspaces
@@ -45,13 +47,15 @@ This command creates a Windows Virtual Desktop Workspace in a Resource Group.
 
 ### Example 2: Create a Windows Virtual Desktop Workspace by name
 ```powershell
-PS C:\> New-AzWvdWorkspace -ResourceGroupName ResourceGroupName `
+New-AzWvdWorkspace -ResourceGroupName ResourceGroupName `
                         -Name WorkspaceName `
                         -Location 'eastus' `
                         -FriendlyName 'Friendly Name' `
                         -ApplicationGroupReference "/subscriptions/SubscriptionId/resourceGroups/ResourceGroupName/providers/Microsoft.DesktopVirtualization/applicationGroups/ApplicationGroupName1","/subscriptions/SubscriptionId/resourceGroups/ResourceGroupName/providers/Microsoft.DesktopVirtualization/applicationGroups/ApplicationGroupName2" `
                         -Description 'Description'
+```
 
+```output
 Location   Name                 Type
 --------   ----                 ----
 eastus     WorkspaceName Microsoft.DesktopVirtualization/workspaces
@@ -77,7 +81,8 @@ Accept wildcard characters: False
 ```
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -443,7 +448,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api20210712.IWorkspace
+### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api202209.IWorkspace
 
 ## NOTES
 

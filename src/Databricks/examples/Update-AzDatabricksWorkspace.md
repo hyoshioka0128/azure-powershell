@@ -1,37 +1,62 @@
-### Example 1: Updates the tags of a Databricks workspace
+### Example 1: Updates the tags of a Databricks workspace.
 ```powershell
-PS C:\> $dbr = Get-AzDatabricksWorkspace -ResourceGroupName databricks-rg-952d47 -Name workspaceopsc46 -Tag @{'key'=1}
-PS C:\> Update-AzDatabricksWorkspace -InputObject $dbr -Tag @{key="value"}
+Get-AzDatabricksWorkspace -ResourceGroupName azps_test_gp_db -Name azps-databricks-workspace-t1 | Update-AzDatabricksWorkspace -Tag @{"key"="value"}
+```
 
-Name            Location Managed Resource Group ID
-----            -------- -------------------------
-workspaceopsc46 eastus   /subscriptions/0140911e-1040-48da-8bc9-b99fb3dd88a6/resourceGroups/databricks-rg-workspaceopsc46-wfgp3ayhu6jkn
+```output
+Name                         ResourceGroupName Location Managed Resource Group ID
+----                         ----------------- -------- -------------------------
+azps-databricks-workspace-t1 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t1
 ```
 
 This command updates the tags of a Databricks workspace.
 
-### Example 2: Enable encryption on a Databricks workspace
+### Example 2: Enable encryption on a Databricks workspace.
 ```powershell
-PS C:\> Update-AzDatabricksWorkspace -ResourceGroupName databricks-rg-952d47 -Name workspaceypae6l -PrepareEncryption
-PS C:\> Update-AzDatabricksWorkspace -ResourceGroupName databricks-rg-952d47 -Name workspaceypae6l -EncryptionKeySource 'Microsoft.KeyVault' -EncryptionKeyVaultUri https://keyvalult-j3kube.vault.azure.net/ -EncryptionKeyName key-p3bjsf -EncryptionKeyVersion 853999da89714fb4a1408681945135fd
+Update-AzDatabricksWorkspace -ResourceGroupName azps_test_gp_db -Name azps-databricks-workspace-t2 -PrepareEncryption
+$updWsp = Get-AzDatabricksWorkspace -ResourceGroupName azps_test_gp_db -Name azps-databricks-workspace-t2
+Set-AzKeyVaultAccessPolicy -VaultName azps-keyvault -ObjectId $updWsp.StorageAccountIdentityPrincipalId -PermissionsToKeys wrapkey,unwrapkey,get
+Update-AzDatabricksWorkspace -ResourceGroupName azps_test_gp_db -Name azps-databricks-workspace-t2 -EncryptionKeySource 'Microsoft.KeyVault' -EncryptionKeyVaultUri https://azps-keyvault.vault.azure.net/ -EncryptionKeyName azps-k1 -EncryptionKeyVersion a563a8021cba47109d93bd6d690621a7
+```
 
-Name            Location       Managed Resource Group ID
-----            --------       -------------------------
-workspaceypae6l East US 2 EUAP /subscriptions/0140911e-1040-48da-8bc9-b99fb3dd88a6/resourceGroups/databricks-rg-workspaceypae6l-wzefrgv2b075t
+```output
+Name                         ResourceGroupName Location Managed Resource Group ID
+----                         ----------------- -------- -------------------------
+azps-databricks-workspace-t2 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t2
 ```
 
 Enabling encryption on a Databricks workspace takes three steps:
-1. Update the workspace with `-PrepareEncryption` (if it was not created so).
-1. Find `StorageAccountIdentityPrincipalId` in the output of the last step. Grant key permissions to the principal.
-1. Update the workspace again to fill in information about the encryption key:
-    - `-EncryptionKeySource`
-    - `-EncryptionKeyVaultUri`
-    - `-EncryptionKeyName`
-    - `-EncryptionKeyVersion`
+1.Please make sure that KeyVault has Purge protection enabled.
+2.Update the workspace with `-PrepareEncryption` (if it was not created so).
+3.Find `StorageAccountIdentityPrincipalId` in the output of the last step and grant key permissions to the principal.
+4.Update the workspace again to fill in information about the encryption key:
+   - `-EncryptionKeySource`
+   - `-EncryptionKeyVaultUri`
+   - `-EncryptionKeyName`
+   - `-EncryptionKeyVersion`
 
-### Example 3: Disable encryption on a Databricks workspace
+### Example 3: Disable encryption on a Databricks workspace.
 ```powershell
-PS C:\> Update-AzDatabricksWorkspace -ResourceGroupName databricks-rg-952d47 -Name workspaceypae6l -EncryptionKeySource 'Default'
+Update-AzDatabricksWorkspace -ResourceGroupName azps_test_gp_db -Name azps-databricks-workspace-t3 -EncryptionKeySource 'Default'
+```
+
+```output
+Name                         ResourceGroupName Location Managed Resource Group ID
+----                         ----------------- -------- -------------------------
+azps-databricks-workspace-t3 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t3
 ```
 
 To disable encryption, simply set `-EncryptionKeySource` to `'Default'`.
+
+### Example 4: Update NsgRule of the Databricks workspace.
+```powershell
+Update-AzDatabricksWorkspace -ResourceGroupName azps_test_gp_db -Name azps-databricks-workspace-t2 -RequiredNsgRule 'AllRules'
+```
+
+```output
+Name                         ResourceGroupName Location Managed Resource Group ID
+----                         ----------------- -------- -------------------------
+azps-databricks-workspace-t2 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t2
+```
+
+This command updates NsgRule of the Databricks workspace.

@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.MySql
-online version: https://docs.microsoft.com/powershell/module/az.mysql/get-azmysqlconfiguration
+online version: https://learn.microsoft.com/powershell/module/az.mysql/get-azmysqlconfiguration
 schema: 2.0.0
 ---
 
@@ -36,8 +36,10 @@ Gets information about a configuration of server.
 
 ### Example 1: List all configurations in specified MySql server
 ```powershell
-PS C:\> Get-AzMySqlConfiguration -ResourceGroupName PowershellMySqlTest -ServerName mysql-test
+Get-AzMySqlConfiguration -ResourceGroupName PowershellMySqlTest -ServerName mysql-test
+```
 
+```output
 Name                                     Type
 ----                                     ----
 audit_log_enabled                        Microsoft.DBforMySQL/servers/configurations
@@ -55,8 +57,10 @@ This cmdlet lists all configurations in specified MySql server.
 
 ### Example 2: Get specified MySql configuration by name
 ```powershell
-PS C:\> Get-AzMySqlConfiguration -Name time_zone -ResourceGroupName PowershellMySqlTest -ServerName mysql-test
+Get-AzMySqlConfiguration -Name time_zone -ResourceGroupName PowershellMySqlTest -ServerName mysql-test
+```
 
+```output
 Name      Type
 ----      ----
 time_zone Microsoft.DBforMySQL/servers/configurations
@@ -67,7 +71,8 @@ This cmdlet gets specified MySql configuration by name.
 ## PARAMETERS
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -178,7 +183,7 @@ COMPLEX PARAMETER PROPERTIES
 To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
 
 
-INPUTOBJECT <IMySqlIdentity>: Identity Parameter
+`INPUTOBJECT <IMySqlIdentity>`: Identity Parameter
   - `[BackupName <String>]`: The name of the backup.
   - `[ConfigurationName <String>]`: The name of the server configuration.
   - `[DatabaseName <String>]`: The name of the database.

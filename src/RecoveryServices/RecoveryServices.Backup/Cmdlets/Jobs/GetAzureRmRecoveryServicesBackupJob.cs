@@ -18,16 +18,16 @@ using System.Management.Automation;
 using Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models;
 using Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers;
 using Microsoft.Azure.Commands.RecoveryServices.Backup.Properties;
+using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 using Microsoft.Azure.Management.Internal.Resources.Utilities.Models;
-using Microsoft.WindowsAzure.Commands.Common.CustomAttributes;
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
 {
     /// <summary>
     /// Gets the list of jobs associated with this recovery services vault 
-    /// according to the filters passed via the cmdlet parameters.
+    /// according to the filters passed via the cmdlet parameters
     /// </summary>
-    [GenericBreakingChange("Please avoid using BackupManagementType MARS, it will be removed in upcoming breaking change release, instead use BackupManagementType MAB", "5.0.0")]
     [Cmdlet("Get", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "RecoveryServicesBackupJob"), OutputType(typeof(JobBase))]
     public class GetAzureRmRecoveryServicesBackupJob : RSBackupVaultCmdletBase
     {        
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
         /// Filter value for backup management type of job.
         /// </summary>
         [Parameter(Mandatory = false, HelpMessage = ParamHelpMsgs.Common.BackupManagementType + validBackupManagementTypes)]
-        [ValidateNotNullOrEmpty]
+        [ValidateSet("AzureVM", "AzureStorage", "AzureWorkload", "MAB", "AzureSQL")]
         public BackupManagementType? BackupManagementType { get; set; }
 
         /// <summary>
@@ -92,11 +92,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
         [ValidateNotNullOrEmpty]
         public SwitchParameter UseSecondaryRegion { get; set; }
 
+        /// <summary>
+        /// Location of the Recovery Services Vault.
+        /// </summary>
+        [Parameter(Mandatory = false, HelpMessage = "Location of the Recovery Services Vault used to fetch the secondary region jobs.")]
+        [LocationCompleter("Microsoft.RecoveryServices/vaults")]
+        public string VaultLocation { get; set; }
+
         public override void ExecuteCmdlet()
         {
             ExecutionBlock(() =>
             {
-                base.ExecuteCmdlet();
+                base.ExecuteCmdlet();               
 
                 ResourceIdentifier resourceIdentifier = new ResourceIdentifier(VaultId);
                 string vaultName = resourceIdentifier.ResourceName;
@@ -166,11 +173,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                     UseSecondaryRegion.ToString()));
 
                 int resultCount = 0;
-
                 if (UseSecondaryRegion.IsPresent)
                 {
-                    ARSVault vault = ServiceClientAdapter.GetVault(resourceGroupName, vaultName);
-                    string secondaryRegion = BackupUtils.regionMap[vault.Location];
+                    if (VaultLocation == null || VaultLocation == "")
+                    {
+                        throw new PSArgumentException(Resources.VaultLocationRequired);
+                    }
+
+                    string secondaryRegion = BackupUtils.regionMap[VaultLocation];
 
                     WriteDebug(" Getting CRR jobs from secondary region: " + secondaryRegion);
                     var adapterResponse = ServiceClientAdapter.GetCrrJobs(VaultId,
@@ -181,9 +191,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                         rangeEnd,
                         ServiceClientHelpers.GetServiceClientBackupManagementType(BackupManagementType),
                         secondaryRegion);
-                    
-                    JobConversions.AddServiceClientJobsToPSList(
-                    adapterResponse, result, ref resultCount);
+
+                    JobConversions.AddServiceClientJobsToPSListCrr(adapterResponse, result, ref resultCount);
                 }
                 else
                 {

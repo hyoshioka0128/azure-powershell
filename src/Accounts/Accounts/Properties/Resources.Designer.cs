@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -187,6 +187,15 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://go.microsoft.com/fwlink/?linkid=2202029.
+        /// </summary>
+        internal static string AzureRMToAzMigrationGuideLink {
+            get {
+                return ResourceManager.GetString("AzureRMToAzMigrationGuideLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please provide either a subscription ID or a subscription name..
         /// </summary>
         internal static string BothSubscriptionIdAndNameProvided {
@@ -327,6 +336,60 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         internal static string ClientFactoryNotRegisteredRemoval {
             get {
                 return ResourceManager.GetString("ClientFactoryNotRegisteredRemoval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The command {0} is in the AzureRM PowerShell module, which is outdated. See {1} for instructions to migrate to Az..
+        /// </summary>
+        internal static string CommandNotFoundAzureRM {
+            get {
+                return ResourceManager.GetString("CommandNotFoundAzureRM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The command {0} has been deprecated in {1}..
+        /// </summary>
+        internal static string CommandNotFoundDeprecated {
+            get {
+                return ResourceManager.GetString("CommandNotFoundDeprecated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not found. The most similar Azure PowerShell commands are:.
+        /// </summary>
+        internal static string CommandNotFoundFuzzyStringPlural {
+            get {
+                return ResourceManager.GetString("CommandNotFoundFuzzyStringPlural", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is not found. The most similar Azure PowerShell command is:.
+        /// </summary>
+        internal static string CommandNotFoundFuzzyStringSingle {
+            get {
+                return ResourceManager.GetString("CommandNotFoundFuzzyStringSingle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The command {0} is part of Azure PowerShell module &quot;{1}&quot; and it is not installed. Run &quot;Install-Module {1}&quot; to install it..
+        /// </summary>
+        internal static string CommandNotFoundModuleNotInstalled {
+            get {
+                return ResourceManager.GetString("CommandNotFoundModuleNotInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The command {0} has been deprecated and replaced by {1} in {2}..
+        /// </summary>
+        internal static string CommandNotFoundReplaced {
+            get {
+                return ResourceManager.GetString("CommandNotFoundReplaced", resourceCulture);
             }
         }
         
@@ -610,6 +673,15 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The uri is invalid: {0}.
+        /// </summary>
+        internal static string InvalidOpenIDConfigUri {
+            get {
+                return ResourceManager.GetString("InvalidOpenIDConfigUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified ResourceTypeName &quot;{0}&quot; is not supported, please provide a valid value. e.g. Arm, AadGraph, etc..
         /// </summary>
         internal static string InvalidResourceTypeName {
@@ -624,6 +696,15 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         internal static string InvalidSubscriptionId {
             get {
                 return ResourceManager.GetString("InvalidSubscriptionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to KeyStore cannot be loaded from storage. Please check the keystore file integrity or system compablity. The functions relate to context autosaving may be affected..
+        /// </summary>
+        internal static string KeyStoreLoadingError {
+            get {
+                return ResourceManager.GetString("KeyStoreLoadingError", resourceCulture);
             }
         }
         
@@ -678,6 +759,33 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         internal static string ObsoleteManagedServiceParameters {
             get {
                 return ResourceManager.GetString("ObsoleteManagedServiceParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uri of OpenID Configuration Doc for {0}: {1}.
+        /// </summary>
+        internal static string OpenIDAbsoluteUriMessage {
+            get {
+                return ResourceManager.GetString("OpenIDAbsoluteUriMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to query tenant information by domain name: unable to find the &apos;issuer&apos; from the OpenID configuration response: {0}..
+        /// </summary>
+        internal static string OpenIDConfigResponseError {
+            get {
+                return ResourceManager.GetString("OpenIDConfigResponseError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OpenID configuration doc in Json: {0}.
+        /// </summary>
+        internal static string OpenIDConfigurationDocInJsonMessage {
+            get {
+                return ResourceManager.GetString("OpenIDConfigurationDocInJsonMessage", resourceCulture);
             }
         }
         
@@ -916,6 +1024,15 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please refer to the migration guide {0}..
+        /// </summary>
+        internal static string SeeMigrationGuide {
+            get {
+                return ResourceManager.GetString("SeeMigrationGuide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the current context.
         /// </summary>
         internal static string SelectContextPrompt {
@@ -1033,7 +1150,7 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The provided service principal secret will be included in the &apos;{0}&apos; file found in the user profile ( {1} ). Please ensure that this directory has appropriate protections..
+        ///   Looks up a localized string similar to The provided service principal secret or certifcate password will be included in the &apos;{0}&apos; file found in the user profile ( {1} ). Please ensure that this directory has appropriate protections..
         /// </summary>
         internal static string ServicePrincipalWarning {
             get {
@@ -1092,6 +1209,15 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         internal static string SubscriptionNameOrIdNotFound {
             get {
                 return ResourceManager.GetString("SubscriptionNameOrIdNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If a subscription is not specified, please check the configs by `Get-AzConfig`..
+        /// </summary>
+        internal static string SubscriptionNotFouldPleaseCheckConfig {
+            get {
+                return ResourceManager.GetString("SubscriptionNotFouldPleaseCheckConfig", resourceCulture);
             }
         }
         
@@ -1159,11 +1285,29 @@ namespace Microsoft.Azure.Commands.Profile.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The input domain is {0} and the tenant Id is {1}.
+        /// </summary>
+        internal static string TenantDomainToTenantIdMessage {
+            get {
+                return ResourceManager.GetString("TenantDomainToTenantIdMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to find tenant &apos;{0}&apos;..
         /// </summary>
         internal static string TenantIdNotFound {
             get {
                 return ResourceManager.GetString("TenantIdNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to parse tenant ID from issuer {0}..
+        /// </summary>
+        internal static string TenantIdNotFoundinIssuer {
+            get {
+                return ResourceManager.GetString("TenantIdNotFoundinIssuer", resourceCulture);
             }
         }
         

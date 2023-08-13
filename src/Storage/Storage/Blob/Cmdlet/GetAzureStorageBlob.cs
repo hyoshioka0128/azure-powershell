@@ -22,6 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
     using Microsoft.Azure.Storage;
     using Microsoft.Azure.Storage.Blob;
     using Microsoft.WindowsAzure.Commands.Common;
+    using Microsoft.WindowsAzure.Commands.Common.CustomAttributes;
     using Microsoft.WindowsAzure.Commands.Storage.Common;
     using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
     using System;
@@ -167,11 +168,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 
         protected override bool UseTrack2Sdk()
         {
-            if (this.IncludeVersion.IsPresent || this.IncludeTag.IsPresent || this.VersionId != null)
-            {
-                return true;
-            }
-            return base.UseTrack2Sdk();
+            return true;
         }
 
         /// <summary>
@@ -194,8 +191,12 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
         /// <summary>
         /// list blobs by blob name and container name
         /// </summary>
+        /// <param name="taskId">Task id</param>
+        /// <param name="localChannel">IStorageBlobManagement channel object</param>
         /// <param name="containerName">container name</param>
         /// <param name="blobName">blob name pattern</param>
+        /// <param name="includeDeleted"></param>
+        /// <param name="includeVersion"></param>
         /// <returns>An enumerable collection of IListBlobItem</returns>
         internal async Task ListBlobsByName(long taskId, IStorageBlobManagement localChannel, string containerName, string blobName, bool includeDeleted = false, bool includeVersion = false)
         {
@@ -233,7 +234,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                 BlobBaseClient blobClient = null;
                 if (UseTrack2Sdk()) // User Track2 SDK
                 {
-                    blobClient = Util.GetTrack2BlobClient(track2container, blobName, localChannel.StorageContext, this.VersionId, false, this.SnapshotTime is null ? null : this.SnapshotTime.Value.ToString("o"), ClientOptions);
+                    blobClient = Util.GetTrack2BlobClient(track2container, blobName, localChannel.StorageContext, this.VersionId, false, this.SnapshotTime is null ? null : this.SnapshotTime.Value.ToUniversalTime().ToString("o").Replace("+00:00", "Z"), ClientOptions, shouldTrimSlash: false);
                     global::Azure.Storage.Blobs.Models.BlobProperties blobProperties;
                     try
                     {
@@ -243,7 +244,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                     {
                         throw new ResourceNotFoundException(String.Format(Resources.BlobNotFound, blobName, containerName));
                     }
-                    blobClient = Util.GetTrack2BlobClient(track2container, blobName, localChannel.StorageContext, this.VersionId, blobProperties.IsLatestVersion, this.SnapshotTime is null ? null : this.SnapshotTime.Value.ToString("o"), ClientOptions, blobProperties.BlobType);
+                    blobClient = Util.GetTrack2BlobClient(track2container, blobName, localChannel.StorageContext, this.VersionId, blobProperties.IsLatestVersion, this.SnapshotTime is null ? null : this.SnapshotTime.Value.ToUniversalTime().ToString("o").Replace("+00:00", "Z"), ClientOptions, blobProperties.BlobType, shouldTrimSlash: false);
 
                     AzureStorageBlob outputBlob = new AzureStorageBlob(blobClient, localChannel.StorageContext, blobProperties, ClientOptions);
                     if (this.IncludeTag.IsPresent)
@@ -276,8 +277,13 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
         /// <summary>
         /// list blobs by blob prefix and container name
         /// </summary>
+        /// <param name="taskId">Task id</param>
+        /// <param name="localChannel">IStorageBlobManagement channel object</param>
         /// <param name="containerName">container name</param>
         /// <param name="prefix">blob preifx</param>
+        /// <param name="blobFilter"></param>
+        /// <param name="includeDeleted"></param>
+        /// <param name="includeVersion"></param>
         /// <returns>An enumerable collection of IListBlobItem</returns>
         internal async Task ListBlobsByPrefix(long taskId, IStorageBlobManagement localChannel, string containerName, string prefix, Func<string, bool> blobFilter = null, bool includeDeleted = false, bool includeVersion = false)
         {
@@ -323,6 +329,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
                     {
                         if (blobFilter == null || blobFilter(item.Name))
                         {
+                            ClientOptions.TrimBlobNameSlashes = false;
                             OutputStream.WriteObject(taskId, GetAzureStorageBlob(item, track2container, localChannel.StorageContext, page.ContinuationToken, ClientOptions));
                         }
                         realListCount++;
@@ -379,53 +386,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             }
         }
 
-        /// <summary>
-        /// list blobs by blob Tag
-        /// </summary>
-        /// <param name="containerName">container name</param>
-        /// <param name="prefix">blob preifx</param>
-        /// <returns>An enumerable collection of IListBlobItem</returns>
-        internal async Task ListBlobsByTag(long taskId, IStorageBlobManagement localChannel, string tagFilterSqlExpression)
-        {
-
-            BlobServiceClient blobServiceClient = Util.GetTrack2BlobServiceClient(localChannel.StorageContext, ClientOptions);
-
-            int listCount = InternalMaxCount;
-            int MaxListCount = 5000;
-            int requestCount = MaxListCount;
-            int realListCount = 0;
-            BlobContinuationToken continuationToken = ContinuationToken;
-            string track2ContinuationToken = this.ContinuationToken is null ? null : this.ContinuationToken.NextMarker;
-
-            do
-            {
-                requestCount = Math.Min(listCount, MaxListCount);
-                realListCount = 0;
-                IAsyncEnumerator<Page<TaggedBlobItem>> enumerator = blobServiceClient.FindBlobsByTagsAsync(tagFilterSqlExpression, CmdletCancellationToken)
-                    .AsPages(track2ContinuationToken, requestCount)
-                    .GetAsyncEnumerator();
-
-                Page<TaggedBlobItem> page;
-                await enumerator.MoveNextAsync().ConfigureAwait(false);
-                page = enumerator.Current;
-                foreach (TaggedBlobItem item in page.Values)
-                {
-                    BlobContainerClient track2container = blobServiceClient.GetBlobContainerClient(item.BlobContainerName);
-                    OutputStream.WriteObject(taskId, GetAzureStorageBlob(item, track2container, localChannel.StorageContext, page.ContinuationToken, ClientOptions));
-                    realListCount++;
-                }
-                track2ContinuationToken = page.ContinuationToken;
-
-                if (InternalMaxCount != int.MaxValue)
-                {
-                    listCount -= realListCount;
-                }
-            } while (listCount > 0 && !string.IsNullOrEmpty(track2ContinuationToken));          
-        }
-
         public static AzureStorageBlob GetAzureStorageBlob(BlobItem blobItem, BlobContainerClient track2container, AzureStorageContext context, string continuationToken = null, BlobClientOptions options = null)
         {
-            BlobBaseClient blobClient = Util.GetTrack2BlobClient(track2container, blobItem.Name, context, blobItem.VersionId, blobItem.IsLatestVersion, blobItem.Snapshot, options, blobItem.Properties.BlobType);
+            BlobBaseClient blobClient = Util.GetTrack2BlobClient(track2container, blobItem.Name, context, blobItem.VersionId, blobItem.IsLatestVersion, blobItem.Snapshot, options, blobItem.Properties.BlobType, shouldTrimSlash: false);
             AzureStorageBlob outputblob = new AzureStorageBlob(blobClient, context, options, blobItem);
             if (!string.IsNullOrEmpty(continuationToken))
             {

@@ -43,8 +43,10 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Helpers
                 SecurityOperators = psActiveDirectory.SecurityOperators,
                 LdapOverTLS = psActiveDirectory.LdapOverTLS,
                 AllowLocalNfsUsersWithLdap = psActiveDirectory.AllowLocalNfsUsersWithLdap,
-                Administrators = psActiveDirectory.Administrators
-
+                Administrators = psActiveDirectory.Administrators,
+                EncryptDCConnections = psActiveDirectory.EncryptDCConnections,
+                PreferredServersForLdapClient = psActiveDirectory.PreferredServersForLdapClient is null ? null:  string.Join(",", psActiveDirectory.PreferredServersForLdapClient),
+                LdapSearchScope = psActiveDirectory.LdapSearchScope?.ConvertFromPs()                
             }).ToList();
         }
 
@@ -77,7 +79,11 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Helpers
                 LdapSigning = activeDirectory.LdapSigning,
                 SecurityOperators = activeDirectory.SecurityOperators,
                 LdapOverTLS = activeDirectory.LdapOverTLS,
-                AllowLocalNfsUsersWithLdap = activeDirectory.AllowLocalNfsUsersWithLdap
+                AllowLocalNfsUsersWithLdap = activeDirectory.AllowLocalNfsUsersWithLdap,
+                Administrators = activeDirectory.Administrators,
+                EncryptDCConnections = activeDirectory.EncryptDCConnections,
+                LdapSearchScope = activeDirectory.LdapSearchScope.ConvertToPs(),
+                PreferredServersForLdapClient = activeDirectory.PreferredServersForLdapClient?.Split(',').ToList<string>()
             };
             return psActiveDirectory;
         }
@@ -95,7 +101,9 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Helpers
                 Tags = netAppAccount.Tags,
                 Etag = netAppAccount.Etag,
                 ActiveDirectories = (netAppAccount.ActiveDirectories != null) ? netAppAccount.ActiveDirectories.ConvertToPs(resourceGroupName, netAppAccount.Name) : null,
-                ProvisioningState = netAppAccount.ProvisioningState
+                ProvisioningState = netAppAccount.ProvisioningState,
+                Identity = netAppAccount.Identity.ConvertToPs(),
+                SystemData =  netAppAccount.SystemData?.ToPsSystemData()
             };
         }
 
@@ -117,7 +125,8 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Helpers
                 QosType = capacityPool.QosType,
                 TotalThroughputMibps = capacityPool.TotalThroughputMibps,
                 UtilizedThroughputMibps = capacityPool.UtilizedThroughputMibps,
-                CoolAccess = capacityPool.CoolAccess
+                CoolAccess = capacityPool.CoolAccess,
+                SystemData = capacityPool.SystemData?.ToPsSystemData()
             };
         }
 
@@ -236,13 +245,16 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Helpers
                 {
                     BackupEnabled = DataProtection.Backup.BackupEnabled,
                     BackupPolicyId = DataProtection.Backup.BackupPolicyId,
-                    PolicyEnforced = DataProtection.Backup.PolicyEnforced,
-                    VaultId = DataProtection.Backup.VaultId
+                    PolicyEnforced = DataProtection.Backup.PolicyEnforced                    
                 };
                 psDataProtection.Backup = psBackupProps;
             }
-
-            return psDataProtection;
+            if (DataProtection.VolumeRelocation != null)
+            {
+                var volumeRelocation = DataProtection.VolumeRelocation.ConvertToPs();
+                psDataProtection.VolumeRelocation = volumeRelocation;
+            }
+           return psDataProtection;
         }
 
         public static VolumePropertiesDataProtection ConvertDataProtectionFromPs(PSNetAppFilesVolumeDataProtection psDataProtection)
@@ -293,12 +305,18 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Helpers
                 backup.BackupEnabled = psDataProtection.Backup.BackupEnabled;
                 backup.BackupPolicyId = psDataProtection.Backup.BackupPolicyId;
                 backup.PolicyEnforced = psDataProtection.Backup.PolicyEnforced;
-                backup.VaultId = psDataProtection.Backup.VaultId;
                 dataProtection.Backup = backup;
             }
             return dataProtection;
         }
 
+        public static PSNetAppFilesVolumeRelocationProperties ConvertToPs(this VolumeRelocationProperties volumeRelocation)
+        {
+            var psVolumeRelocation = new PSNetAppFilesVolumeRelocationProperties();
+            psVolumeRelocation.RelocationRequested = volumeRelocation.RelocationRequested;
+            psVolumeRelocation.ReadyToBeFinalized = volumeRelocation.ReadyToBeFinalized;
+            return psVolumeRelocation;
+        }
 
         public static PSNetAppFilesVolume ToPsNetAppFilesVolume(this Management.NetApp.Models.Volume volume)
         {
@@ -343,8 +361,39 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Helpers
                 DefaultGroupQuotaInKiBs = volume.DefaultGroupQuotaInKiBs,
                 NetworkFeatures = volume.NetworkFeatures,
                 NetworkSiblingSetId = volume.NetworkSiblingSetId,
-                StorageToNetworkProximity = volume.StorageToNetworkProximity
+                StorageToNetworkProximity = volume.StorageToNetworkProximity,
+                VolumeGroupName = volume.VolumeGroupName,
+                CapacityPoolResourceId = volume.CapacityPoolResourceId,
+                T2Network = volume.T2Network,
+                ProximityPlacementGroup = volume.ProximityPlacementGroup,
+                PlacementRules = volume.PlacementRules?.ToPPSKeyValuePairs(),
+                SystemData = volume.SystemData?.ToPsSystemData(),
+                MaximumNumberOfFiles = volume.MaximumNumberOfFiles,
+                EnableSubvolumes = volume.EnableSubvolumes,
+                Encrypted = volume.Encrypted,
+                Zones = volume.Zones,
+                KeyVaultPrivateEndpointResourceId = volume.KeyVaultPrivateEndpointResourceId,
+                DeleteBaseSnapshot = volume.DeleteBaseSnapshot,
+                SmbAccessBasedEnumeration = volume.SmbAccessBasedEnumeration,
+                SmbNonBrowsable = volume.SmbNonBrowsable,
+                EncryptionKeySource = volume.EncryptionKeySource,
+                VolumeSpecName = volume.VolumeSpecName,
+                FileAccessLogs = volume.FileAccessLogs,
+                DataStoreResourceId = volume.DataStoreResourceId,
+                ProvisionedAvailabilityZone = volume.ProvisionedAvailabilityZone,
+                IsLargeVolume = volume.IsLargeVolume,
+                ActualThroughputMibps = volume.ActualThroughputMibps,
+                OriginatingResourceId = volume.OriginatingResourceId
             };
+        }
+
+        public static IList<PSKeyValuePairs> ToPPSKeyValuePairs(this IList<PlacementKeyValuePairs> placementKeysValuePair)
+        {
+            return placementKeysValuePair?.Select(e => new PSKeyValuePairs() { Key = e.Key, Value = e.Value } ).ToList();            
+        }
+        public static IList<PlacementKeyValuePairs> ToPlacementKeyValuePairs(this IList<PSKeyValuePairs> psKeysValuePair)
+        {
+            return psKeysValuePair?.Select(e => new PlacementKeyValuePairs() { Key = e.Key, Value = e.Value }).ToList();
         }
 
         public static PSNetAppFilesSnapshot ToPsNetAppFilesSnapshot(this Management.NetApp.Models.Snapshot snapshot)
@@ -371,6 +420,19 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Helpers
                 MirrorState = replicationStatus.MirrorState,
                 TotalProgress = replicationStatus.TotalProgress,
                 ErrorMessage = replicationStatus.ErrorMessage
+            };
+        }
+
+        public static PSSystemData ToPsSystemData(this SystemData systemData)
+        {
+            return new PSSystemData
+            {
+                CreatedAt = systemData.CreatedAt,
+                CreatedBy = systemData.CreatedBy,
+                CreatedByType = systemData.CreatedByType,
+                LastModifiedAt = systemData.LastModifiedAt,
+                LastModifiedBy = systemData.LastModifiedBy,
+                LastModifiedByType = systemData.LastModifiedByType
             };
         }
     }

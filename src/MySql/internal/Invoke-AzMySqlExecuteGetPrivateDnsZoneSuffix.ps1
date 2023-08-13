@@ -20,18 +20,14 @@ Get private DNS zone suffix in the cloud.
 .Description
 Get private DNS zone suffix in the cloud.
 .Example
-PS C:\> {{ Add code here }}
-
-{{ Add output here }}
+{{ Add code here }}
 .Example
-PS C:\> {{ Add code here }}
-
-{{ Add output here }}
+{{ Add code here }}
 
 .Outputs
 System.String
 .Link
-https://docs.microsoft.com/powershell/module/az.mysql/invoke-azmysqlexecutegetprivatednszonesuffix
+https://learn.microsoft.com/powershell/module/az.mysql/invoke-azmysqlexecutegetprivatednszonesuffix
 #>
 function Invoke-AzMySqlExecuteGetPrivateDnsZoneSuffix {
 [OutputType([System.String])]
@@ -42,7 +38,8 @@ param(
     [ValidateNotNull()]
     [Microsoft.Azure.PowerShell.Cmdlets.MySql.Category('Azure')]
     [System.Management.Automation.PSObject]
-    # The credentials, account, tenant, and subscription used for communication with Azure.
+    # The DefaultProfile parameter is not functional.
+    # Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
     ${DefaultProfile},
 
     [Parameter(DontShow)]
@@ -92,6 +89,7 @@ begin {
             $PSBoundParameters['OutBuffer'] = 1
         }
         $parameterSet = $PSCmdlet.ParameterSetName
+
         $mapping = @{
             Execute = 'Az.MySql.private\Invoke-AzMySqlExecuteGetPrivateDnsZoneSuffix_Execute';
         }
@@ -101,6 +99,7 @@ begin {
         $steppablePipeline = $scriptCmd.GetSteppablePipeline($MyInvocation.CommandOrigin)
         $steppablePipeline.Begin($PSCmdlet)
     } catch {
+
         throw
     }
 }
@@ -109,15 +108,18 @@ process {
     try {
         $steppablePipeline.Process($_)
     } catch {
+
         throw
     }
-}
 
+}
 end {
     try {
         $steppablePipeline.End()
+
     } catch {
+
         throw
     }
-}
+} 
 }

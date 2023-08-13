@@ -135,5 +135,16 @@ namespace Microsoft.Azure.Commands.Sql.ElasticPool.Model
         /// Gets or sets the maintenance configuration id for the elastic pool
         /// </summary>
         public string MaintenanceConfigurationId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of high availability replicas associated with the elastic pool
+        /// </summary>
+        public int? HighAvailabilityReplicaCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets type of enclave requested on the elastic pool.
+        /// Possible values include: 'Default', 'VBS'
+        /// </summary>
+        public string PreferredEnclaveType { get; set; }
     }
 }

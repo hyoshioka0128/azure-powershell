@@ -12,7 +12,7 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------------
 
-function Handle-FailoverGroupTest($scriptBlock, $primaryLocation = "North Europe", $secondaryLocation = "West US 2", $serverVersion = "12.0", $rg = $null, $server1 = $null, $server2 = $null, $cleanup = $false)
+function Handle-FailoverGroupTest($scriptBlock, $primaryLocation = "North Europe", $secondaryLocation = "West Europe", $serverVersion = "12.0", $rg = $null, $server1 = $null, $server2 = $null, $cleanup = $false)
 {
 	try
 	{
@@ -50,6 +50,7 @@ function Validate-FailoverGroup($server, $partnerServer, $name, $role, $failover
 	Assert-NotNull $fg.Id "`$fg.Id ($message)"
 	Assert-NotNull $fg.PartnerServers "`$fg.PartnerServers ($message)"
 	Assert-AreEqual $name $fg.FailoverGroupName "`$fg.FailoverGroupName ($message)"
+	# Assert-AreEqual $true $partnerServer.ResourceId.Contains($fg.PartnerSubscriptionId) "`$fg.PartnerSubscriptionId ($message)"
 	Assert-AreEqual $server.ResourceGroupName $fg.ResourceGroupName "`$fg.ResourceGroupName ($message)"
 	Assert-AreEqual $partnerServer.ResourceGroupName $fg.PartnerResourceGroupName "`$fg.PartnerResourceGroupName ($message)"
 	Assert-AreEqual $server.ServerName $fg.ServerName "`$fg.ServerName ($message)"
@@ -236,6 +237,19 @@ function Test-CreateFailoverGroup-Overflow()
 	}
 }
 
+function Test-CreateFailoverGroup-CrossSubscription()
+{
+	Handle-FailoverGroupTest {
+		Param($server, $partnerServer)
+
+		$fgName = Get-FailoverGroupName
+		$partnerSubscriptionId = $partnerServer.ResourceId.Split('/')[2]
+		$fg = $server | New-AzSqlDatabaseFailoverGroup -FailoverGroupName $fgName -PartnerSubscriptionId $partnerSubscriptionId -PartnerResourceGroupName $partnerServer.ResourceGroupName -PartnerServerName $partnerServer.ServerName -FailoverPolicy Manual
+		Validate-FailoverGroup $server $partnerServer $fgName Primary Manual $null Disabled @() $fg
+		Validate-FailoverGroupWithGet $fg
+	}
+}
+
 function Test-SetFailoverGroup-Named()
 {
 	Handle-FailoverGroupTestWithFailoverGroup {
@@ -383,6 +397,21 @@ function Test-SwitchFailoverGroupAllowDataLoss()
 		Param($fg)
 
 		Switch-AzSqlDatabaseFailoverGroup $fg.PartnerResourceGroupName $fg.PartnerServerName $fg.FailoverGroupName -AllowDataLoss
+		$newSecondaryFg = $fg | Get-AzSqlDatabaseFailoverGroup
+		Assert-FailoverGroupsEqual $fg $newSecondaryFg -role "Secondary"
+		Validate-FailoverGroupWithGet $newSecondaryFg
+	}
+}
+
+function Test-SwitchFailoverGroupTryPlannedBeforeForcedFailover()
+{
+	Handle-FailoverGroupTestWithFailoverGroup {
+		Param($fg)
+
+		$foGroup = Get-AzSqlDatabaseFailoverGroup $fg.PartnerResourceGroupName $fg.PartnerServerName $fg.FailoverGroupName
+		$job = $foGroup | Switch-AzSqlDatabaseFailoverGroup -TryPlannedBeforeForcedFailover -AsJob
+		$job | Wait-Job
+
 		$newSecondaryFg = $fg | Get-AzSqlDatabaseFailoverGroup
 		Assert-FailoverGroupsEqual $fg $newSecondaryFg -role "Secondary"
 		Validate-FailoverGroupWithGet $newSecondaryFg

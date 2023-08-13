@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.RedisEnterpriseCache
-online version: https://docs.microsoft.com/powershell/module/az.redisenterprisecache/remove-azredisenterprisecache
+online version: https://learn.microsoft.com/powershell/module/az.redisenterprisecache/remove-azredisenterprisecache
 schema: 2.0.0
 ---
 
@@ -31,7 +31,10 @@ Deletes a RedisEnterprise cache cluster.
 
 ### Example 1: Remove a Redis Enterprise cache and return the result
 ```powershell
-PS C:\> Remove-AzRedisEnterpriseCache -Name "MyCache" -ResourceGroupName "MyGroup" -PassThru
+Remove-AzRedisEnterpriseCache -Name "MyCache" -ResourceGroupName "MyGroup" -PassThru
+```
+
+```output
 True
 ```
 
@@ -39,7 +42,7 @@ This command removes a Redis Enterprise cache and displays whether the operation
 
 ### Example 2: Remove a Redis Enterprise cache and do not display the result
 ```powershell
-PS C:\> Remove-AzRedisEnterpriseCache -Name "MyCache" -ResourceGroupName "MyGroup"
+Remove-AzRedisEnterpriseCache -Name "MyCache" -ResourceGroupName "MyGroup"
 ```
 
 This command removes a Redis Enterprise cache.
@@ -78,7 +81,8 @@ Accept wildcard characters: False
 ```
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -220,12 +224,12 @@ COMPLEX PARAMETER PROPERTIES
 To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
 
 
-INPUTOBJECT <IRedisEnterpriseCacheIdentity>: Identity Parameter
+`INPUTOBJECT <IRedisEnterpriseCacheIdentity>`: Identity Parameter
   - `[ClusterName <String>]`: The name of the RedisEnterprise cluster.
   - `[DatabaseName <String>]`: The name of the database.
   - `[Id <String>]`: Resource identity path
-  - `[Location <String>]`: The region the operation is in.
-  - `[OperationId <String>]`: The operation's unique identifier.
+  - `[Location <String>]`: The name of Azure region.
+  - `[OperationId <String>]`: The ID of an ongoing async operation.
   - `[PrivateEndpointConnectionName <String>]`: The name of the private endpoint connection associated with the Azure resource
   - `[ResourceGroupName <String>]`: The name of the resource group. The name is case insensitive.
   - `[SubscriptionId <String>]`: The ID of the target subscription.

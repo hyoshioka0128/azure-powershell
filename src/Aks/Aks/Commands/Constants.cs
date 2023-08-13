@@ -18,7 +18,7 @@ namespace Microsoft.Azure.Commands.Aks
 {
     public static class Constants
     {
-        public const string AksHelpUri = "https://docs.microsoft.com/en-us/powershell/module/?view=azurermps-5.0.0";
+        public const string AksHelpUri = "https://learn.microsoft.com/en-us/powershell/module/?view=azurermps-5.0.0";
         public const string Name = "Name";
         public const string DefaultParameterSet = "defaultParameterSet";
         public const string IdParameterSet = "IdParameterSet";
@@ -45,8 +45,5 @@ namespace Microsoft.Azure.Commands.Aks
         internal const string DotNetApiParameterResourceGroupName = "resourceGroupName";
         internal const string DotNetApiParameterResourceName = "resourceName";
         internal const string DotNetApiParameterAgentPoolName = "agentPoolName";
-
-        public const string MSGraphMigrationMessage = @"This cmdlet is migrated from Azure Active Directory Graph to Microsoft Graph in Az 7.x and later.
-Visit https://go.microsoft.com/fwlink/?linkid=2174792 for migration guide and breaking changes.";
     }
 }

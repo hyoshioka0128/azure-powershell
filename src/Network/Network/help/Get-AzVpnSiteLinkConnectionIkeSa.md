@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Network.dll-Help.xml
 Module Name: Az.Network
-online version: https://docs.microsoft.com/powershell/module/az.network/get-azvpnsitelinkconnectionikesa
+online version: https://learn.microsoft.com/powershell/module/az.network/get-azvpnsitelinkconnectionikesa
 schema: 2.0.0
 ---
 
@@ -39,7 +39,10 @@ If the **Get-AzVpnSiteLinkConnectionIkeSa** cmdlet is issued without specifying 
 
 ### Example 1
 ```powershell
-PS C:\> Get-AzVpnSiteLinkConnectionIkeSa -ResourceGroupName test-rg -VpnGatewayName test-gateway -VpnConnectionName test-connection -ResourceName test-linkConnection
+Get-AzVpnSiteLinkConnectionIkeSa -ResourceGroupName test-rg -VpnGatewayName test-gateway -VpnConnectionName test-connection -ResourceName test-linkConnection
+```
+
+```output
 LocalEndpoint              : 52.148.27.69
 RemoteEndpoint             : 13.78.223.113
 InitiatorCookie            : 10994953846917485010
@@ -63,7 +66,7 @@ Returns the IKE Security Associations for the VPN Site Link Connection with the 
 Run cmdlet in the background.
 
 ```yaml
-Type: SwitchParameter
+Type: System.Management.Automation.SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -78,7 +81,7 @@ Accept wildcard characters: False
 The credentials, account, tenant, and subscription used for communication with Azure.
 
 ```yaml
-Type: IAzureContextContainer
+Type: Microsoft.Azure.Commands.Common.Authentication.Abstractions.Core.IAzureContextContainer
 Parameter Sets: (All)
 Aliases: AzContext, AzureRmContext, AzureCredential
 
@@ -93,7 +96,7 @@ Accept wildcard characters: False
 The Vpn site link connection object.
 
 ```yaml
-Type: PSVpnSiteLinkConnection
+Type: Microsoft.Azure.Commands.Network.Models.PSVpnSiteLinkConnection
 Parameter Sets: ByInputObject
 Aliases: VpnSiteLinkConnection
 
@@ -108,7 +111,7 @@ Accept wildcard characters: False
 The Vpn site link connection name.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ByName
 Aliases: ResourceName, VpnSiteLinkConnectionName
 
@@ -123,7 +126,7 @@ Accept wildcard characters: False
 The resource group name.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ByName
 Aliases:
 
@@ -138,7 +141,7 @@ Accept wildcard characters: False
 The Azure resource ID of the Vpn site link connection for which IKE Security Associations needs to be fetched.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ByResourceId
 Aliases:
 
@@ -153,7 +156,7 @@ Accept wildcard characters: False
 The Vpn connection name.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ByName
 Aliases: ParentName
 
@@ -168,7 +171,7 @@ Accept wildcard characters: False
 The Vpn gateway name.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: ByName
 Aliases: GrandParentName
 

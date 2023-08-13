@@ -136,5 +136,70 @@ namespace Commands.Network.Test.ScenarioTests
         {
             TestRunner.RunTestScript("Test-AzureFirewallVirtualHubAllocateDeallocated");
         }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestAzureFirewallBasicSku()
+        {
+            TestRunner.RunTestScript("Test-AzureFirewallBasicSku");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestAzureFirewallManagementNICBasicSku()
+        {
+            TestRunner.RunTestScript("Test-AzureFirewallManagementNICBasicSku");
+        }
+        
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestAzureFirewallCRUDEnableFatFlowLogging()
+        {
+            TestRunner.RunTestScript("Test-AzureFirewallCRUDEnableFatFlowLogging");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestAzureFirewallVirtualHubPrivateIPAddress()
+        {
+            TestRunner.RunTestScript("Test-AzureFirewallVirtualHubPrivateIPAddress");
+        }
+
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestAzureFirewallCRUDEnableUDPLogOptimization()
+        {
+            TestRunner.RunTestScript("Test-AzureFirewallCRUDEnableUDPLogOptimization");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestAzureFirewallCRUDRouteServerId()
+        {
+            TestRunner.RunTestScript("Test-AzureFirewallCRUDRouteServerId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestAzureFirewallCRUDRouteServerIdHub()
+        {
+            TestRunner.RunTestScript("Test-AzureFirewallCRUDRouteServerIdHub");
+        }
+
+        [Fact(Skip = "Skipped due to LearnedIpPrefixes feature not available in most regions")]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.azurefirewall)]
+        public void TestGetAzureFirewallLearnedIpPrefixes()
+        {
+            TestRunner.RunTestScript("Test-GetAzureFirewallLearnedIpPrefixes");
+        }
     }
 }

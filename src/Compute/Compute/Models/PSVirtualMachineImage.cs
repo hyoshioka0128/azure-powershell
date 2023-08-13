@@ -66,6 +66,14 @@ namespace Microsoft.Azure.Commands.Compute.Models
 
         public PurchasePlan PurchasePlan { get; set; }
 
+        public ImageDeprecationStatus ImageDeprecationStatus { get; set; }
+
+        [JsonIgnore]
+        public string ImageDeprecationStatusText
+        {
+            get { return JsonConvert.SerializeObject(ImageDeprecationStatus, Formatting.Indented); }
+        }
+
         [JsonIgnore]
         public string PurchasePlanText
         {
@@ -81,5 +89,7 @@ namespace Microsoft.Azure.Commands.Compute.Models
         }
 
         public AutomaticOSUpgradeProperties AutomaticOSUpgradeProperties { get; set; }
+
+        public string Architecture { get; set; }
     }
 }

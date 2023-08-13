@@ -15,7 +15,7 @@
 namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
 {
     using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
-    using Microsoft.Azure.Management.ResourceManager.Models;
+    using Microsoft.Azure.Management.Resources.Models;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
@@ -300,6 +300,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// Gets all of the deployment resource JObjects within the specified template
         /// JObject.
         /// </summary>
+        /// <param name="templateObj"></param>
         /// <param name="includeNested">If true, deployment resource objects from nested
         /// templates will be included in the results</param>
         /// <remarks>
@@ -336,6 +337,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components
         /// Gets all of the TemplateLink JObjects within the specified template object that
         /// are representing references to Template Spec artifacts.
         /// </summary>
+        /// <param name="templateObj"></param>
         /// <param name="includeNested">If true, template links from nested templates 
         /// will be included in the results</param>
         /// <remarks>

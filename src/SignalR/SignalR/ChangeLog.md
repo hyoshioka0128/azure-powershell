@@ -19,6 +19,21 @@
 -->
 ## Upcoming Release
 
+## Version 2.0.0
+* Breaking change:
+    - Removed `HostNamePrefix` property of output type `PSSignalRResource` of following cmdlets:
+        - `Get-AzSignalR`
+        - `New-AzSignalR`
+        - `Update-AzSignalR`
+
+## Version 1.5.0
+* Updated to API version 2022-08-01-preview
+  - Added support for custom domain. Added new cmdlets New-AzWebPubSubCustomCertificate, Get-AzWebPubSubCustomCertificate, Remove-AzWebPubSubCustomCertificate, New-AzWebPubSubCustomDomain, Get-AzWebPubSubCustomDomain, Remove-AzWebPubSubCustomDomain.
+  - Added support for event listeners in hub settings. Added new cmdlets New-AzWebPubSubEventHubEndpointObject, New-AzWebPubSubEventNameFilterObject.
+
+## Version 1.4.1
+* Fixed the bug of "Update-AzSignalR" cmdlet that resets the resource states by mistake.
+
 ## Version 1.4.0
 * Added Web PubSub cmdlets
   - `New-AzWebPubSub`

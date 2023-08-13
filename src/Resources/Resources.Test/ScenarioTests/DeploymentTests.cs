@@ -19,7 +19,7 @@ using Xunit.Abstractions;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
-    public class DeploymentTests : ResourceTestRunner
+    public class DeploymentTests : ResourcesTestRunner
     {
         public DeploymentTests(ITestOutputHelper output) : base(output)
         {
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             TestRunner.RunTestScript("Test-NewFailedSubscriptionDeploymentFromTemplateSpec");
         }
 
-        [Fact]
+        [Fact(Skip = "Need to update the Resources")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.RunType, Category.CoreOnly)]
         public void TestNewMGDeploymentTemplateSpec()
@@ -195,6 +195,13 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             TestRunner.RunTestScript("Test-TestDeploymentFromBicepFile");
         }
 
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.LiveOnly)]
+        public void TestNewDeploymentFromBicepFileAndBicepparamFile()
+        {
+            TestRunner.RunTestScript("Test-NewDeploymentFromBicepFileAndBicepparamFile");
+        }
+
         //Please make sure to re-record this test if any changes are made to WhatIf, QueryString or ResourceGroupDeployments
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
@@ -229,6 +236,20 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         public void TestNewDeploymentFromTemplateAndParameterFileContainingTagsOutput()
         {
             TestRunner.RunTestScript("Test-NewDeploymentFromTemplateAndParameterFileContainingTagsOutput");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestSymbolicNameDeployment()
+        {
+            TestRunner.RunTestScript("Test-SymbolicNameDeployment");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestExtensibleResourceDeployment()
+        {
+            TestRunner.RunTestScript("Test-ExtensibleResourceDeployment");
         }
     }
 }

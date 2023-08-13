@@ -40,7 +40,14 @@ namespace Microsoft.Azure.Commands.CosmosDB.Models
             }
             else if (backupPolicy is ContinuousModeBackupPolicy)
             {
+                ContinuousModeBackupPolicy continuousModeBackupPolicy = backupPolicy as ContinuousModeBackupPolicy;
+                Tier = continuousModeBackupPolicy.ContinuousModeProperties.Tier;
                 BackupType = ContinuousModeBackupType;
+            }
+
+            if (backupPolicy.MigrationState != null)
+            {
+                BackupPolicyMigrationState = new PSBackupPolicyMigrationState(backupPolicy.MigrationState);
             }
         }
 
@@ -52,11 +59,24 @@ namespace Microsoft.Azure.Commands.CosmosDB.Models
 
         public string BackupStorageRedundancy { get; set; }
 
+        public string Tier { get; set; }
+
+        public PSBackupPolicyMigrationState BackupPolicyMigrationState { get; set;}
+
         public BackupPolicy ToSDKModel()
         {
+            BackupPolicy backupPolicy;
             if (BackupType.Equals(PSBackupPolicy.ContinuousModeBackupType))
             {
-                return new ContinuousModeBackupPolicy();
+                ContinuousModeBackupPolicy continuousModeBackupPolicy = new ContinuousModeBackupPolicy
+                {
+                    ContinuousModeProperties = new ContinuousModeProperties()
+                    {
+                        Tier = Tier
+                    }
+                };
+
+                backupPolicy = continuousModeBackupPolicy;
             }
             else
             {
@@ -70,8 +90,10 @@ namespace Microsoft.Azure.Commands.CosmosDB.Models
                     }
                 };
 
-                return periodicModeBackupPolicy;
+                backupPolicy = periodicModeBackupPolicy;
             }
+
+            return backupPolicy;
         }
     }
 }

@@ -1,7 +1,7 @@
 ---
-external help file:
+external help file: Az.SignalR-help.xml
 Module Name: Az.SignalR
-online version: https://docs.microsoft.com/powershell/module/az.signalr/get-azwebpubsubusage
+online version: https://learn.microsoft.com/powershell/module/az.signalr/get-azwebpubsubusage
 schema: 2.0.0
 ---
 
@@ -24,8 +24,10 @@ List resource usage quotas by location.
 
 ### Example 1: List Web PubSub usage in east US region.
 ```powershell
-PS C:\> Get-AzWebPubSubUsage -Location eastus | Format-List
+Get-AzWebPubSubUsage -Location eastus | Format-List
+```
 
+```output
 CurrentValue       : 4
 Id                 : /subscriptions/9caf2a1e-9c49-49b6-89a2-56bdec7e3f97/providers/Microsoft.SignalRService/locations/eastus/usages/FreeTierInstances
 Limit              : 5
@@ -46,7 +48,8 @@ The example pipes the result of `Get-AzWebPubSubUsage -Location eastus` to `Form
 ## PARAMETERS
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -98,11 +101,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.WebPubSub.Models.Api20211001.ISignalRServiceUsage
+### Microsoft.Azure.PowerShell.Cmdlets.WebPubSub.Models.Api20220801Preview.ISignalRServiceUsage
 
 ## NOTES
 
 ALIASES
 
 ## RELATED LINKS
-

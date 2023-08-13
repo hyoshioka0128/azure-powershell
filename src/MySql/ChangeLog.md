@@ -19,6 +19,15 @@
 -->
 ## Upcoming Release
 
+## Version 1.1.1
+* Fixed iops and high availability parameters issue
+
+## Version 1.1.0
+* Added `PublicNetworkAccess` to `Update-AzMySqlServer` [#19189]
+
+## Version 1.0.0
+* General availability of Az.MySql
+
 ## Version 0.8.0
 * Changed API version to 2021-05-01
 * Fixed bugs for location capabilities

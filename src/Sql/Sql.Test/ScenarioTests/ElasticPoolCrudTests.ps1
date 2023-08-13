@@ -19,7 +19,7 @@
 function Test-CreateElasticPool
 {
 	# Setup
-	$location = Get-Location "Microsoft.Sql" "operations" "Southeast Asia"
+	$location = Get-Location "Microsoft.Sql" "operations" "West Europe"
 	$rg = Create-ResourceGroupForTest $location
 	$server = Create-ServerForTest $rg $location
 
@@ -58,7 +58,7 @@ function Test-CreateElasticPool
 function Test-CreateVcoreElasticPool
 {
 	# Setup
-	$location = Get-Location "Microsoft.Sql" "operations" "Southeast Asia"
+	$location = Get-Location "Microsoft.Sql" "operations" "West Europe"
 	$rg = Create-ResourceGroupForTest $location
 	$server = Create-ServerForTest $rg $location
 
@@ -219,12 +219,114 @@ function Test-CreateElasticPoolWithMaintenanceConfigurationId
 
 <#
 	.SYNOPSIS
+	Tests creating a Hyperscale elastic pool
+#>
+function Test-CreateHyperscaleElasticPool
+{
+	# Setup
+	$location = "north europe"
+	$rg = "PowershellTestsNE"
+	$server = "hs-ep-powershelltests"
+
+	try
+	{
+		## Create Hyperscale pool with 2 high availability replicas
+		$poolName = Get-ElasticPoolName
+		$job = New-AzSqlElasticPool -ServerName $server -ResourceGroupName $rg `
+				-ElasticPoolName $poolName -VCore 4 -Edition Hyperscale -ComputeGeneration Gen5 -AsJob
+		$job | Wait-Job
+		$ep1 = $job.Output
+
+		Assert-NotNull $ep1
+		Assert-AreEqual Hyperscale $ep1.Edition
+		Assert-AreEqual 4 $ep1.Capacity
+		Assert-AreEqual 1 $ep1.HighAvailabilityReplicaCount #Default number of high availability replicas
+	}
+	finally
+	{
+		Remove-AzSqlElasticPool -ElasticPoolName $poolName -ResourceGroupName $rg -ServerName $server
+	}
+}
+
+<#
+	.SYNOPSIS
+	Tests creating a Hyperscale elastic pool with 2 high availability replicas
+#>
+function Test-CreateHyperscaleElasticPoolWithReplica
+{
+	# Setup
+	$location = "north europe"
+	$rg = "PowershellTestsNE"
+	$server = "hs-ep-powershelltests"
+
+	try
+	{
+		## Create Hyperscale pool with 2 high availability replicas
+		$poolName = Get-ElasticPoolName
+		$job = New-AzSqlElasticPool -ServerName $server -ResourceGroupName $rg `
+				-ElasticPoolName $poolName -VCore 4 -Edition Hyperscale -ComputeGeneration Gen5 -HighAvailabilityReplicaCount 2 -AsJob
+		$job | Wait-Job
+		$ep1 = $job.Output
+
+		Assert-NotNull $ep1
+		Assert-AreEqual Hyperscale $ep1.Edition
+		Assert-AreEqual 2 $ep1.HighAvailabilityReplicaCount
+	}
+	finally
+	{
+		Remove-AzSqlElasticPool -ElasticPoolName $poolName -ResourceGroupName $rg -ServerName $server
+	}
+}
+
+<#
+	.SYNOPSIS
+	Tests creating a General Purpose elastic pool with preferred enclave type.
+#>
+function Test-CreateElasticPoolWithPreferredEnclaveType
+{
+	# Setup
+	$location = "uksouth"
+	$rg = Create-ResourceGroupForTest
+	$server = Create-ServerForTest $rg $location
+
+	try
+	{
+		## Create General Purpose pool with PreferredEnclaveType as Default
+		$poolName = Get-ElasticPoolName
+		$job = New-AzSqlElasticPool -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName `
+				-ElasticPoolName $poolName -VCore 4 -Edition GeneralPurpose -ComputeGeneration Gen5 -PreferredEnclaveType Default -AsJob
+		$job | Wait-Job
+		$ep1 = $job.Output
+
+		Assert-NotNull $ep1
+		Assert-AreEqual GeneralPurpose $ep1.Edition
+		Assert-AreEqual Default $ep1.PreferredEnclaveType
+
+		## Create General Purpose pool with PreferredEnclaveType as VBS
+		$poolName = Get-ElasticPoolName
+		$job = New-AzSqlElasticPool -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName `
+				-ElasticPoolName $poolName -VCore 4 -Edition GeneralPurpose -ComputeGeneration Gen5 -PreferredEnclaveType VBS -AsJob
+		$job | Wait-Job
+		$ep2 = $job.Output
+
+		Assert-NotNull $ep2
+		Assert-AreEqual GeneralPurpose $ep2.Edition
+		Assert-AreEqual VBS $ep2.PreferredEnclaveType
+	}
+	finally
+	{
+		Remove-ResourceGroupForTest $rg
+	}
+}
+
+<#
+	.SYNOPSIS
 	Tests updating an elastic pool
 #>
 function Test-UpdateElasticPool
 {
 	# Setup
-	$location = Get-Location "Microsoft.Sql" "operations" "Southeast Asia"
+	$location = Get-Location "Microsoft.Sql" "operations" "West Europe"
 	$rg = Create-ResourceGroupForTest $location
 	$server = Create-ServerForTest $rg $location
 
@@ -280,7 +382,7 @@ function Test-UpdateElasticPool
 function Test-UpdateVcoreElasticPool
 {
 	# Setup
-	$location = Get-Location "Microsoft.Sql" "operations" "Southeast Asia"
+	$location = Get-Location "Microsoft.Sql" "operations" "West Europe"
 	$rg = Create-ResourceGroupForTest $location
 	$server = Create-ServerForTest $rg $location
 
@@ -348,13 +450,13 @@ function Test-UpdateVcoreElasticPool
 function Test-UpdateVcoreElasticPoolWithLicenseType
 {
 	# Setup
-	$location = Get-Location "Microsoft.Sql" "operations" "Southeast Asia"
+	$location = Get-Location "Microsoft.Sql" "operations" "West Europe"
 	$rg = Create-ResourceGroupForTest $location
 	$server = Create-ServerForTest $rg $location
 
 	# Create a Vcore Pool
 	$poolName = Get-ElasticPoolName
-	$ep1 = New-AzSqlElasticPool -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName -ElasticPoolName $poolName -VCore 2 -Edition GeneralPurpose -ComputeGeneration Gen4
+	$ep1 = New-AzSqlElasticPool -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName -ElasticPoolName $poolName -VCore 2 -Edition GeneralPurpose -ComputeGeneration Gen5
 	Assert-NotNull $ep1
 
 	try
@@ -447,12 +549,145 @@ function Test-UpdateElasticPoolWithMaintenanceConfigurationId
 
 <#
 	.SYNOPSIS
+	Tests updating a Hyperscale elastic pool's number of high availability replicas
+#>
+function Test-UpdateHyperscaleElasticPoolReplicaCount
+{
+	# Setup
+	$location = "north europe"
+	$rg = "PowershellTestsNE"
+	$server = "hs-ep-powershelltests"
+
+	try
+	{
+		# Create elastic pool without specifying HighAvailabilityReplicaCount
+		$poolName = Get-ElasticPoolName
+		$ep1 = New-AzSqlElasticPool -ServerName $server -ResourceGroupName $rg `
+				-ElasticPoolName $poolName -VCore 4 -Edition Hyperscale -ComputeGeneration Gen5
+
+		Assert-NotNull $ep1
+		Assert-AreEqual Hyperscale $ep1.Edition
+		Assert-AreEqual 4 $ep1.Capacity
+		Assert-AreEqual 1 $ep1.HighAvailabilityReplicaCount
+
+		# Alter pool's HighAvailabilityReplicaCount
+		$sep1 = Set-AzSqlElasticPool -ResourceGroupName $ep1.ResourceGroupName -ServerName $ep1.ServerName -ElasticPoolName $ep1.ElasticPoolName `
+			-HighAvailabilityReplicaCount 2
+
+		Assert-AreEqual $sep1.ElasticPoolName $poolName
+		Assert-AreEqual Hyperscale $sep1.Edition
+		Assert-AreEqual 4 $sep1.Capacity
+		Assert-AreEqual 2 $sep1.HighAvailabilityReplicaCount
+	}
+	finally
+	{
+		Remove-AzSqlElasticPool -ElasticPoolName $poolName -ResourceGroupName $rg -ServerName $server
+	}
+}
+
+<#
+	.SYNOPSIS
+	Tests updating a General Purpose elastic pool with preferred enclave type.
+#>
+function Test-UpdateElasticPoolWithPreferredEnclaveType
+{
+	# Setup
+	$location = "uksouth"
+	$rg = Create-ResourceGroupForTest
+	$server = Create-ServerForTest $rg $location
+
+	## Create General Purpose pool with PreferredEnclaveType as Default
+	$poolName = Get-ElasticPoolName
+	$job = New-AzSqlElasticPool -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName `
+			-ElasticPoolName $poolName -VCore 4 -Edition GeneralPurpose -ComputeGeneration Gen5 -PreferredEnclaveType Default -AsJob
+	$job | Wait-Job
+	$ep1 = $job.Output
+
+	Assert-NotNull $ep1
+	Assert-AreEqual GeneralPurpose $ep1.Edition
+	Assert-AreEqual Default $ep1.PreferredEnclaveType
+
+	try
+	{
+		## Update with PreferredEnclaveType as VBS
+		$job = Set-AzSqlElasticPool -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName `
+				-ElasticPoolName $poolName -PreferredEnclaveType VBS -AsJob
+		$job | Wait-Job
+		$ep2 = $job.Output
+
+		Assert-NotNull $ep2
+		Assert-AreEqual GeneralPurpose $ep2.Edition
+		Assert-AreEqual VBS $ep2.PreferredEnclaveType
+
+		## Update with PreferredEnclaveType as Default
+		$job = Set-AzSqlElasticPool -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName `
+				-ElasticPoolName $poolName -PreferredEnclaveType Default -AsJob
+		$job | Wait-Job
+		$ep3 = $job.Output
+
+		Assert-NotNull $ep3
+		Assert-AreEqual GeneralPurpose $ep3.Edition
+		Assert-AreEqual Default $ep3.PreferredEnclaveType
+	}
+	finally
+	{
+		Remove-ResourceGroupForTest $rg
+	}
+}
+
+<#
+	.SYNOPSIS
+	Tests moving a database out of a Hyperscale elastic pool
+#>
+function Test-MoveDatabaseOutHyperscaleElasticPool
+{
+	# Setup
+	$location = "East US 2 EUAP"
+	$rg = "pstest"
+	$server = "canarysvr1"
+
+	try
+	{
+		# Create Hyperscale elastic pool 
+		$poolName = Get-ElasticPoolName
+		$ep1 = New-AzSqlElasticPool -ServerName $server -ResourceGroupName $rg `
+				-ElasticPoolName $poolName -VCore 4 -Edition Hyperscale -ComputeGeneration Gen5 -HighAvailabilityReplicaCount 2
+
+		Assert-NotNull $ep1
+		Assert-AreEqual Hyperscale $ep1.Edition
+		Assert-AreEqual 4 $ep1.Capacity
+		Assert-AreEqual 2 $ep1.HighAvailabilityReplicaCount
+
+		# Create database inside pool
+		$databaseName = Get-DatabaseName
+		$db = New-AzSqlDatabase -ResourceGroupName $rg -ServerName $server -DatabaseName $databaseName -ElasticPoolName $poolName
+
+		Assert-NotNull $db
+		Assert-AreEqual Hyperscale $db.Edition
+		Assert-AreEqual 2 $db.HighAvailabilityReplicaCount
+
+		#Move database out of elastic pool
+		$db = Set-AzSqlDatabase -ResourceGroupName $rg -ServerName $server -DatabaseName $databaseName -Edition "Hyperscale" -Vcore 4 -ComputeGeneration "Gen5"
+		Assert-NotNull $db
+		Assert-AreEqual Hyperscale $db.Edition
+		Assert-AreEqual 4 $db.Capacity
+		Assert-AreEqual 2 $db.HighAvailabilityReplicaCount
+	}
+	finally
+	{
+		Remove-AzSqlDatabase -ResourceGroupName $rg -ServerName $server -DatabaseName $databaseName
+		Remove-AzSqlElasticPool -ElasticPoolName $poolName -ResourceGroupName $rg -ServerName $server
+	}
+}
+
+<#
+	.SYNOPSIS
 	Tests getting an elastic pool
 #>
 function Test-GetElasticPool
 {
 	# Setup
-	$location = Get-Location "Microsoft.Sql" "operations" "Southeast Asia"
+	$location = Get-Location "Microsoft.Sql" "operations" "West Europe"
 	$rg = Create-ResourceGroupForTest $location
 	$server = Create-ServerForTest $rg $location
 
@@ -579,12 +814,82 @@ function Test-GetElasticPoolWithMaintenanceConfigurationId
 
 <#
 	.SYNOPSIS
+	Tests getting an elastic pool with preferred enclave type
+#>
+function Test-GetElasticPoolWithPreferredEnclaveType($location = "uksouth")
+{
+	# Setup
+	$rg = Create-ResourceGroupForTest $location
+	$server = Create-ServerForTest $rg $location
+
+	try
+	{
+		# Create General Purpose pool with PreferredEnclaveType as Default
+		$poolName = Get-ElasticPoolName
+		$ep1 = New-AzSqlElasticPool -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName `
+			-ElasticPoolName $poolName -VCore 4 -Edition GeneralPurpose -ComputeGeneration Gen5 -PreferredEnclaveType Default
+
+		# Get created pool with PreferredEnclaveType as Default
+		$gep1 = Get-AzSqlElasticPool  -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName `
+			-ElasticPoolName $ep1.ElasticPoolName
+		Assert-AreEqual Default $gep1.PreferredEnclaveType
+		
+		# Create General Purpose pool with PreferredEnclaveType as VBS
+		$poolName = Get-ElasticPoolName
+		$ep2 = New-AzSqlElasticPool -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName `
+			-ElasticPoolName $poolName -VCore 4 -Edition GeneralPurpose -ComputeGeneration Gen5 -PreferredEnclaveType VBS
+
+		# Get created pool with PreferredEnclaveType as VBS
+		$gep2 = Get-AzSqlElasticPool  -ServerName $server.ServerName -ResourceGroupName $rg.ResourceGroupName `
+			-ElasticPoolName $ep2.ElasticPoolName
+		Assert-AreEqual VBS $gep2.PreferredEnclaveType
+	}
+	finally
+	{
+		Remove-ResourceGroupForTest $rg
+	}
+}
+
+<#
+	.SYNOPSIS
+	Tests getting a hyperscale elastic pool
+#>
+function Test-GetHyperscaleElasticPool
+{
+	# Setup
+	$location = "north europe"
+	$rg = "PowershellTestsNE"
+	$server = "hs-ep-powershelltests"
+
+	try
+	{
+		# Create Hyperscale elastic pool 
+		$poolName = Get-ElasticPoolName
+		New-AzSqlElasticPool -ServerName $server -ResourceGroupName $rg `
+				-ElasticPoolName $poolName -VCore 4 -Edition Hyperscale -ComputeGeneration Gen5 -HighAvailabilityReplicaCount 2
+		
+		# Get Hyperscale elastic pool
+		$ep1 = Get-AzSqlElasticPool  -ServerName $server -ResourceGroupName $rg -ElasticPoolName $poolName
+
+		Assert-NotNull $ep1
+		Assert-AreEqual Hyperscale $ep1.Edition
+		Assert-AreEqual 4 $ep1.Capacity
+		Assert-AreEqual 2 $ep1.HighAvailabilityReplicaCount
+	}
+	finally
+	{
+		Remove-AzSqlElasticPool -ElasticPoolName $poolName -ResourceGroupName $rg -ServerName $server
+	}
+}
+
+<#
+	.SYNOPSIS
 	Tests removing an elastic pool
 #>
 function Test-RemoveElasticPool
 {
 	# Setup
-	$location = Get-Location "Microsoft.Sql" "operations" "Southeast Asia"
+	$location = Get-Location "Microsoft.Sql" "operations" "West Europe"
 	$rg = Create-ResourceGroupForTest $location
 	$server = Create-ServerForTest $rg $location
 
@@ -622,7 +927,7 @@ function Test-RemoveElasticPool
 function Test-ListAndCancelElasticPoolOperation
 {
 	# Setup
-	$location = Get-Location "Microsoft.Sql" "operations" "Southeast Asia"
+	$location = Get-Location "Microsoft.Sql" "operations" "West Europe"
 	$rg = Create-ResourceGroupForTest $location
 	$server = Create-ServerForTest $rg $location
 

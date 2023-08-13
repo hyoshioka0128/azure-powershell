@@ -2,7 +2,7 @@
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Compute.dll-Help.xml
 Module Name: Az.Compute
 ms.assetid: FC6BC096-DBC4-48DA-A366-B87EB18A0496
-online version: https://docs.microsoft.com/powershell/module/az.compute/get-azvmss
+online version: https://learn.microsoft.com/powershell/module/az.compute/get-azvmss
 schema: 2.0.0
 ---
 
@@ -31,6 +31,11 @@ Get-AzVmss [[-ResourceGroupName] <String>] [[-VMScaleSetName] <String>] [-OSUpgr
  [-DefaultProfile <IAzureContextContainer>] [<CommonParameters>]
 ```
 
+### ResourceIdParameterSet
+```
+Get-AzVmss [-ResourceId <String>] [-DefaultProfile <IAzureContextContainer>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 The **Get-AzVmss** cmdlet gets the model and instance view of a Virtual Machine Scale Set (VMSS).
 The model view is the user specified properties of the virtual machine scale set.
@@ -40,9 +45,11 @@ Specify the *InstanceView* parameter to get only the instance view of a virtual 
 ## EXAMPLES
 
 ### Example 1: Get the properties of a VMSS
+```powershell
+Get-AzVmss -ResourceGroupName "Group001" -VMScaleSetName "VMSS001"
 ```
-PS C:\> Get-AzVmss -ResourceGroupName "Group001" -VMScaleSetName "VMSS001"
 
+```output
 ResourceGroupName                           : Group001
 Sku                                         :
   Name                                      : Standard_DS1_v2
@@ -109,9 +116,11 @@ This command gets the properties of the VMSS named VMSS001 that belongs to the r
 Since the command does not specify the *InstanceView* switch parameter, the cmdlet gets the model view of the virtual machine scale set.
 
 ### Example 2: Get all Vmss in a resource group
+```powershell
+Get-AzVmss -ResourceGroupName "Group001"
 ```
-PS C:\> Get-AzVmss -ResourceGroupName "Group001"
 
+```output
 ResourceGroupName                               Name       Location             Sku Capacity ProvisioningState
 -----------------                               ----       --------             --- -------- -----------------
 Group001                                       VMSS001      eastus Standard_DS1_v2        2         Succeeded
@@ -121,9 +130,11 @@ Group001                                       VMSS002      eastus     Standard_
 Get all Vmss in resource group "Group001"
 
 ### Example 3: Get all Vmss in a subscription
+```powershell
+Get-AzVmss
 ```
-PS C:\> Get-AzVmss
 
+```output
 ResourceGroupName                               Name       Location             Sku Capacity ProvisioningState
 -----------------                               ----       --------             --- -------- -----------------
 Group001                                       VMSS001      eastus Standard_DS1_v2        2         Succeeded
@@ -135,9 +146,11 @@ Group002                                       VMSS004      eastus Standard_DS1_
 Get all Vmss in subscription.
 
 ### Example 4: Get all Vmss using filtering
+```powershell
+Get-AzVmss -Name VMSS00*
 ```
-PS C:\> Get-AzVmss -Name VMSS00*
 
+```output
 ResourceGroupName                               Name       Location             Sku Capacity ProvisioningState
 -----------------                               ----       --------             --- -------- -----------------
 Group001                                       VMSS001      eastus Standard_DS1_v2        2         Succeeded
@@ -149,9 +162,11 @@ Group002                                       VMSS004      eastus Standard_DS1_
 Get all Vmss in subscription that start with "VMSS00".
 
 ### Example 5: Get the Vmss with a UserData value
+```powershell
+Get-AzVmss -ResourceGroupName <RESOURCE GROUP NAME> -VMScaleSetName <VMSS NAME> -InstanceView:$false -UserData;
 ```
-PS C:\> Get-AzVmss -ResourceGroupName <RESOURCE GROUP NAME> -VMScaleSetName <VMSS NAME> -InstanceView:$false -UserData;
 
+```output
 ResourceGroupName                           : <RESOURCE GROUP NAME>
 Sku                                         :
   Name                                      : Standard_DS1_v2
@@ -226,9 +241,31 @@ VirtualMachineProfile                       :
       EnableAutomaticUpgrade                : True
       Settings                              : {}
   UserData                                  : dQBwAGQAYQB0AGUAIAB2AG0AcwBzAA==
-
 ```
+
 The UserData value must be Base64 encoded. This command assumes you have created a Vmss with a UserData value. 
+
+### Example 6: Get a Virtual Machine Scale Set via its ResourceId.
+```powershell
+$rgname = "ResourceGroupName";
+$loc = "eastus";
+New-AzResourceGroup -Name $rgname -Location $loc;
+
+$vmssSize = 'Standard_D4s_v3';
+$vmssName1 = 'vmss1' + $rgname;
+$imageName = "Win2019Datacenter";
+$adminUsername = <Username>;
+$adminPassword = <Password> | ConvertTo-SecureString -AsPlainText -Force;
+$cred = New-Object System.Management.Automation.PSCredential($adminUsername, $adminPassword);
+
+$result = New-AzVmss -ResourceGroupName $rgname -Credential $cred -VMScaleSetName $vmssName1 -ImageName $imageName;
+
+$vmss = Get-AzVmss -ResourceGroupName $rgname -VMScaleSetName $vmssName1;
+$vmssId = $vmss.Id;
+$vmssGet = Get-AzVmss -ResourceId $vmssId;
+```
+
+Make a Vmss then get that same Vmss via its ARM resource Id. 
 
 ## PARAMETERS
 
@@ -282,7 +319,7 @@ Specifies the name of the Resource Group of the VMSS.
 
 ```yaml
 Type: System.String
-Parameter Sets: (All)
+Parameter Sets: DefaultParameter, FriendMethod, OSUpgradeHistoryMethodParameter
 Aliases:
 
 Required: False
@@ -290,6 +327,21 @@ Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: True
+```
+
+### -ResourceId
+The ARM resource id specifying the specific virtual machine scale set object you want returned.
+
+```yaml
+Type: System.String
+Parameter Sets: ResourceIdParameterSet
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
 ```
 
 ### -UserData
@@ -303,7 +355,7 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: True (ByValue)
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -312,7 +364,7 @@ Species the name of the VMSS.
 
 ```yaml
 Type: System.String
-Parameter Sets: (All)
+Parameter Sets: DefaultParameter, FriendMethod, OSUpgradeHistoryMethodParameter
 Aliases: Name
 
 Required: False

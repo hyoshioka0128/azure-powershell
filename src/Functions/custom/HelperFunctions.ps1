@@ -1,8 +1,8 @@
 # Load Az.Functions module constants
 $constants = @{}
-$constants["AllowedStorageTypes"] = @('Standard_GRS', 'Standard_RAGRS', 'Standard_LRS', 'Standard_ZRS', 'Premium_LRS')
+$constants["AllowedStorageTypes"] = @('Standard_GRS', 'Standard_RAGRS', 'Standard_LRS', 'Standard_ZRS', 'Premium_LRS', 'Standard_GZRS')
 $constants["RequiredStorageEndpoints"] = @('PrimaryEndpointFile', 'PrimaryEndpointQueue', 'PrimaryEndpointTable')
-$constants["DefaultFunctionsVersion"] = '3'
+$constants["DefaultFunctionsVersion"] = '4'
 $constants["RuntimeToFormattedName"] = @{
     'node' = 'Node'
     'dotnet' = 'DotNet'
@@ -41,6 +41,8 @@ $constants["FunctionsNoV2Version"] = @(
     "USSec West"
     "USSec East"
 )
+
+$constants["SetDefaultValueParameterWarningMessage"] = "This default value is subject to change over time. Please set this value explicitly to ensure the behavior is not accidentally impacted by future changes."
 
 foreach ($variableName in $constants.Keys)
 {
@@ -158,7 +160,6 @@ function GetEndpointSuffix
     {
         "AzureUSGovernment" { ';EndpointSuffix=core.usgovcloudapi.net' }
         "AzureChinaCloud"   { ';EndpointSuffix=core.chinacloudapi.cn' }
-        "AzureGermanCloud"  { ';EndpointSuffix=core.cloudapi.de' }
         "AzureCloud"        { ';EndpointSuffix=core.windows.net' }
         default { '' }
     }
@@ -420,6 +421,9 @@ function AddFunctionAppSettings
                                                                          @PSBoundParameters
         if ($null -eq $settings)
         {
+            Write-Warning -Message "Failed to retrieve function app settings. 1st attempt"
+            Write-Warning -Message "Setting session context to subscription id '$($App.SubscriptionId)'"
+
             $resetDefaultSubscription = $true
             $currentSubscription = (Get-AzContext).Subscription.Id
             $null = Select-AzSubscription $App.SubscriptionId
@@ -431,6 +435,7 @@ function AddFunctionAppSettings
             if ($null -eq $settings)
             {
                 # We are unable to get the app settings, return the app
+                Write-Warning -Message "Failed to retrieve function app settings. 2nd attempt."
                 return $App
             }
         }
@@ -439,6 +444,7 @@ function AddFunctionAppSettings
     {
         if ($resetDefaultSubscription)
         {
+            Write-Warning -Message "Resetting session context to subscription id '$currentSubscription'"
             $null = Select-AzSubscription $currentSubscription
         }
     }
@@ -760,7 +766,7 @@ function GetSkuName
         return "Isolated"
     }
 
-    $guidanceUrl = 'https://docs.microsoft.com/azure/azure-functions/functions-premium-plan#plan-and-sku-settings'
+    $guidanceUrl = 'https://learn.microsoft.com/azure/azure-functions/functions-premium-plan#plan-and-sku-settings'
 
     $errorMessage = "Invalid sku (pricing tier), please refer to '$guidanceUrl' for valid values."
     $exception = [System.InvalidOperationException]::New($errorMessage)
@@ -1018,7 +1024,7 @@ function GetRuntimeJsonDefinition
             $RuntimeVersion = $latestVersion.ToString()
         }
 
-        Write-Verbose "RuntimeVersion not specified. Setting default runtime version for '$Runtime' to '$RuntimeVersion'." -Verbose
+        Write-Warning "RuntimeVersion not specified. Setting default value to '$RuntimeVersion'. $SetDefaultValueParameterWarningMessage"
     }
 
     # Get the RuntimeJsonDefinition
@@ -1041,7 +1047,7 @@ function GetRuntimeJsonDefinition
     if ($runtimeJsonDefinition.IsPreview)
     {
         # Write a verbose message to the user if the current runtime is in Preview
-        Write-Verbose "Runtime '$Runtime' version '$RuntimeVersion' is in Preview." -Verbose
+        Write-Verbose "Runtime '$Runtime' version '$RuntimeVersion' is in Preview for '$OSType'." -Verbose
     }
 
     return $runtimeJsonDefinition
@@ -1064,7 +1070,7 @@ function ThrowRuntimeNotSupportedException
     )
 
     $Message += [System.Environment]::NewLine
-    $Message += "For supported languages, please visit 'https://docs.microsoft.com/azure/azure-functions/functions-versions#languages'."
+    $Message += "For supported languages, please visit 'https://learn.microsoft.com/azure/azure-functions/functions-versions#languages'."
 
     $exception = [System.InvalidOperationException]::New($Message)
     ThrowTerminatingError -ErrorId $ErrorId `
@@ -1528,6 +1534,7 @@ function GetAzWebAppConfig
 
     $resetDefaultSubscription = $false
     $webAppConfig = $null
+    $currentSubscription = $null
     try
     {
         $webAppConfig = Az.Functions.internal\Get-AzWebAppConfiguration -ErrorAction SilentlyContinue `
@@ -1535,21 +1542,28 @@ function GetAzWebAppConfig
 
         if ($null -eq $webAppConfig)
         {
-            $resetDefaultSubscription = $true
+            Write-Warning -Message "Failed to retrieve function app site config. 1st attempt"
+            Write-Warning -Message "Setting session context to subscription id '$($SubscriptionId)'"
 
+            $resetDefaultSubscription = $true
             $currentSubscription = (Get-AzContext).Subscription.Id
-            $null = Select-AzSubscription $App.SubscriptionId
+            $null = Select-AzSubscription $SubscriptionId
 
             $webAppConfig = Az.Functions.internal\Get-AzWebAppConfiguration -ResourceGroupName $ResourceGroupName `
                                                                             -Name $Name `
                                                                             -ErrorAction SilentlyContinue `
                                                                             @PSBoundParameters
+            if ($null -eq $webAppConfig)
+            {
+                Write-Warning -Message "Failed to retrieve function app site config. 2nd attempt."
+            }
         }
     }
     finally
     {
         if ($resetDefaultSubscription)
         {
+            Write-Warning -Message "Resetting session context to subscription id '$currentSubscription'"
             $null = Select-AzSubscription $currentSubscription
         }
     }
@@ -1599,7 +1613,8 @@ function GetShareSuffix
         $Length = 8
     )
 
-    $letters = 'a'..'z'
+    # Create char array from 'a' to 'z'
+    $letters = 97..122 | ForEach-Object { [char]$_ }
     $numbers = 0..9
     $alphanumericLowerCase = $letters + $numbers
 
@@ -1643,7 +1658,7 @@ function GetShareName
         - All letters in a share name must be lowercase.
         - Share names must be from 3 through 63 characters long.
 
-    Docs: https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-shares--directories--files--and-metadata#share-names
+    Docs: https://learn.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-shares--directories--files--and-metadata#share-names
     #>
 
     # Share name will be function app name + 8 random char suffix with a max length of 60

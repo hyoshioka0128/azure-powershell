@@ -59,6 +59,14 @@ namespace Commands.Network.Test.ScenarioTests
             TestRunner.RunTestScript("Test-SetVirtualNetworkGatewayCRUD");
         }
 
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.brooklynft_subset2)]
+        public void VirtualNetworkGatewayDisableIPsecProtection()
+        {
+            TestRunner.RunTestScript("Test-VirtualNetworkGatewayDisableIPsecProtection");
+        }
+
         [Fact(Skip = "Skipped due to intermittent backend failures")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.Owner, NrpTeamAlias.brooklynft_subset2)]
@@ -155,5 +163,30 @@ namespace Commands.Network.Test.ScenarioTests
         {
             TestRunner.RunTestScript("Test-VirtualNetworkGatewayNatRuleCRUD");
         }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.brooklynft_subset2)]
+        public void TestVirtualNetworkGatewayPolicyGroupCRUD()
+        {
+            TestRunner.RunTestScript("Test-VirtualNetworkGatewayPolicyGroupCRUD");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.brooklynft_subset2)]
+        public void TestVirtualNetworkGatewayMultiAuth()
+        {
+            TestRunner.RunTestScript("Test-VirtualNetworkGatewayMultiAuth");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.exrdev)]
+        public void TestVirtualNetworkExpressRouteGatewayCRUDwithAdminState()
+        {
+            TestRunner.RunTestScript("Test-VirtualNetworkExpressRouteGatewayCRUDwithAdminState");
+        }
+
     }
 }

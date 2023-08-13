@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Search.dll-Help.xml
 Module Name: Az.Search
-online version: https://docs.microsoft.com/powershell/module/az.search/remove-azsearchsharedprivatelinkresource
+online version: https://learn.microsoft.com/powershell/module/az.search/remove-azsearchsharedprivatelinkresource
 schema: 2.0.0
 ---
 
@@ -21,8 +21,8 @@ Remove-AzSearchSharedPrivateLinkResource [-ResourceGroupName] <String> [-Service
 
 ### ParentObjectParameterSet
 ```
-Remove-AzSearchSharedPrivateLinkResource -ParentObject <PSSearchService> [-Name] <String> [-Force] [-PassThru]
- [-AsJob] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-AzSearchSharedPrivateLinkResource [-ParentObject] <PSSearchService> [-Name] <String> [-Force]
+ [-PassThru] [-AsJob] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### ResourceIdParameterSet
@@ -33,7 +33,7 @@ Remove-AzSearchSharedPrivateLinkResource [-ResourceId] <String> [-Force] [-PassT
 
 ### InputObjectParameterSet
 ```
-Remove-AzSearchSharedPrivateLinkResource -InputObject <PSSharedPrivateLinkResource> [-Force] [-PassThru]
+Remove-AzSearchSharedPrivateLinkResource [-InputObject] <PSSharedPrivateLinkResource> [-Force] [-PassThru]
  [-AsJob] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
@@ -44,8 +44,10 @@ The **Remove-AzSearchSharedPrivateLinkResource** cmdlet removes the shared priva
 
 ### Example 1
 ```powershell
-PS C:\> Remove-AzSearchSharedPrivateLinkResource -ResourceGroupName arjagann -ServiceName arjagann-test-cuseuap -Name blob-pe
+Remove-AzSearchSharedPrivateLinkResource -ResourceGroupName arjagann -ServiceName arjagann-test-cuseuap -Name blob-pe
+```
 
+```output
 Confirm
 Remove Shared Private Link Resource 'blob-pe'.
 [Y] Yes  [N] No  [S] Suspend  [?] Help (default is "Y"): Y
@@ -109,7 +111,7 @@ Parameter Sets: InputObjectParameterSet
 Aliases:
 
 Required: True
-Position: Named
+Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
@@ -139,7 +141,7 @@ Parameter Sets: ParentObjectParameterSet
 Aliases:
 
 Required: True
-Position: Named
+Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False

@@ -19,6 +19,18 @@
 -->
 ## Upcoming Release
 
+## Version 2.2.0
+* Added cmdlet `Get-AzKustoSku`
+* Added parameter `CallerRole` for cmdlet `AzKustoDatabase` and `Update-AzKustoDatabase`
+* Added support for new data connection kind `CosmosDb` for cmdlet `New-AzKustoDataConnection` and `Update-AzKustoDataConnection`
+* Added parameters `DatabaseNameOverride` `DatabaseNamePrefix` `TableLevelSharingPropertyFunctionsToInclude` `TableLevelSharingPropertyFunctionsToExclude` for cmdlet `New-AzKustoAttachedDatabaseConfiguration`
+
+## Version 2.1.0
+* Supported inline script resource (creation of script with content instead of sas token)
+* Added managed identity support to EventGrid
+* Added databaseRouting (Single/Multi) to all data connections
+* Added PublicIPType to cluster
+
 ## Version 2.0.0
 * Bumped API version to stable 2021-01-01
 

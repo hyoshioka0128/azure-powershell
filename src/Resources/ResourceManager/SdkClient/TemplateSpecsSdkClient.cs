@@ -17,8 +17,8 @@ using Microsoft.Azure.Commands.Common.Authentication.Abstractions;
 using Microsoft.Azure.Commands.ResourceManager.Cmdlets.Components;
 using Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels;
 using Microsoft.Azure.Commands.ResourceManager.Common.Tags;
-using Microsoft.Azure.Management.ResourceManager;
-using Microsoft.Azure.Management.ResourceManager.Models;
+using Microsoft.Azure.Management.Resources;
+using Microsoft.Azure.Management.Resources.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
@@ -313,7 +313,7 @@ namespace Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkClient
         /// <remarks>
         /// Method name is protected and has an 'Internal' suffix because the return type is
         /// the SDK model rather than the model wrapped for PS. See
-        /// <see cref="CreateOrUpdateTemplateSpec(string, string, string, string, string)"/>
+        /// <see cref="CreateOrUpdateTemplateSpec"/>
         /// for the method that returns the wrapped model.
         /// </remarks>
         protected TemplateSpec CreateOrUpdateTemplateSpecInternal(

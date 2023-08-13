@@ -37,7 +37,7 @@ Install-AzModule -Repository PSGallery
 
 ### EXAMPLE 2
 ```
-Install-AzModule Storage,Compute,Network,Blockchain -Repository PSGallery -AllowPrerelease
+Install-AzModule Storage,Compute,Network -Repository PSGallery -AllowPrerelease
 ```
 
 ### EXAMPLE 3
@@ -80,7 +80,9 @@ Accept wildcard characters: False
 ```
 
 ### -Repository
-The Registered Repostory.
+The Registered Repository to install module from.
+If only one repository is registered in PowerShell, Install-AzModule will use it.
+If more than one, please specify the Repository.
 
 ```yaml
 Type: String

@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.DesktopVirtualization
-online version: https://docs.microsoft.com/powershell/module/az.desktopvirtualization/new-azwvdhostpool
+online version: https://learn.microsoft.com/powershell/module/az.desktopvirtualization/new-azwvdhostpool
 schema: 2.0.0
 ---
 
@@ -16,9 +16,11 @@ Create or update a host pool.
 ```
 New-AzWvdHostPool -HostPoolType <HostPoolType> -LoadBalancerType <LoadBalancerType> -Name <String>
  -PreferredAppGroupType <PreferredAppGroupType> -ResourceGroupName <String> [-Location <String>]
- [-SubscriptionId <String>] [-CustomRdpProperty <String>] [-Description <String>] [-ExpirationTime <DateTime>]
- [-FriendlyName <String>] [-IdentityType <ResourceIdentityType>] [-Kind <String>] [-ManagedBy <String>]
- [-MaxSessionLimit <Int32>] [-MigrationRequestMigrationPath <String>] [-MigrationRequestOperation <Operation>]
+ [-SubscriptionId <String>] [-AgentUpdateMaintenanceWindow <IMaintenanceWindowProperties[]>]
+ [-AgentUpdateMaintenanceWindowTimeZone <String>] [-AgentUpdateType <SessionHostComponentUpdateType>]
+ [-AgentUpdateUseSessionHostLocalTime] [-CustomRdpProperty <String>] [-Description <String>]
+ [-ExpirationTime <DateTime>] [-FriendlyName <String>] [-IdentityType <ResourceIdentityType>] [-Kind <String>]
+ [-ManagedBy <String>] [-MaxSessionLimit <Int32>]
  [-PersonalDesktopAssignmentType <PersonalDesktopAssignmentType>] [-PlanName <String>] [-PlanProduct <String>]
  [-PlanPromotionCode <String>] [-PlanPublisher <String>] [-PlanVersion <String>]
  [-RegistrationInfoToken <String>] [-RegistrationTokenOperation <RegistrationTokenOperation>] [-Ring <Int32>]
@@ -43,13 +45,13 @@ Create or update a host pool.
 
 ### Example 1: Create a Windows Virtual Desktop HostPool by name
 ```powershell
-PS C:\> New-AzWvdHostPool -ResourceGroupName ResourceGroupName `
+New-AzWvdHostPool -ResourceGroupName ResourceGroupName `
                             -Name HostPoolName `
                             -Location 'eastus' `
                             -HostPoolType 'Pooled' `
                             -LoadBalancerType 'DepthFirst' `
                             -RegistrationTokenOperation 'Update' `
-                            -ExpirationTime $((get-date).ToUniversalTime().AddDays(1).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ')) `
+                            -ExpirationTime $((Get-Date).ToUniversalTime().AddDays(1).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ')) `
                             -Description 'Description' `
                             -FriendlyName 'Friendly Name' `
                             -MaxSessionLimit 5 `
@@ -61,7 +63,9 @@ PS C:\> New-AzWvdHostPool -ResourceGroupName ResourceGroupName `
                             -CustomRdpProperty $null `
                             -Ring $null `
                             -ValidationEnvironment:$false
+```
 
+```output
 Location   Name                 Type
 --------   ----                 ----
 eastus     HostPoolName Microsoft.DesktopVirtualization/hostpools
@@ -69,15 +73,15 @@ eastus     HostPoolName Microsoft.DesktopVirtualization/hostpools
 
 This command creates a Windows Virtual Desktop HostPool in a Resource Group.
 
-### Example 1: Create a Windows Virtual Desktop HostPool by name
+### Example 2: Create a Windows Virtual Desktop HostPool by name
 ```powershell
-PS C:\> New-AzWvdHostPool -ResourceGroupName ResourceGroupName `
+New-AzWvdHostPool -ResourceGroupName ResourceGroupName `
                             -Name HostPoolName `
                             -Location 'eastus' `
                             -HostPoolType 'Personal' `
                             -LoadBalancerType 'Persistent' `
                             -RegistrationTokenOperation 'Update' `
-                            -ExpirationTime $((get-date).ToUniversalTime().AddDays(1).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ')) `
+                            -ExpirationTime $((Get-Date).ToUniversalTime().AddDays(1).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ')) `
                             -Description 'Description' `
                             -FriendlyName 'Friendly Name' `
                             -MaxSessionLimit 5 `
@@ -89,7 +93,9 @@ PS C:\> New-AzWvdHostPool -ResourceGroupName ResourceGroupName `
                             -CustomRdpProperty $null `
                             -Ring $null `
                             -ValidationEnvironment:$false
+```
 
+```output
 Location   Name                 Type
 --------   ----                 ----
 eastus     HostPoolName Microsoft.DesktopVirtualization/hostpools
@@ -98,6 +104,69 @@ eastus     HostPoolName Microsoft.DesktopVirtualization/hostpools
 This command creates a Windows Virtual Desktop HostPool in a Resource Group.
 
 ## PARAMETERS
+
+### -AgentUpdateMaintenanceWindow
+List of maintenance windows.
+Maintenance windows are 2 hours long.
+To construct, see NOTES section for AGENTUPDATEMAINTENANCEWINDOW properties and create a hash table.
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api202209.IMaintenanceWindowProperties[]
+Parameter Sets: CreateExpanded
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AgentUpdateMaintenanceWindowTimeZone
+Time zone for maintenance as defined in https://learn.microsoft.com//dotnet/api/system.timezoneinfo.findsystemtimezonebyid.
+Must be set if useLocalTime is true.
+
+```yaml
+Type: System.String
+Parameter Sets: CreateExpanded
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AgentUpdateType
+The type of maintenance for session host components.
+
+```yaml
+Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Support.SessionHostComponentUpdateType
+Parameter Sets: CreateExpanded
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AgentUpdateUseSessionHostLocalTime
+Whether to use localTime of the virtual machine.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+Parameter Sets: CreateExpanded
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -CustomRdpProperty
 Custom rdp property of HostPool.
@@ -115,7 +184,8 @@ Accept wildcard characters: False
 ```
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -288,36 +358,6 @@ The max session limit of HostPool.
 
 ```yaml
 Type: System.Int32
-Parameter Sets: CreateExpanded
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -MigrationRequestMigrationPath
-The path to the legacy object to migrate.
-
-```yaml
-Type: System.String
-Parameter Sets: CreateExpanded
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -MigrationRequestOperation
-The type of operation for migration.
-
-```yaml
-Type: Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Support.Operation
 Parameter Sets: CreateExpanded
 Aliases:
 
@@ -781,11 +821,20 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api20210712.IHostPool
+### Microsoft.Azure.PowerShell.Cmdlets.DesktopVirtualization.Models.Api202209.IHostPool
 
 ## NOTES
 
 ALIASES
+
+COMPLEX PARAMETER PROPERTIES
+
+To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
+
+
+`AGENTUPDATEMAINTENANCEWINDOW <IMaintenanceWindowProperties[]>`: List of maintenance windows. Maintenance windows are 2 hours long.
+  - `[DayOfWeek <DayOfWeek?>]`: Day of the week.
+  - `[Hour <Int32?>]`: The update start hour of the day. (0 - 23)
 
 ## RELATED LINKS
 

@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,10 +36,6 @@ namespace Microsoft.Azure.Commands.Network
         [ValidateNotNullOrEmpty]
         public string Description { get; set; }
 
-        [CmdletParameterBreakingChange(
-            "SourceAddress",
-            ChangeDescription = "This parameter is becoming optional as SourceIpGroup can be provided without this.",
-            IsBecomingMandatory = false)]
         [Parameter(
             Mandatory = true,
             ParameterSetName = AzureFirewallPolicyApplicationRuleParameterSets.SourceAddressAndTargetFqdn,
@@ -165,7 +161,7 @@ namespace Microsoft.Azure.Commands.Network
 
             if (FqdnTag != null)
             {
-                this.Protocol = new string[] { "http", "https" };
+                this.Protocol = new string[] { "http", "https", "mssql"};
                 FqdnTag = AzureFirewallFqdnTagHelper.MapUserInputToAllowedFqdnTags(FqdnTag, this.AzureFirewallPolicyFqdnTagClient).ToArray();
             }
 
@@ -182,7 +178,8 @@ namespace Microsoft.Azure.Commands.Network
                 WebCategories = this.WebCategory?.ToList(),
                 TargetUrls = this.TargetUrl?.ToList(),
                 TerminateTLS = this.TerminateTLS.IsPresent ? true : (bool?)null,
-                RuleType = "ApplicationRule"
+                RuleType = "ApplicationRule",
+                Description = this.Description
             };
             WriteObject(applicationRule);
         }

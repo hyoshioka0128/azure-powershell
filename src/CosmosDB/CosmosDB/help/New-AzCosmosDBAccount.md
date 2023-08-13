@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.CosmosDB.dll-Help.xml
 Module Name: Az.CosmosDB
-online version: https://docs.microsoft.com/powershell/module/az.cosmosdb/new-azcosmosdbaccount
+online version: https://learn.microsoft.com/powershell/module/az.cosmosdb/new-azcosmosdbaccount
 schema: 2.0.0
 ---
 
@@ -15,15 +15,15 @@ Create a new CosmosDB Account.
 ```
 New-AzCosmosDBAccount [-EnableAutomaticFailover] [-EnableMultipleWriteLocations] [-EnableVirtualNetwork]
  [-FromPointInTimeBackup] [-ApiKind <String>] [-DisableKeyBasedMetadataWriteAccess] [-EnableFreeTier <Boolean>]
- [-Location <String[]>] [-LocationObject <PSLocation[]>] -ResourceGroupName <String> -Name <String>
- [-DefaultConsistencyLevel <String>] [-IpRule <String[]>] [-MaxStalenessIntervalInSeconds <Int32>]
- [-MaxStalenessPrefix <Int32>] [-Tag <Hashtable>] [-VirtualNetworkRule <String[]>]
- [-VirtualNetworkRuleObject <PSVirtualNetworkRule[]>] [-PublicNetworkAccess <String>]
- [-KeyVaultKeyUri <String>] [-EnableAnalyticalStorage <Boolean>] [-AsJob] [-NetworkAclBypass <String>]
- [-NetworkAclBypassResourceId <String[]>] [-ServerVersion <String>] [-BackupIntervalInMinutes <Int32>]
- [-BackupRetentionIntervalInHours <Int32>] [-BackupStorageRedundancy <String>] [-BackupPolicyType <String>]
- [-AnalyticalStorageSchemaType <String>] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-Location <String[]>] [-LocationObject <PSLocation[]>] [-Capabilities <String[]>] -ResourceGroupName <String>
+ -Name <String> [-DefaultConsistencyLevel <String>] [-IpRule <String[]>]
+ [-MaxStalenessIntervalInSeconds <Int32>] [-MaxStalenessPrefix <Int32>] [-Tag <Hashtable>]
+ [-VirtualNetworkRule <String[]>] [-VirtualNetworkRuleObject <PSVirtualNetworkRule[]>]
+ [-PublicNetworkAccess <String>] [-KeyVaultKeyUri <String>] [-EnableAnalyticalStorage <Boolean>] [-AsJob]
+ [-NetworkAclBypass <String>] [-NetworkAclBypassResourceId <String[]>] [-ServerVersion <String>]
+ [-BackupIntervalInMinutes <Int32>] [-BackupRetentionIntervalInHours <Int32>]
+ [-BackupStorageRedundancy <String>] [-BackupPolicyType <String>] [-ContinuousTier <String>] [-AnalyticalStorageSchemaType <String>] [-EnablePartitionMerge <Boolean>]
+ [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,8 +33,10 @@ Create a new CosmosDB Account in the given ResourceGroup.
 
 ### Example 1
 ```powershell
-PS C:\> New-AzCosmosDBAccount -ResourceGroupName resourceGroupName -Name databaseAccountName  -Location "East US"
+New-AzCosmosDBAccount -ResourceGroupName resourceGroupName -Name databaseAccountName -Location "East US"
+```
 
+```output
 Kind                          : GlobalDocumentDB
 ProvisioningState             : Initializing
 DocumentEndpoint              :
@@ -59,88 +61,6 @@ NetworkAclBypassResourceIds   : {}
 ```
 
 A new CosmosDB Account with name databaseAccountName is created in the ResourceGroup resourceGroupName.
-
-### Example 2
-```powershell
-PS C:\> New-AzCosmosDBAccount -ResourceGroupName resourceGroupName -Name restored-account-name  -Location "West US" -FromPointInTimeBackup -RestoreSourceId /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/restorableDatabaseAccounts/{instance-id} -RestoreTimesampInUtc 2020-07-20T17:19:25+0000
-
-
-Id                                 : /subscriptions/259fbb24-9bcd-4cfc-865c-fc33b22fe38a/resourceGroups/resourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/restored-account-name
-Name                               : restored-account-name
-InstanceId                         : eeb45f7f-4c05-4b52-9f42-6807d8eb8703
-Location                           : West US
-Tags                               : {}
-EnableCassandraConnector           :
-EnableMultipleWriteLocations       : False
-VirtualNetworkRules                : {}
-FailoverPolicies                   : {restored-account-name-westus}
-Locations                          : {restored-account-name-westus}
-ReadLocations                      : {restored-account-name-westus}
-WriteLocations                     : {restored-account-name-westus}
-Capabilities                       : {}
-ConsistencyPolicy                  : Microsoft.Azure.Management.CosmosDB.Models.ConsistencyPolicy
-EnableAutomaticFailover            : False
-IsVirtualNetworkFilterEnabled      : False
-IpRules                            : {}
-DatabaseAccountOfferType           : Standard
-DocumentEndpoint                   : https://restored-account-name.documents.azure.com:443/
-ProvisioningState                  : Succeeded
-Kind                               : GlobalDocumentDB
-ConnectorOffer                     :
-DisableKeyBasedMetadataWriteAccess : False
-PublicNetworkAccess                : Enabled
-KeyVaultKeyUri                     :
-PrivateEndpointConnections         :
-EnableFreeTier                     : False
-ApiProperties                      : Microsoft.Azure.Commands.CosmosDB.Models.PSApiProperties
-EnableAnalyticalStorage            : False
-BackupPolicy                       : Microsoft.Azure.Commands.CosmosDB.Models.PSBackupPolicy
-RestoreParameters                  : Microsoft.Azure.Commands.CosmosDB.Models.PSRestoreParameters
-CreateMode                         : Restore
-```
-
-A new account with the name restoredDatabaseAccountName is created by restoring the restorable database account of the given Id to the given timestamp.
-
-### Example 3
-```powershell
-PS C:\> New-AzCosmosDBAccount -ResourceGroupName resourceGroupName -Name restored-account-name  -Location "West US" -FromPointInTimeBackup -SourceDatabaseAccountName source-database-account-name -RestoreTimesampInUtc 2020-07-20T17:19:25+0000
-
-
-Id                                 : /subscriptions/259fbb24-9bcd-4cfc-865c-fc33b22fe38a/resourceGroups/resourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/restored-account-name
-Name                               : restored-account-name
-InstanceId                         : eeb45f7f-4c05-4b52-9f42-6807d8eb8703
-Location                           : West US
-Tags                               : {}
-EnableCassandraConnector           :
-EnableMultipleWriteLocations       : False
-VirtualNetworkRules                : {}
-FailoverPolicies                   : {restored-account-name-westus}
-Locations                          : {restored-account-name-westus}
-ReadLocations                      : {restored-account-name-westus}
-WriteLocations                     : {restored-account-name-westus}
-Capabilities                       : {}
-ConsistencyPolicy                  : Microsoft.Azure.Management.CosmosDB.Models.ConsistencyPolicy
-EnableAutomaticFailover            : False
-IsVirtualNetworkFilterEnabled      : False
-IpRules                            : {}
-DatabaseAccountOfferType           : Standard
-DocumentEndpoint                   : https://restored-account-name.documents.azure.com:443/
-ProvisioningState                  : Succeeded
-Kind                               : GlobalDocumentDB
-ConnectorOffer                     :
-DisableKeyBasedMetadataWriteAccess : False
-PublicNetworkAccess                : Enabled
-KeyVaultKeyUri                     :
-PrivateEndpointConnections         :
-EnableFreeTier                     : False
-ApiProperties                      : Microsoft.Azure.Commands.CosmosDB.Models.PSApiProperties
-EnableAnalyticalStorage            : False
-BackupPolicy                       : Microsoft.Azure.Commands.CosmosDB.Models.PSBackupPolicy
-RestoreParameters                  : Microsoft.Azure.Commands.CosmosDB.Models.PSRestoreParameters
-CreateMode                         : Restore
-```
-
-A new account with the name restoredDatabaseAccountName is created by restoring the restorable database account of the given Id to the given timestamp.
 
 ## PARAMETERS
 
@@ -236,6 +156,50 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -BackupStorageRedundancy
+The redundancy type of the backup Storage account
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Capabilities
+Add a location to the Cosmos DB database account. Array of strings, ordered by failover priority.
+
+```yaml
+Type: System.String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ContinuousTier
+The tier of continuous backups mode on the Cosmos DB account. Accepted values: Continuous7Days, Continuous30Days
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -DefaultConsistencyLevel
 Default consistency level of the Cosmos DB database account.
 Accepted values: BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong
@@ -285,6 +249,21 @@ Accept wildcard characters: False
 ### -EnableAnalyticalStorage
 Bool to indicate if AnalyticalStorage is enabled on the account.
 
+```yaml
+Type: System.Nullable`1[System.Boolean]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EnablePartitionMerge
+Bool to indicate if PartitionMerge is enabled on the account.
+Accepted Values: false, true
 ```yaml
 Type: System.Nullable`1[System.Boolean]
 Parameter Sets: (All)
@@ -636,31 +615,16 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -BackupStorageRedundancy
-The redundancy type of the backup Storage account
-
-```yaml
-Type: System.String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
-### Microsoft.Azure.Commands.CosmosDB.Models.PSCorsRule[]
+### None
 
 ## OUTPUTS
 
-### Microsoft.Azure.Commands.CosmosDB.Models.PSDatabaseAccount
+### Microsoft.Azure.Commands.CosmosDB.Models.PSDatabaseAccountGetResults
 
 ## NOTES
 

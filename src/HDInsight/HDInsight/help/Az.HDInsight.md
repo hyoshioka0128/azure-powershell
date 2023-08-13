@@ -1,7 +1,7 @@
 ---
 Module Name: Az.HDInsight
 Module Guid: 3fd1475f-cb23-4ffb-bf08-33d94b7d1acb
-Download Help Link: https://docs.microsoft.com/powershell/module/az.hdinsight
+Download Help Link: https://learn.microsoft.com/powershell/module/az.hdinsight
 Help Version: 4.1.2.0
 Locale: en-US
 ---
@@ -92,11 +92,17 @@ Creates a non-persisted cluster configuration object that describes an Azure HDI
 ### [New-AzHDInsightHiveJobDefinition](New-AzHDInsightHiveJobDefinition.md)
 Creates a Hive job object.
 
+### [New-AzHDInsightIPConfiguration](New-AzHDInsightIPConfiguration.md)
+Creates the IP configuration of private link configuration.
+
 ### [New-AzHDInsightMapReduceJobDefinition](New-AzHDInsightMapReduceJobDefinition.md)
 Creates a MapReduce job object.
 
 ### [New-AzHDInsightPigJobDefinition](New-AzHDInsightPigJobDefinition.md)
 Creates a Pig job object.
+
+### [New-AzHDInsightPrivateLinkConfiguration](New-AzHDInsightPrivateLinkConfiguration.md)
+Creates the private link configuration of the HDInsight cluster.
 
 ### [New-AzHDInsightSqoopJobDefinition](New-AzHDInsightSqoopJobDefinition.md)
 Creates a Sqoop job object.

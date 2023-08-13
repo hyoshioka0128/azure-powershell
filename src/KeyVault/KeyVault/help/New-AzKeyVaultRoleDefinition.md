@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.KeyVault.dll-Help.xml
 Module Name: Az.KeyVault
-online version: https://docs.microsoft.com/powershell/module/az.keyvault/new-azkeyvaultroledefinition
+online version: https://learn.microsoft.com/powershell/module/az.keyvault/new-azkeyvaultroledefinition
 schema: 2.0.0
 ---
 
@@ -40,7 +40,7 @@ $role = Get-AzKeyVaultRoleDefinition -HsmName myHsm -RoleDefinitionName 'Managed
 $role.Name = $null
 $role.RoleName = "my custom role"
 $role.Description = "description for my role"
-$role.Permissions[0].AllowedDataActions = @("Microsoft.KeyVault/managedHsm/roleAssignments/write/action", "Microsoft.KeyVault/managedHsm/roleAssignments/delete/action")
+$role.Permissions[0].DataActions = @("Microsoft.KeyVault/managedHsm/roleAssignments/write/action", "Microsoft.KeyVault/managedHsm/roleAssignments/delete/action") # todo
 New-AzKeyVaultRoleDefinition -HsmName myHsm -Role $role
 ```
 

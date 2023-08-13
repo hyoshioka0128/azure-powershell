@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.CosmosDB.dll-Help.xml
 Module Name: Az.CosmosDB
-online version: https://docs.microsoft.com/powershell/module/az.cosmosdb/get-azcosmosdbmongodbrestorablecollection
+online version: https://learn.microsoft.com/powershell/module/az.cosmosdb/get-azcosmosdbmongodbrestorablecollection
 schema: 2.0.0
 ---
 
@@ -15,7 +15,8 @@ Lists all the restorable Azure Cosmos DB MongoDB collection available for a spec
 ### ByNameParameterSet (Default)
 ```
 Get-AzCosmosDBMongoDBRestorableCollection -Location <String> -DatabaseAccountInstanceId <String>
- -DatabaseRId <String> [-DefaultProfile <IAzureContextContainer>] [<CommonParameters>]
+ -DatabaseRId <String> [-StartTime <String>] [-EndTime <String>] [-DefaultProfile <IAzureContextContainer>]
+ [<CommonParameters>]
 ```
 
 ### ByParentObjectParameterSet
@@ -34,10 +35,12 @@ For example, if user wants to restore the database account to a timestamp when a
 
 ### Example 1
 ```powershell
-PS C:\> Get-AzCosmosDBMongoDBRestorableCollection -Location {locationName} -DatabaseAccountInstanceId {DatabaseAccountInstanceIdInstanceId} -DatabaseRId {DatabaseRId}
+Get-AzCosmosDBMongoDBRestorableCollection -Location "location" -DatabaseAccountInstanceId "DatabaseAccountInstanceId" -DatabaseRId "DatabaseRId"
+```
 
-Id              : /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{locationName}/restorableDatabaseAccounts
-                    /{DatabaseAccountInstanceIdInstanceId}/restorableMongoDBCollections/6a0cb3e4-7d2b-4363-b585-04a3b14ada8c
+```output
+Id              : /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts
+                    /{DatabaseAccountInstanceId}/restorableMongoDBCollections/6a0cb3e4-7d2b-4363-b585-04a3b14ada8c
 Name            : 6a0cb3e4-7d2b-4363-b585-04a3b14ada8c
 Type            : Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableMongoDBCollections
 _rid            : qsLuzwAAAA==
@@ -46,8 +49,8 @@ EventTimestamp  : 01/20/2021 18:44:07
 OwnerId         : foo-collection2
 OwnerResourceId : Ts0YAPGKTvw=
 
-Id              : /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{locationName}/restorableDatabaseAccounts
-                    /{DatabaseAccountInstanceIdInstanceId}/restorableMongoDBCollections/ff36d1d3-f9dc-40a0-a003-60fe349abcfb
+Id              : /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts
+                    /{DatabaseAccountInstanceId}/restorableMongoDBCollections/ff36d1d3-f9dc-40a0-a003-60fe349abcfb
 Name            : ff36d1d3-f9dc-40a0-a003-60fe349abcfb
 Type            : Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableMongoDBCollections
 _rid            : Ngu72QAAAA==
@@ -56,8 +59,8 @@ EventTimestamp  : 01/20/2021 18:44:07
 OwnerId         : foo-collection1
 OwnerResourceId : Ts0YAP+RbG0=
 
-Id              : /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{locationName}/restorableDatabaseAccounts
-                    /{DatabaseAccountInstanceIdInstanceId}/restorableMongoDBCollections/2afb35ba-1755-4fbc-85be-ae175dd0668f
+Id              : /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts
+                    /{DatabaseAccountInstanceId}/restorableMongoDBCollections/2afb35ba-1755-4fbc-85be-ae175dd0668f
 Name            : 2afb35ba-1755-4fbc-85be-ae175dd0668f
 Type            : Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableMongoDBCollections
 _rid            : lSuf5gAAAA==
@@ -87,6 +90,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -DatabaseRId
+ResourceId of the database.
+
+```yaml
+Type: System.String
+Parameter Sets: ByNameParameterSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -DefaultProfile
 The credentials, account, tenant, and subscription used for communication with Azure.
 
@@ -102,15 +120,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -DatabaseRId
-ResourceId of the database.
+### -EndTime
+Restorable MongoDB collections event feed end time.
 
 ```yaml
 Type: System.String
 Parameter Sets: ByNameParameterSet
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -141,6 +159,21 @@ Parameter Sets: ByNameParameterSet
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -StartTime
+Restorable MongoDB collections event feed start time.
+
+```yaml
+Type: System.String
+Parameter Sets: ByNameParameterSet
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

@@ -92,9 +92,33 @@ namespace Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.Owner, NrpTeamAlias.slbdev)]
+        public void TestLoadBalancerProbes_ProbeThresholdParameter()
+        {
+            TestRunner.RunTestScript("Test-LoadBalancerProbes_ProbeThresholdParameter");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.slbdev)]
         public void TestLoadBalancerChildResource()
         {
             TestRunner.RunTestScript("Test-LoadBalancerChildResource");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.slbdev)]
+        public void TestLoadBalancerInboundNatRuleV2()
+        {
+            TestRunner.RunTestScript("Test-LoadBalancerInboundNatRuleV2");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.slbdev)]
+        public void TestLoadBalancerInboundNatRuleV2InternalLB()
+        {
+            TestRunner.RunTestScript("Test-LoadBalancerInboundNatRuleV2-InternalLB");
         }
 
         [Fact]
@@ -196,6 +220,14 @@ namespace Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.Owner, NrpTeamAlias.slbdev)]
+        public void TestSetLoadBalancerCRUDPublicStandardSkuAsDefault()
+        {
+            TestRunner.RunTestScript("Test-LoadBalancerCRUD-PublicStandardSkuDefault");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.slbdev)]
         public void TestSetLoadBalancerCRUDPublicStandardSkuIpPrefix()
         {
             TestRunner.RunTestScript("Test-LoadBalancerCRUD-PublicStandardSkuIpPrefix");
@@ -215,6 +247,14 @@ namespace Commands.Network.Test.ScenarioTests
         public void TestSetLoadBalancerCRUDInternalStandardSku()
         {
             TestRunner.RunTestScript("Test-LoadBalancerCRUD-InternalStandardSku");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.slbdev)]
+        public void TestSetLoadBalancerCRUDInternalStandardSkuAsDefault()
+        {
+            TestRunner.RunTestScript("Test-LoadBalancerCRUD-InternalStandardSkuDefault");
         }
 
         [Fact]

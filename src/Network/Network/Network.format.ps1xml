@@ -717,6 +717,14 @@
                 <PropertyName>SharedKey</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>ExpressRouteGatewayBypass</Label>
+                <PropertyName>ExpressRouteGatewayBypass</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>EnablePrivateLinkFastPath</Label>
+                <PropertyName>EnablePrivateLinkFastPath</PropertyName>
+              </ListItem>
+              <ListItem>
                 <Label>ConnectionStatus</Label>
                 <PropertyName>ConnectionStatus</PropertyName>
               </ListItem>
@@ -739,6 +747,10 @@
               <ListItem>
                 <Label>EgressNatRules</Label>
                 <PropertyName>EgressNatRulesText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>GatewayCustomBgpIpAddresses</Label>
+                <PropertyName>GatewayCustomBgpIpAddressesText</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -973,12 +985,24 @@
                 <PropertyName>BgpSettingsText</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>CustomRoutes</Label>
+                <PropertyName>CustomRoutesText</PropertyName>
+              </ListItem>       
+              <ListItem>
                 <Label>NatRules</Label>
                 <PropertyName>NatRulesText</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>ExtendedLocation</Label>
+                <PropertyName>ExtendedLocationText</PropertyName>
+              </ListItem>
+              <ListItem>
                 <Label>EnableBgpRouteTranslationForNat</Label>
                 <PropertyName>EnableBgpRouteTranslationForNat</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AdminState</Label>
+                <PropertyName>AdminState</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -1563,6 +1587,10 @@
                 <PropertyName>DnsSettingsText</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>DdosSettings</Label>
+                <PropertyName>DdosSettingsText</PropertyName>
+              </ListItem>
+              <ListItem>
                 <Label>Zones</Label>
                 <PropertyName>Zones</PropertyName>
               </ListItem>
@@ -1649,6 +1677,22 @@
               <ListItem>
                 <Label>Cidr</Label>
                 <PropertyName>Cidr</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Asn</Label>
+                <PropertyName>Asn</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Geo</Label>
+                <PropertyName>Geo</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>ExpressrouteAdvertise</Label>
+                <PropertyName>ExpressrouteAdvertise</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>NoInternetAdvertise</Label>
+                <PropertyName>NoInternetAdvertise</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>CommissionedState</Label>
@@ -1756,6 +1800,10 @@
                 <Label>PublicIpAddresses</Label>
                 <PropertyName>PublicIpAddressesText</PropertyName>
               </ListItem>
+                <ListItem>
+                    <Label>CustomIpPrefix</Label>
+                    <PropertyName>CustomIpPrefixText</PropertyName>
+                </ListItem>
               <ListItem>
                 <Label>ExtendedLocation</Label>
                 <PropertyName>ExtendedLocationText</PropertyName>
@@ -1851,6 +1899,18 @@
               <ListItem>
                 <Label>VnetEncryptionSupported</Label>
                 <PropertyName>VnetEncryptionSupported</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>DisableTcpStateTracking</Label>
+                <PropertyName>DisableTcpStateTracking</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AuxiliaryMode</Label>
+                <PropertyName>AuxiliaryMode</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AuxiliarySku</Label>
+                <PropertyName>AuxiliarySku</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>NetworkSecurityGroup</Label>
@@ -2063,6 +2123,10 @@
               <ListItem>
                 <Label>Tags</Label>
                 <PropertyName>TagsTable</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>FlushConnection</Label>
+                <PropertyName>FlushConnectionText</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>SecurityRules</Label>
@@ -2295,6 +2359,10 @@
                 <PropertyName>Target</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>TargetType</Label>
+                <PropertyName>TargetType</PropertyName>
+              </ListItem>
+              <ListItem>
                 <Label>BytesToCapturePerPacket</Label>
                 <PropertyName>BytesToCapturePerPacket</PropertyName>
               </ListItem>
@@ -2313,6 +2381,10 @@
               <ListItem>
                 <Label>Filters</Label>
                 <PropertyName>FiltersText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Scope</Label>
+                <PropertyName>ScopeText</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -2349,6 +2421,10 @@
                 <PropertyName>Target</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>TargetType</Label>
+                <PropertyName>TargetType</PropertyName>
+              </ListItem>
+              <ListItem>
                 <Label>BytesToCapturePerPacket</Label>
                 <PropertyName>BytesToCapturePerPacket</PropertyName>
               </ListItem>
@@ -2367,6 +2443,10 @@
               <ListItem>
                 <Label>Filters</Label>
                 <PropertyName>FiltersText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Scope</Label>
+                <PropertyName>ScopeText</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>CaptureStartTime</Label>
@@ -2756,6 +2836,10 @@
                 <Label>LoadBalancerFrontendIPConfiguration</Label>
                 <PropertyName>LoadBalancerFrontendIPConfigurationIdText</PropertyName>
               </ListItem>
+              <ListItem>
+                <Label>InboundNatRulesPortMapping</Label>
+                <PropertyName>InboundNatRulesPortMappingText</PropertyName>
+              </ListItem>
             </ListItems>
           </ListEntry>
         </ListEntries>
@@ -2803,12 +2887,72 @@
                 <PropertyName>NumberOfProbes</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>ProbeThreshold</Label>
+                <PropertyName>ProbeThreshold</PropertyName>
+              </ListItem>
+              <ListItem>
                 <Label>RequestPath</Label>
                 <PropertyName>RequestPath</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>LoadBalancingRules</Label>
                 <PropertyName>LoadBalancingRulesText</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Network.Models.PSInboundNatRulePortMapping</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Network.Models.PSInboundNatRulePortMapping</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <Label>InboundNatRuleName</Label>
+                <PropertyName>InboundNatRuleName</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Protocol</Label>
+                <PropertyName>Protocol</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>FrontendPort</Label>
+                <PropertyName>FrontendPort</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>BackendPort</Label>
+                <PropertyName>BackendPort</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Network.Models.PSNatRulePortMapping</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Network.Models.PSNatRulePortMapping</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <Label>InboundNatRuleName</Label>
+                <PropertyName>InboundNatRuleName</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>FrontendPort</Label>
+                <PropertyName>FrontendPort</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>BackendPort</Label>
+                <PropertyName>BackendPort</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -2867,6 +3011,18 @@
               <ListItem>
                 <Label>BackendIPConfiguration</Label>
                 <PropertyName>BackendIPConfigurationText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>FrontendPortRangeStart</Label>
+                <PropertyName>FrontendPortRangeStart</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>FrontendPortRangeEnd</Label>
+                <PropertyName>FrontendPortRangeEnd</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>BackendAddressPool</Label>
+                <PropertyName>BackendAddressPoolText</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -3288,6 +3444,10 @@
                 <Label>Circuits</Label>
                 <PropertyName>CircuitsText</PropertyName>
               </ListItem>
+              <ListItem>
+                <Label>BillingType</Label>
+                <PropertyName>BillingType</PropertyName>
+              </ListItem>
             </ListItems>
           </ListEntry>
         </ListEntries>
@@ -3345,6 +3505,48 @@
               <ListItem>
                 <Label>MacSecConfig</Label>
                 <PropertyName>MacSecConfigText</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Network.Models.PSExpressRoutePortAuthorization</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Network.Models.PSExpressRoutePortAuthorization</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <Label>Name</Label>
+                <PropertyName>Name</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Id</Label>
+                <PropertyName>Id</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Etag</Label>
+                <PropertyName>Etag</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AuthorizationKey</Label>
+                <PropertyName>AuthorizationKey</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AuthorizationUseStatus</Label>
+                <PropertyName>AuthorizationUseStatus</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>ProvisioningState</Label>
+                <PropertyName>ProvisioningState</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>CircuitResourceUri</Label>
+                <PropertyName>CircuitResourceUri</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -3435,6 +3637,14 @@
               <ListItem>
                 <Label>GatewayManagerEtag</Label>
                 <PropertyName>GatewayManagerEtag</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AuthorizationKey</Label>
+                <PropertyName>AuthorizationKey</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AuthorizationStatus</Label>
+                <PropertyName>AuthorizationStatus</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -3907,6 +4117,10 @@
                 <Label>VirtualNetworks</Label>
                 <PropertyName>VirtualNetworksText</PropertyName>
               </ListItem>
+              <ListItem>
+                <Label>PublicIPAddresses</Label>
+                <PropertyName>PublicIPAddressesText</PropertyName>
+              </ListItem>
             </ListItems>
           </ListEntry>
         </ListEntries>
@@ -4001,6 +4215,10 @@
                 <Label>IPv6CircuitConnectionConfig</Label>
                 <PropertyName>IPv6CircuitConnectionConfigText</PropertyName>
               </ListItem>
+			  <ListItem>
+				<Label>RouteServerId</Label>
+				<PropertyName>RouteServerId</PropertyName>
+			  </ListItem>
             </ListItems>
           </ListEntry>
         </ListEntries>
@@ -4370,6 +4588,10 @@
                 <PropertyName>PreferredRoutingGateway</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>HubRoutingPreference</Label>
+                <PropertyName>HubRoutingPreference</PropertyName>
+              </ListItem>
+              <ListItem>
                 <Label>ProvisioningState</Label>
                 <PropertyName>ProvisioningState</PropertyName>
               </ListItem>
@@ -4416,7 +4638,7 @@
         </ListEntries>
       </ListControl>
     </View>
-    <View>
+	  <View>
       <Name>Microsoft.Azure.Commands.Network.Models.PSVirtualHubRouteTable</Name>
       <ViewSelectedBy>
         <TypeName>Microsoft.Azure.Commands.Network.Models.PSVirtualHubRouteTable</TypeName>
@@ -5026,6 +5248,55 @@
         </ListEntries>
       </ListControl>
     </View>
+
+	  <View>
+		  <Name>Microsoft.Azure.Commands.Network.Models.PSNetworkVirtualApplianceConnection</Name>
+		  <ViewSelectedBy>
+			  <TypeName>Microsoft.Azure.Commands.Network.Models.PSNetworkVirtualApplianceConnection</TypeName>
+		  </ViewSelectedBy>
+		  <ListControl>
+			  <ListEntries>
+				  <ListEntry>
+					  <ListItems>
+						  <ListItem>
+							  <Label>Name</Label>
+							  <PropertyName>Name</PropertyName>
+						  </ListItem>
+						  <ListItem>
+							  <Label>ProvisioningState</Label>
+							  <PropertyName>ProvisioningState</PropertyName>
+						  </ListItem>
+						  <ListItem>
+							  <Label>PropagateStaticRoutes</Label>
+							  <PropertyName>PropagateStaticRoutes</PropertyName>
+						  </ListItem>
+						  <ListItem>
+							  <Label>EnableInternetSecurity</Label>
+							  <PropertyName>EnableInternetSecurity</PropertyName>
+						  </ListItem>
+						  <ListItem>
+							  <Label>BgpPeerAddress</Label>
+							  <PropertyName>BgpPeerAddress</PropertyName>
+						  </ListItem>
+						  <ListItem>
+							  <Label>Asn</Label>
+							  <PropertyName>Asn</PropertyName>
+						  </ListItem>
+						  <ListItem>
+							  <Label>TunnelIdentifier</Label>
+							  <PropertyName>TunnelIdentifier</PropertyName>
+						  </ListItem>
+						  <ListItem>
+							  <Label>RoutingConfiguration</Label>
+							  <PropertyName>RoutingConfigurationText</PropertyName>
+						  </ListItem>
+					  </ListItems>
+				  </ListEntry>
+			  </ListEntries>
+		  </ListControl>
+	  </View>
+	  
+	  
     <View>
       <Name>Microsoft.Azure.Commands.Network.Models.PSExpressRouteGatewayAutoscaleConfiguration</Name>
       <ViewSelectedBy>
@@ -5174,6 +5445,18 @@
               <ListItem>
                 <Label>ExtendedLocation</Label>
                 <PropertyName>ExtendedLocationText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>ApplicationSecurityGroups</Label>
+                <PropertyName>ApplicationSecurityGroupsText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>IpConfigurations</Label>
+                <PropertyName>IpConfigurationsText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>CustomNetworkInterfaceName</Label>
+                <PropertyName>CustomNetworkInterfaceName</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -5670,6 +5953,29 @@
       </ListControl>
     </View>
     <View>
+		  <Name>Microsoft.Azure.Commands.Network.Models.PSRoutingConfigurationNfv</Name>
+		  <ViewSelectedBy>
+			  <TypeName>Microsoft.Azure.Commands.Network.Models.PSRoutingConfigurationNfv</TypeName>
+		  </ViewSelectedBy>
+		  <ListControl>
+			  <ListEntries>
+				  <ListEntry>
+					  <ListItems>
+						  <ListItem>
+							  <Label>AssociatedRouteTable</Label>
+							  <PropertyName>AssociatedRouteTable</PropertyName>
+						  </ListItem>
+						  <ListItem>
+							  <Label>PropagatedRouteTables</Label>
+							  <PropertyName>PropagatedRouteTablesText</PropertyName>
+						  </ListItem>
+					  </ListItems>
+				  </ListEntry>
+			  </ListEntries>
+		  </ListControl>
+	  </View>
+  
+	  <View>
       <Name>Microsoft.Azure.Commands.Network.Models.PSVHubRouteTable</Name>
       <ViewSelectedBy>
         <TypeName>Microsoft.Azure.Commands.Network.Models.PSVHubRouteTable</TypeName>
@@ -6755,6 +7061,74 @@
               <ListItem>
                 <Label>PeerIp</Label>
                 <PropertyName>PeerIp</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Network.Models.PSRoutingIntent</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Network.Models.PSRoutingIntent</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <Label>Name</Label>
+                <PropertyName>Name</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Id</Label>
+                <PropertyName>Id</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>ProvisioningState</Label>
+                <PropertyName>ProvisioningState</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>RoutingPolicies</Label>
+                <PropertyName>RoutingPoliciesText</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.Network.Models.PSRouteMap</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Network.Models.PSRouteMap</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <Label>Name</Label>
+                <PropertyName>Name</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Id</Label>
+                <PropertyName>Id</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>ProvisioningState</Label>
+                <PropertyName>ProvisioningState</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>RouteMapRules</Label>
+                <PropertyName>RouteMapRulesText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AssociatedInboundConnections</Label>
+                <PropertyName>AssociatedInboundConnectionsText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AssociatedOutboundConnections</Label>
+                <PropertyName>AssociatedOutboundConnectionsText</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>

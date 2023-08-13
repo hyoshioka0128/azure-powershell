@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Network.dll-Help.xml
 Module Name: Az.Network
-online version: https://docs.microsoft.com/powershell/module/az.network/get-azcustomipprefix
+online version: https://learn.microsoft.com/powershell/module/az.network/get-azcustomipprefix
 schema: 2.0.0
 ---
 
@@ -30,8 +30,10 @@ The **Get-AzCustomIpPrefix** cmdlet gets one or more CustomIpPrefixes given the 
 
 ### Example 1
 ```powershell
-PS C:\> Get-AzCustomIpPrefix -ResourceGroupName myRg -Name myCustomIpPrefix
+Get-AzCustomIpPrefix -ResourceGroupName myRg -Name myCustomIpPrefix
+```
 
+```output
 Name                 : myCustomIpPrefix
 ResourceGroupName    : myRg
 Location             : westus
@@ -59,7 +61,7 @@ This command gets a CustomIpPrefix resource named myCustomIpPrefix in resource g
 The credentials, account, tenant, and subscription used for communication with Azure.
 
 ```yaml
-Type: IAzureContextContainer
+Type: Microsoft.Azure.Commands.Common.Authentication.Abstractions.Core.IAzureContextContainer
 Parameter Sets: (All)
 Aliases: AzContext, AzureRmContext, AzureCredential
 
@@ -74,7 +76,7 @@ Accept wildcard characters: False
 The resource name.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: GetByNameParameterSet
 Aliases: ResourceName
 
@@ -82,14 +84,14 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### -ResourceGroupName
 The resource group name.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: GetByNameParameterSet
 Aliases:
 
@@ -97,14 +99,14 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### -ResourceId
 The resource id.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: GetByResourceIdParameterSet
 Aliases:
 

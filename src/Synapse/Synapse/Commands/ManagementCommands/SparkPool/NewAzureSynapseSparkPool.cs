@@ -77,10 +77,14 @@ namespace Microsoft.Azure.Commands.Synapse
         [ValidateRange(3, 200)]
         public int NodeCount { get; set; }
 
+        [Parameter(ValueFromPipelineByPropertyName = false, Mandatory = false,
+            HelpMessage = HelpMessages.IsolatedCompute)]
+        public SwitchParameter EnableIsolatedCompute { get; set; }
+
         [Parameter(ValueFromPipelineByPropertyName = false, Mandatory = true,
             HelpMessage = HelpMessages.NodeSize)]
-        [ValidateSet(Management.Synapse.Models.NodeSize.Small, Management.Synapse.Models.NodeSize.Medium, Management.Synapse.Models.NodeSize.Large, IgnoreCase = true)]
-        [PSArgumentCompleter(Management.Synapse.Models.NodeSize.Small, Management.Synapse.Models.NodeSize.Medium, Management.Synapse.Models.NodeSize.Large)]
+        [ValidateSet(Management.Synapse.Models.NodeSize.Small, Management.Synapse.Models.NodeSize.Medium, Management.Synapse.Models.NodeSize.Large, Management.Synapse.Models.NodeSize.XLarge, Management.Synapse.Models.NodeSize.XXLarge, Management.Synapse.Models.NodeSize.XXXLarge, IgnoreCase = true)]
+        [PSArgumentCompleter(Management.Synapse.Models.NodeSize.Small, Management.Synapse.Models.NodeSize.Medium, Management.Synapse.Models.NodeSize.Large, Management.Synapse.Models.NodeSize.XLarge, Management.Synapse.Models.NodeSize.XXLarge, Management.Synapse.Models.NodeSize.XXXLarge)]
         public string NodeSize { get; set; }
 
         private SwitchParameter enableAutoScale;
@@ -107,7 +111,18 @@ namespace Microsoft.Azure.Commands.Synapse
             HelpMessage = HelpMessages.AutoPauseDelayInMinute)]
         [ValidateNotNullOrEmpty]
         [ValidateRange(5, 10080)]
-        public int AutoPauseDelayInMinute { get; set; }
+        public int AutoPauseDelayInMinute { get; set; } = int.Parse(SynapseConstants.DefaultAutoPauseDelayInMinute);
+       
+        [Parameter(ValueFromPipelineByPropertyName = false, Mandatory = false, HelpMessage = HelpMessages.EnableDynamicExecutorAllocation)]
+        public SwitchParameter EnableDynamicExecutorAllocation { get; set; }
+
+        [Parameter(ValueFromPipelineByPropertyName = false, Mandatory = false, HelpMessage = HelpMessages.MinExecutorCount)]
+        [ValidateNotNullOrEmpty]
+        public int MinExecutorCount { get; set; } = int.Parse(SynapseConstants.DefaultMinExecutorCount);
+
+        [Parameter(ValueFromPipelineByPropertyName = false, Mandatory = false, HelpMessage = HelpMessages.MaxExecutorCount)]
+        [ValidateNotNullOrEmpty]
+        public int MaxExecutorCount { get; set; } = int.Parse(SynapseConstants.DefaultMaxExecutorCount);
 
         [Parameter(ValueFromPipelineByPropertyName = false, Mandatory = true,
             HelpMessage = HelpMessages.SparkVersion)]
@@ -115,9 +130,8 @@ namespace Microsoft.Azure.Commands.Synapse
         public string SparkVersion { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = false, Mandatory = false,
-            HelpMessage = HelpMessages.SparkConfigPropertiesFilePath)]
-        [ValidateNotNullOrEmpty]
-        public string SparkConfigFilePath { get; set; }
+          HelpMessage = HelpMessages.SparkConfigurationResource)]
+        public PSSparkConfigurationResource SparkConfiguration { get; set; }
 
         [Parameter(Mandatory = false, HelpMessage = HelpMessages.AsJob)]
         public SwitchParameter AsJob { get; set; }
@@ -174,21 +188,25 @@ namespace Microsoft.Azure.Commands.Synapse
             }
 
             SparkConfigProperties sparkConfigProperties = null;
-            if (this.IsParameterBound(c => c.SparkConfigFilePath))
+
+            if (this.IsParameterBound(c => c.SparkConfiguration))
             {
-                string path = this.TryResolvePath(SparkConfigFilePath);
-                string filename = Path.GetFileNameWithoutExtension(path);
-                sparkConfigProperties = new SparkConfigProperties()
+                if (this.SparkConfiguration != null)
                 {
-                    Content = this.ReadFileAsText(this.SparkConfigFilePath),
-                    Filename = filename
-                };
+                    sparkConfigProperties = new SparkConfigProperties()
+                    {
+                        Filename = SparkConfiguration.Name,
+                        ConfigurationType = ConfigurationType.Artifact,
+                        Content = Newtonsoft.Json.JsonConvert.SerializeObject(SparkConfiguration)
+                    };                   
+                }
             }
 
             var createParams = new BigDataPoolResourceInfo
             {
                 Location = existingWorkspace.Location,
                 Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true),
+                IsComputeIsolationEnabled = EnableIsolatedCompute.IsPresent,
                 NodeCount = this.enableAutoScale ? (int?)null : this.NodeCount,
                 NodeSizeFamily = NodeSizeFamily.MemoryOptimized,
                 NodeSize = NodeSize,
@@ -202,6 +220,12 @@ namespace Microsoft.Azure.Commands.Synapse
                 {
                     Enabled = EnableAutoPause.IsPresent,
                     DelayInMinutes = AutoPauseDelayInMinute
+                },
+                DynamicExecutorAllocation = !EnableDynamicExecutorAllocation ? new DynamicExecutorAllocation { Enabled = false } : new DynamicExecutorAllocation
+                { 
+                    Enabled = EnableDynamicExecutorAllocation.IsPresent,
+                    MinExecutors = MinExecutorCount,
+                    MaxExecutors = MaxExecutorCount
                 },
                 SparkVersion = this.SparkVersion,
                 SparkConfigProperties = sparkConfigProperties

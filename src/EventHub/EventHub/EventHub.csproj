@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <PsModuleName>EventHub</PsModuleName>
@@ -11,12 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Cmdlets\NetworkRuleSet\NewAzureEventHubVNetRule.cs" />
-    <Compile Remove="Cmdlets\NetworkRuleSet\SetAzureEventHubVNetRule.cs" />
+    <PackageReference Include="Microsoft.Azure.Management.EventHub" Version="5.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Management.EventHub" Version="3.0.0" />
-  </ItemGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory).., build.proj))\src\Az.Post.props" />
 
 </Project>

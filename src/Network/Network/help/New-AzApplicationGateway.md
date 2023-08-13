@@ -2,7 +2,7 @@
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Network.dll-Help.xml
 Module Name: Az.Network
 ms.assetid: 1F5066C6-9756-47B4-886C-C52755809926
-online version: https://docs.microsoft.com/powershell/module/az.network/new-azapplicationgateway
+online version: https://learn.microsoft.com/powershell/module/az.network/new-azapplicationgateway
 schema: 2.0.0
 ---
 
@@ -25,11 +25,12 @@ New-AzApplicationGateway -Name <String> -ResourceGroupName <String> -Location <S
  [-FrontendIPConfigurations <PSApplicationGatewayFrontendIPConfiguration[]>]
  -FrontendPorts <PSApplicationGatewayFrontendPort[]> [-Probes <PSApplicationGatewayProbe[]>]
  -BackendAddressPools <PSApplicationGatewayBackendAddressPool[]>
- -BackendHttpSettingsCollection <PSApplicationGatewayBackendHttpSettings[]>
- [-SslProfiles <PSApplicationGatewaySslProfile[]>] -HttpListeners <PSApplicationGatewayHttpListener[]>
- [-UrlPathMaps <PSApplicationGatewayUrlPathMap[]>]
- -RequestRoutingRules <PSApplicationGatewayRequestRoutingRule[]>
- [-RewriteRuleSet <PSApplicationGatewayRewriteRuleSet[]>]
+ [-BackendHttpSettingsCollection <PSApplicationGatewayBackendHttpSettings[]>]
+ [-BackendSettingsCollection <PSApplicationGatewayBackendSettings[]>]
+ [-SslProfiles <PSApplicationGatewaySslProfile[]>] [-HttpListeners <PSApplicationGatewayHttpListener[]>]
+ [-Listeners <PSApplicationGatewayListener[]>] [-UrlPathMaps <PSApplicationGatewayUrlPathMap[]>]
+ [-RequestRoutingRules <PSApplicationGatewayRequestRoutingRule[]>]
+ [-RoutingRules <PSApplicationGatewayRoutingRule[]>] [-RewriteRuleSet <PSApplicationGatewayRewriteRuleSet[]>]
  [-RedirectConfigurations <PSApplicationGatewayRedirectConfiguration[]>]
  [-WebApplicationFirewallConfiguration <PSApplicationGatewayWebApplicationFirewallConfiguration>]
  [-AutoscaleConfiguration <PSApplicationGatewayAutoscaleConfiguration>] [-EnableHttp2] [-EnableFIPS]
@@ -51,11 +52,12 @@ New-AzApplicationGateway -Name <String> -ResourceGroupName <String> -Location <S
  [-FrontendIPConfigurations <PSApplicationGatewayFrontendIPConfiguration[]>]
  -FrontendPorts <PSApplicationGatewayFrontendPort[]> [-Probes <PSApplicationGatewayProbe[]>]
  -BackendAddressPools <PSApplicationGatewayBackendAddressPool[]>
- -BackendHttpSettingsCollection <PSApplicationGatewayBackendHttpSettings[]>
- [-SslProfiles <PSApplicationGatewaySslProfile[]>] -HttpListeners <PSApplicationGatewayHttpListener[]>
- [-UrlPathMaps <PSApplicationGatewayUrlPathMap[]>]
- -RequestRoutingRules <PSApplicationGatewayRequestRoutingRule[]>
- [-RewriteRuleSet <PSApplicationGatewayRewriteRuleSet[]>]
+ [-BackendHttpSettingsCollection <PSApplicationGatewayBackendHttpSettings[]>]
+ [-BackendSettingsCollection <PSApplicationGatewayBackendSettings[]>]
+ [-SslProfiles <PSApplicationGatewaySslProfile[]>] [-HttpListeners <PSApplicationGatewayHttpListener[]>]
+ [-Listeners <PSApplicationGatewayListener[]>] [-UrlPathMaps <PSApplicationGatewayUrlPathMap[]>]
+ [-RequestRoutingRules <PSApplicationGatewayRequestRoutingRule[]>]
+ [-RoutingRules <PSApplicationGatewayRoutingRule[]>] [-RewriteRuleSet <PSApplicationGatewayRewriteRuleSet[]>]
  [-RedirectConfigurations <PSApplicationGatewayRedirectConfiguration[]>]
  [-WebApplicationFirewallConfiguration <PSApplicationGatewayWebApplicationFirewallConfiguration>]
  [-FirewallPolicyId <String>] [-AutoscaleConfiguration <PSApplicationGatewayAutoscaleConfiguration>]
@@ -77,11 +79,12 @@ New-AzApplicationGateway -Name <String> -ResourceGroupName <String> -Location <S
  [-FrontendIPConfigurations <PSApplicationGatewayFrontendIPConfiguration[]>]
  -FrontendPorts <PSApplicationGatewayFrontendPort[]> [-Probes <PSApplicationGatewayProbe[]>]
  -BackendAddressPools <PSApplicationGatewayBackendAddressPool[]>
- -BackendHttpSettingsCollection <PSApplicationGatewayBackendHttpSettings[]>
- [-SslProfiles <PSApplicationGatewaySslProfile[]>] -HttpListeners <PSApplicationGatewayHttpListener[]>
- [-UrlPathMaps <PSApplicationGatewayUrlPathMap[]>]
- -RequestRoutingRules <PSApplicationGatewayRequestRoutingRule[]>
- [-RewriteRuleSet <PSApplicationGatewayRewriteRuleSet[]>]
+ [-BackendHttpSettingsCollection <PSApplicationGatewayBackendHttpSettings[]>]
+ [-BackendSettingsCollection <PSApplicationGatewayBackendSettings[]>]
+ [-SslProfiles <PSApplicationGatewaySslProfile[]>] [-HttpListeners <PSApplicationGatewayHttpListener[]>]
+ [-Listeners <PSApplicationGatewayListener[]>] [-UrlPathMaps <PSApplicationGatewayUrlPathMap[]>]
+ [-RequestRoutingRules <PSApplicationGatewayRequestRoutingRule[]>]
+ [-RoutingRules <PSApplicationGatewayRoutingRule[]>] [-RewriteRuleSet <PSApplicationGatewayRewriteRuleSet[]>]
  [-RedirectConfigurations <PSApplicationGatewayRedirectConfiguration[]>]
  [-WebApplicationFirewallConfiguration <PSApplicationGatewayWebApplicationFirewallConfiguration>]
  [-FirewallPolicy <PSApplicationGatewayWebApplicationFirewallPolicy>]
@@ -104,11 +107,12 @@ New-AzApplicationGateway -Name <String> -ResourceGroupName <String> -Location <S
  [-FrontendIPConfigurations <PSApplicationGatewayFrontendIPConfiguration[]>]
  -FrontendPorts <PSApplicationGatewayFrontendPort[]> [-Probes <PSApplicationGatewayProbe[]>]
  -BackendAddressPools <PSApplicationGatewayBackendAddressPool[]>
- -BackendHttpSettingsCollection <PSApplicationGatewayBackendHttpSettings[]>
- [-SslProfiles <PSApplicationGatewaySslProfile[]>] -HttpListeners <PSApplicationGatewayHttpListener[]>
- [-UrlPathMaps <PSApplicationGatewayUrlPathMap[]>]
- -RequestRoutingRules <PSApplicationGatewayRequestRoutingRule[]>
- [-RewriteRuleSet <PSApplicationGatewayRewriteRuleSet[]>]
+ [-BackendHttpSettingsCollection <PSApplicationGatewayBackendHttpSettings[]>]
+ [-BackendSettingsCollection <PSApplicationGatewayBackendSettings[]>]
+ [-SslProfiles <PSApplicationGatewaySslProfile[]>] [-HttpListeners <PSApplicationGatewayHttpListener[]>]
+ [-Listeners <PSApplicationGatewayListener[]>] [-UrlPathMaps <PSApplicationGatewayUrlPathMap[]>]
+ [-RequestRoutingRules <PSApplicationGatewayRequestRoutingRule[]>]
+ [-RoutingRules <PSApplicationGatewayRoutingRule[]>] [-RewriteRuleSet <PSApplicationGatewayRewriteRuleSet[]>]
  [-RedirectConfigurations <PSApplicationGatewayRedirectConfiguration[]>]
  [-WebApplicationFirewallConfiguration <PSApplicationGatewayWebApplicationFirewallConfiguration>]
  [-AutoscaleConfiguration <PSApplicationGatewayAutoscaleConfiguration>] [-EnableHttp2] [-EnableFIPS]
@@ -134,23 +138,23 @@ Layer (SSL) certificate name (if configuring SSL offload).
 ## EXAMPLES
 
 ### Example 1: Create an application gateway
-```
-PS C:\> $ResourceGroup = New-AzResourceGroup -Name "ResourceGroup01" -Location "West US" -Tag @{Name = "Department"; Value = "Marketing"} 
-PS C:\> $Subnet = New-AzVirtualNetworkSubnetConfig -Name "Subnet01" -AddressPrefix 10.0.0.0/24
-PS C:\> $VNet = New-AzVirtualNetwork -Name "VNet01" -ResourceGroupName "ResourceGroup01" -Location "West US" -AddressPrefix 10.0.0.0/16 -Subnet $Subnet
-PS C:\> $VNet = Get-AzVirtualNetwork -Name "VNet01" -ResourceGroupName "ResourceGroup01"
-PS C:\> $Subnet = Get-AzVirtualNetworkSubnetConfig -Name "Subnet01" -VirtualNetwork $VNet 
-PS C:\> $GatewayIPconfig = New-AzApplicationGatewayIPConfiguration -Name "GatewayIp01" -Subnet $Subnet
-PS C:\> $Pool = New-AzApplicationGatewayBackendAddressPool -Name "Pool01" -BackendIPAddresses 10.10.10.1, 10.10.10.2, 10.10.10.3
-PS C:\> $PoolSetting = New-AzApplicationGatewayBackendHttpSettings -Name "PoolSetting01"  -Port 80 -Protocol "Http" -CookieBasedAffinity "Disabled"
-PS C:\> $FrontEndPort = New-AzApplicationGatewayFrontendPort -Name "FrontEndPort01"  -Port 80
+```powershell
+$ResourceGroup = New-AzResourceGroup -Name "ResourceGroup01" -Location "West US" -Tag @{Name = "Department"; Value = "Marketing"} 
+$Subnet = New-AzVirtualNetworkSubnetConfig -Name "Subnet01" -AddressPrefix 10.0.0.0/24
+$VNet = New-AzVirtualNetwork -Name "VNet01" -ResourceGroupName "ResourceGroup01" -Location "West US" -AddressPrefix 10.0.0.0/16 -Subnet $Subnet
+$VNet = Get-AzVirtualNetwork -Name "VNet01" -ResourceGroupName "ResourceGroup01"
+$Subnet = Get-AzVirtualNetworkSubnetConfig -Name "Subnet01" -VirtualNetwork $VNet 
+$GatewayIPconfig = New-AzApplicationGatewayIPConfiguration -Name "GatewayIp01" -Subnet $Subnet
+$Pool = New-AzApplicationGatewayBackendAddressPool -Name "Pool01" -BackendIPAddresses 10.10.10.1, 10.10.10.2, 10.10.10.3
+$PoolSetting = New-AzApplicationGatewayBackendHttpSetting -Name "PoolSetting01"  -Port 80 -Protocol "Http" -CookieBasedAffinity "Disabled"
+$FrontEndPort = New-AzApplicationGatewayFrontendPort -Name "FrontEndPort01"  -Port 80
 # Create a public IP address
-PS C:\> $PublicIp = New-AzPublicIpAddress -ResourceGroupName "ResourceGroup01" -Name "PublicIpName01" -Location "West US" -AllocationMethod "Dynamic"
-PS C:\> $FrontEndIpConfig = New-AzApplicationGatewayFrontendIPConfig -Name "FrontEndConfig01" -PublicIPAddress $PublicIp
-PS C:\> $Listener = New-AzApplicationGatewayHttpListener -Name "ListenerName01"  -Protocol "Http" -FrontendIpConfiguration $FrontEndIpConfig -FrontendPort $FrontEndPort
-PS C:\> $Rule = New-AzApplicationGatewayRequestRoutingRule -Name "Rule01" -RuleType basic -BackendHttpSettings $PoolSetting -HttpListener $Listener -BackendAddressPool $Pool
-PS C:\> $Sku = New-AzApplicationGatewaySku -Name "Standard_Small" -Tier Standard -Capacity 2
-PS C:\> $Gateway = New-AzApplicationGateway -Name "AppGateway01" -ResourceGroupName "ResourceGroup01" -Location "West US" -BackendAddressPools $Pool -BackendHttpSettingsCollection $PoolSetting -FrontendIpConfigurations $FrontEndIpConfig  -GatewayIpConfigurations $GatewayIpConfig -FrontendPorts $FrontEndPort -HttpListeners $Listener -RequestRoutingRules $Rule -Sku $Sku
+$PublicIp = New-AzPublicIpAddress -ResourceGroupName "ResourceGroup01" -Name "PublicIpName01" -Location "West US" -AllocationMethod "Dynamic"
+$FrontEndIpConfig = New-AzApplicationGatewayFrontendIPConfig -Name "FrontEndConfig01" -PublicIPAddress $PublicIp
+$Listener = New-AzApplicationGatewayHttpListener -Name "ListenerName01"  -Protocol "Http" -FrontendIpConfiguration $FrontEndIpConfig -FrontendPort $FrontEndPort
+$Rule = New-AzApplicationGatewayRequestRoutingRule -Name "Rule01" -RuleType basic -BackendHttpSettings $PoolSetting -HttpListener $Listener -BackendAddressPool $Pool
+$Sku = New-AzApplicationGatewaySku -Name "Standard_Small" -Tier Standard -Capacity 2
+$Gateway = New-AzApplicationGateway -Name "AppGateway01" -ResourceGroupName "ResourceGroup01" -Location "West US" -BackendAddressPools $Pool -BackendHttpSettingsCollection $PoolSetting -FrontendIpConfigurations $FrontEndIpConfig  -GatewayIpConfigurations $GatewayIpConfig -FrontendPorts $FrontEndPort -HttpListeners $Listener -RequestRoutingRules $Rule -Sku $Sku
 ```
 
 The following example creates an application gateway by first creating a resource group and a
@@ -177,25 +181,25 @@ The ninth command sets the SKU.
 The tenth command creates the gateway using the objects set by the previous commands.
 
 ### Example 2: Create an application gateway with UserAssigned Identity
-```
-PS C:\> $ResourceGroup = New-AzResourceGroup -Name "ResourceGroup01" -Location "West US" -Tag @{Name = "Department"; Value = "Marketing"} 
-PS C:\> $Subnet = New-AzVirtualNetworkSubnetConfig -Name "Subnet01" -AddressPrefix 10.0.0.0/24
-PS C:\> $VNet = New-AzVirtualNetwork -Name "VNet01" -ResourceGroupName "ResourceGroup01" -Location "West US" -AddressPrefix 10.0.0.0/16 -Subnet $Subnet
-PS C:\> $VNet = Get-AzVirtualNetwork -Name "VNet01" -ResourceGroupName "ResourceGroup01"
-PS C:\> $Subnet = Get-AzVirtualNetworkSubnetConfig -Name $Subnet01 -VirtualNetwork $VNet 
-PS C:\> $GatewayIPconfig = New-AzApplicationGatewayIPConfiguration -Name "GatewayIp01" -Subnet $Subnet
-PS C:\> $Pool = New-AzApplicationGatewayBackendAddressPool -Name "Pool01" -BackendIPAddresses 10.10.10.1, 10.10.10.2, 10.10.10.3
-PS C:\> $PoolSetting = New-AzApplicationGatewayBackendHttpSettings -Name "PoolSetting01"  -Port 80 -Protocol "Http" -CookieBasedAffinity "Disabled"
-PS C:\> $FrontEndPort = New-AzApplicationGatewayFrontendPort -Name "FrontEndPort01"  -Port 80
+```powershell
+$ResourceGroup = New-AzResourceGroup -Name "ResourceGroup01" -Location "West US" -Tag @{Name = "Department"; Value = "Marketing"} 
+$Subnet = New-AzVirtualNetworkSubnetConfig -Name "Subnet01" -AddressPrefix 10.0.0.0/24
+$VNet = New-AzVirtualNetwork -Name "VNet01" -ResourceGroupName "ResourceGroup01" -Location "West US" -AddressPrefix 10.0.0.0/16 -Subnet $Subnet
+$VNet = Get-AzVirtualNetwork -Name "VNet01" -ResourceGroupName "ResourceGroup01"
+$Subnet = Get-AzVirtualNetworkSubnetConfig -Name $Subnet01 -VirtualNetwork $VNet 
+$GatewayIPconfig = New-AzApplicationGatewayIPConfiguration -Name "GatewayIp01" -Subnet $Subnet
+$Pool = New-AzApplicationGatewayBackendAddressPool -Name "Pool01" -BackendIPAddresses 10.10.10.1, 10.10.10.2, 10.10.10.3
+$PoolSetting = New-AzApplicationGatewayBackendHttpSetting -Name "PoolSetting01"  -Port 80 -Protocol "Http" -CookieBasedAffinity "Disabled"
+$FrontEndPort = New-AzApplicationGatewayFrontendPort -Name "FrontEndPort01"  -Port 80
 # Create a public IP address
-PS C:\> $PublicIp = New-AzPublicIpAddress -ResourceGroupName "ResourceGroup01" -Name "PublicIpName01" -Location "West US" -AllocationMethod "Dynamic"
-PS C:\> $FrontEndIpConfig = New-AzApplicationGatewayFrontendIPConfig -Name "FrontEndConfig01" -PublicIPAddress $PublicIp
-PS C:\> $Listener = New-AzApplicationGatewayHttpListener -Name "ListenerName01"  -Protocol "Http" -FrontendIpConfiguration $FrontEndIpConfig -FrontendPort $FrontEndPort
-PS C:\> $Rule = New-AzApplicationGatewayRequestRoutingRule -Name "Rule01" -RuleType basic -BackendHttpSettings $PoolSetting -HttpListener $Listener -BackendAddressPool $Pool
-PS C:\> $Sku = New-AzApplicationGatewaySku -Name "Standard_Small" -Tier Standard -Capacity 2
-PS C:\> $Identity = New-AzUserAssignedIdentity -Name "Identity01" -ResourceGroupName "ResourceGroup01" -Location "West US"
-PS C:\> $AppgwIdentity = New-AzApplicationGatewayIdentity -UserAssignedIdentity $Identity.Id
-PS C:\> $Gateway = New-AzApplicationGateway -Name "AppGateway01" -ResourceGroupName "ResourceGroup01" -Location "West US" -Identity $AppgwIdentity -BackendAddressPools $Pool -BackendHttpSettingsCollection $PoolSetting -FrontendIpConfigurations $FrontEndIpConfig  -GatewayIpConfigurations $GatewayIpConfig -FrontendPorts $FrontEndPort -HttpListeners $Listener -RequestRoutingRules $Rule -Sku $Sku
+$PublicIp = New-AzPublicIpAddress -ResourceGroupName "ResourceGroup01" -Name "PublicIpName01" -Location "West US" -AllocationMethod "Dynamic"
+$FrontEndIpConfig = New-AzApplicationGatewayFrontendIPConfig -Name "FrontEndConfig01" -PublicIPAddress $PublicIp
+$Listener = New-AzApplicationGatewayHttpListener -Name "ListenerName01"  -Protocol "Http" -FrontendIpConfiguration $FrontEndIpConfig -FrontendPort $FrontEndPort
+$Rule = New-AzApplicationGatewayRequestRoutingRule -Name "Rule01" -RuleType basic -BackendHttpSettings $PoolSetting -HttpListener $Listener -BackendAddressPool $Pool
+$Sku = New-AzApplicationGatewaySku -Name "Standard_Small" -Tier Standard -Capacity 2
+$Identity = New-AzUserAssignedIdentity -Name "Identity01" -ResourceGroupName "ResourceGroup01" -Location "West US"
+$AppgwIdentity = New-AzApplicationGatewayIdentity -UserAssignedIdentity $Identity.Id
+$Gateway = New-AzApplicationGateway -Name "AppGateway01" -ResourceGroupName "ResourceGroup01" -Location "West US" -Identity $AppgwIdentity -BackendAddressPools $Pool -BackendHttpSettingsCollection $PoolSetting -FrontendIpConfigurations $FrontEndIpConfig  -GatewayIpConfigurations $GatewayIpConfig -FrontendPorts $FrontEndPort -HttpListeners $Listener -RequestRoutingRules $Rule -Sku $Sku
 ```
 
 ## PARAMETERS
@@ -268,7 +272,22 @@ Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewayBackendHttpSet
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -BackendSettingsCollection
+The list of backend settings
+
+```yaml
+Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewayBackendSettings[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -448,7 +467,7 @@ Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewayHttpListener[]
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -464,6 +483,21 @@ Parameter Sets: IdentityByIdentityObject
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Listeners
+The list of listener
+
+```yaml
+Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewayListener[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -553,7 +587,7 @@ Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewayRequestRouting
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -580,6 +614,21 @@ The list of RewriteRuleSet
 
 ```yaml
 Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewayRewriteRuleSet[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -RoutingRules
+The list of routing rule
+
+```yaml
+Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewayRoutingRule[]
 Parameter Sets: (All)
 Aliases:
 

@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.DataBox
-online version: https://docs.microsoft.com/powershell/module/az.databox/remove-azdataboxjob
+online version: https://learn.microsoft.com/powershell/module/az.databox/remove-azdataboxjob
 schema: 2.0.0
 ---
 
@@ -22,12 +22,12 @@ Deletes a job.
 
 ## EXAMPLES
 
-### Example 1: {{ Deletes a job }}
+### Example 1: Deletes a job 
 ```powershell
-PS C:\> Remove-AzDataBoxJob -Name "Powershell10" -ResourceGroupName "resourceGroupName"
+Remove-AzDataBoxJob -Name "Powershell10" -ResourceGroupName "resourceGroupName"
 ```
 
-{{Deletes a job }}
+Deletes a job
 
 ## PARAMETERS
 
@@ -47,7 +47,8 @@ Accept wildcard characters: False
 ```
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject

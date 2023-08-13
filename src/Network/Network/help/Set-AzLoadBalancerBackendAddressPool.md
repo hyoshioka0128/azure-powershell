@@ -1,7 +1,7 @@
-﻿---
+---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Network.dll-Help.xml
 Module Name: Az.Network
-online version: https://docs.microsoft.com/powershell/module/az.network/set-azloadbalancerbackendaddresspool
+online version: https://learn.microsoft.com/powershell/module/az.network/set-azloadbalancerbackendaddresspool
 schema: 2.0.0
 ---
 
@@ -15,28 +15,29 @@ Updates the backend pool on a loadbalancer
 ### SetByNameParameterSet (Default)
 ```
 Set-AzLoadBalancerBackendAddressPool -ResourceGroupName <String> -LoadBalancerName <String> -Name <String>
- -LoadBalancerBackendAddress <PSLoadBalancerBackendAddress[]> [-TunnelInterface <PSTunnelInterface[]>] [-Force] [-PassThru]
- [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ -LoadBalancerBackendAddress <PSLoadBalancerBackendAddress[]> [-TunnelInterface <PSTunnelInterface[]>] [-Force]
+ [-PassThru] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### SetByParentObjectParameterSet
 ```
 Set-AzLoadBalancerBackendAddressPool -Name <String> -LoadBalancer <PSLoadBalancer>
- -LoadBalancerBackendAddress <PSLoadBalancerBackendAddress[]> [-TunnelInterface <PSTunnelInterface[]>] [-Force] [-PassThru]
- [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ -LoadBalancerBackendAddress <PSLoadBalancerBackendAddress[]> [-TunnelInterface <PSTunnelInterface[]>] [-Force]
+ [-PassThru] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### SetByInputObjectParameterSet
 ```
-Set-AzLoadBalancerBackendAddressPool -InputObject <PSBackendAddressPool> [-Force] [-PassThru]
- [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-AzLoadBalancerBackendAddressPool -InputObject <PSBackendAddressPool>
+ [-TunnelInterface <PSTunnelInterface[]>] [-Force] [-PassThru] [-DefaultProfile <IAzureContextContainer>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### SetByResourceIdParameterSet
 ```
-Set-AzLoadBalancerBackendAddressPool -LoadBalancerBackendAddress <PSLoadBalancerBackendAddress[]> [-TunnelInterface <PSTunnelInterface[]>]
- -ResourceId <String> [-Force] [-PassThru] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Set-AzLoadBalancerBackendAddressPool -LoadBalancerBackendAddress <PSLoadBalancerBackendAddress[]>
+ -ResourceId <String> [-TunnelInterface <PSTunnelInterface[]>] [-Force] [-PassThru]
+ [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -46,32 +47,32 @@ Updates the backend pool on a loadbalancer
 
 ### Example 1
 ```powershell
-###Set by name and modified input object
-PS C:\> $virtualNetwork = Get-AzVirtualNetwork -Name $vnetName -ResourceGroupName $resourceGroup
-PS C:\> $lb = Get-AzLoadBalancer -ResourceGroupName $resourceGroup -Name $loadBalancerName
-PS C:\> $ip1 = New-AzLoadBalancerBackendAddressConfig -IpAddress "10.0.0.5" -Name "TestVNetRef" -VirtualNetworkId $virtualNetwork.Id
-PS C:\> $ip2 = New-AzLoadBalancerBackendAddressConfig -IpAddress "10.0.0.6" -Name "TestVNetRef2" -VirtualNetworkId $virtualNetwork.Id
-PS C:\> $ip3 = New-AzLoadBalancerBackendAddressConfig -IpAddress "10.0.0.7" -Name "TestVNetRef3" -VirtualNetworkId $virtualNetwork.id
-PS C:\> $tunnelInterface1 = New-AzLoadBalancerBackendAddressPoolTunnelInterfaceConfig -Protocol "Vxlan" -Type "Internal" -Port 2000 -Identifier 800
-PS C:\> $tunnelInterface2 = New-AzLoadBalancerBackendAddressPoolTunnelInterfaceConfig -Protocol "Vxlan" -Type "External" -Port 2001 -Identifier 801
-PS C:\> New-AzLoadBalancerBackendAddressPool -ResourceGroupName $resourceGroup -LoadBalancerName $loadBalancerName -Name $backendPool3 -TunnelInterface $tunnelInterface1, $tunnelInterface2
-PS C:\> $ips = @($ip1, $ip2)
-PS C:\> $b2 = Get-AzLoadBalancerBackendAddressPool -ResourceGroupName $resourceGroup -LoadBalancerName $loadBalancerName -Name $backendPool1
-PS C:\> $b2.LoadBalancerBackendAddresses.Add($ip3)
+# Set by name and modified input object
+$virtualNetwork = Get-AzVirtualNetwork -Name $vnetName -ResourceGroupName $resourceGroup
+$lb = Get-AzLoadBalancer -ResourceGroupName $resourceGroup -Name $loadBalancerName
+$ip1 = New-AzLoadBalancerBackendAddressConfig -IpAddress "10.0.0.5" -Name "TestVNetRef" -VirtualNetworkId $virtualNetwork.Id
+$ip2 = New-AzLoadBalancerBackendAddressConfig -IpAddress "10.0.0.6" -Name "TestVNetRef2" -VirtualNetworkId $virtualNetwork.Id
+$ip3 = New-AzLoadBalancerBackendAddressConfig -IpAddress "10.0.0.7" -Name "TestVNetRef3" -VirtualNetworkId $virtualNetwork.id
+$tunnelInterface1 = New-AzLoadBalancerBackendAddressPoolTunnelInterfaceConfig -Protocol "Vxlan" -Type "Internal" -Port 2000 -Identifier 800
+$tunnelInterface2 = New-AzLoadBalancerBackendAddressPoolTunnelInterfaceConfig -Protocol "Vxlan" -Type "External" -Port 2001 -Identifier 801
+New-AzLoadBalancerBackendAddressPool -ResourceGroupName $resourceGroup -LoadBalancerName $loadBalancerName -Name $backendPool3 -TunnelInterface $tunnelInterface1, $tunnelInterface2
+$ips = @($ip1, $ip2)
+$b2 = Get-AzLoadBalancerBackendAddressPool -ResourceGroupName $resourceGroup -LoadBalancerName $loadBalancerName -Name $backendPool1
+$b2.LoadBalancerBackendAddresses.Add($ip3)
 
-PS C:\> Set-AzLoadBalancerBackendAddressPool -InputObject $b2
+Set-AzLoadBalancerBackendAddressPool -InputObject $b2
 ```
 
 ### Example 2
 ```powershell
-###Set by specific backend from piped loadbalancer and set two IP's
-PS C:\> $lb | Set-AzLoadBalancerBackendAddressPool -LoadBalancerBackendAddress $ips -Name $backendPool1
+# Set by specific backend from piped loadbalancer and set two IP's
+$lb | Set-AzLoadBalancerBackendAddressPool -LoadBalancerBackendAddress $ips -Name $backendPool1
 ```
 
 ### Example 3
 ```powershell
-### #set by ResourceId
-PS C:\> Set-AzLoadBalancerBackendAddressPool -ResourceId b2.Id -LoadBalancerBackendAddress $b2.LoadBalancerBackendAddresses
+# Set by ResourceId
+Set-AzLoadBalancerBackendAddressPool -ResourceId $b2.Id -LoadBalancerBackendAddress $b2.LoadBalancerBackendAddresses
 ```
 
 ## PARAMETERS
@@ -222,6 +223,21 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -TunnelInterface
+Gateway Load Balancer provider configurations.
+
+```yaml
+Type: Microsoft.Azure.Commands.Network.Models.PSTunnelInterface[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

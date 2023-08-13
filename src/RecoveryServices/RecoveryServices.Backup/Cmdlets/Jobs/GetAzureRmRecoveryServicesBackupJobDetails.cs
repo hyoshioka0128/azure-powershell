@@ -15,8 +15,11 @@
 using System.Management.Automation;
 using Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets.Models;
 using Microsoft.Azure.Commands.RecoveryServices.Backup.Helpers;
+using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 using Microsoft.Azure.Management.Internal.Resources.Utilities.Models;
 using Microsoft.Azure.Management.RecoveryServices.Backup.Models;
+using CrrModel = Microsoft.Azure.Management.RecoveryServices.Backup.CrossRegionRestore.Models;
+using Microsoft.Azure.Commands.RecoveryServices.Backup.Properties;
 
 namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
 {
@@ -52,6 +55,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
         [ValidateNotNullOrEmpty]
         public SwitchParameter UseSecondaryRegion { get; set; }
 
+        /// <summary>
+        /// Location of the Recovery Services Vault.
+        /// </summary>
+        [Parameter(Mandatory = false, HelpMessage = "Location of the Recovery Services Vault used to fetch the secondary region jobs.")]
+        [LocationCompleter("Microsoft.RecoveryServices/vaults")]
+        public string VaultLocation { get; set; }
+
         public override void ExecuteCmdlet()
         {
             ExecutionBlock(() =>
@@ -68,27 +78,30 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Backup.Cmdlets
                 }
 
                 WriteDebug("Fetching job with ID: " + JobId);
-
-                JobResource jobDetails;
+                                
                 if (UseSecondaryRegion.IsPresent) {
-                    CrrJobRequest jobRequest = new CrrJobRequest();
+                    CrrModel.CrrJobRequest jobRequest = new CrrModel.CrrJobRequest();
                     jobRequest.JobName = JobId;
                     jobRequest.ResourceId = VaultId;
+                                                            
+                    if(VaultLocation == null || VaultLocation == "") {
+                        throw new PSArgumentException(Resources.VaultLocationRequired);
+                    }
 
-                    ARSVault vault = ServiceClientAdapter.GetVault(resourceGroupName, vaultName);
-                    string secondaryRegion = BackupUtils.regionMap[vault.Location];
-                    
-                    jobDetails = ServiceClientAdapter.GetCRRJobDetails(secondaryRegion, jobRequest);
+                    string secondaryRegion = BackupUtils.regionMap[VaultLocation];
+
+                    CrrModel.JobResource jobDetailsCrr = ServiceClientAdapter.GetCRRJobDetails(secondaryRegion, jobRequest);
+                    WriteObject(JobConversions.GetPSJobCrr(jobDetailsCrr));
                 }
                 else
                 {
-                    jobDetails = ServiceClientAdapter.GetJob(
+                    JobResource jobDetails = ServiceClientAdapter.GetJob(
                     JobId,
                     vaultName: vaultName,
                     resourceGroupName: resourceGroupName);
+
+                    WriteObject(JobConversions.GetPSJob(jobDetails));
                 }
-                
-                WriteObject(JobConversions.GetPSJob(jobDetails));
             });
         }
     }

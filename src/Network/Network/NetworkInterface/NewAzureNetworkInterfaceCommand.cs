@@ -225,6 +225,12 @@ namespace Microsoft.Azure.Commands.Network
 
         [Parameter(
             Mandatory = false,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "DisableTcpStateTracking")]
+        public string DisableTcpStateTracking { get; set; }
+
+        [Parameter(
+            Mandatory = false,
             HelpMessage = "EnableIPForwarding")]
         public SwitchParameter EnableIPForwarding { get; set; }
         
@@ -232,6 +238,28 @@ namespace Microsoft.Azure.Commands.Network
             Mandatory = false,
             HelpMessage = "EnableAcceleratedNetworking")]
         public SwitchParameter EnableAcceleratedNetworking { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "The auxiliary mode of the Network Interface ")]
+        [ValidateSet(
+            MNM.NetworkInterfaceAuxiliaryMode.None,
+            MNM.NetworkInterfaceAuxiliaryMode.MaxConnections,
+            MNM.NetworkInterfaceAuxiliaryMode.AcceleratedConnections,
+            IgnoreCase = true)]
+        public string AuxiliaryMode { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "The auxiliary sku of the Network Interface ")]
+        [ValidateSet(
+            MNM.NetworkInterfaceAuxiliarySku.None,
+            MNM.NetworkInterfaceAuxiliarySku.A1,
+            MNM.NetworkInterfaceAuxiliarySku.A2,
+            MNM.NetworkInterfaceAuxiliarySku.A4,
+            MNM.NetworkInterfaceAuxiliarySku.A8,
+            IgnoreCase = true)]
+        public string AuxiliarySku { get; set; }
 
         [Parameter(
             Mandatory = false,
@@ -279,6 +307,11 @@ namespace Microsoft.Azure.Commands.Network
             if (!string.IsNullOrEmpty(EdgeZone))
             {
                 networkInterface.ExtendedLocation = new PSExtendedLocation(this.EdgeZone);
+            }
+
+            if (!string.IsNullOrEmpty(DisableTcpStateTracking))
+            {
+                networkInterface.DisableTcpStateTracking = this.DisableTcpStateTracking;
             }
 
             networkInterface.EnableIPForwarding = this.EnableIPForwarding.IsPresent;
@@ -436,6 +469,16 @@ namespace Microsoft.Azure.Commands.Network
             {
                 networkInterface.NetworkSecurityGroup = new PSNetworkSecurityGroup();
                 networkInterface.NetworkSecurityGroup.Id = this.NetworkSecurityGroupId;
+            }
+
+            if (!string.IsNullOrEmpty(this.AuxiliaryMode))
+            {
+                networkInterface.AuxiliaryMode = this.AuxiliaryMode;
+            }
+
+            if (!string.IsNullOrEmpty(this.AuxiliarySku))
+            {
+                networkInterface.AuxiliarySku = this.AuxiliarySku;
             }
 
             List<string> resourceIdsRequiringAuthToken = new List<string>();

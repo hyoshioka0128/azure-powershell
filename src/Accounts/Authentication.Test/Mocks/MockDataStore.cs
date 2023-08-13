@@ -272,7 +272,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             }
             else
             {
-                return new X509Certificate2();
+                byte[] emptyCertificateData = Array.Empty<byte>();
+                return new X509Certificate2(emptyCertificateData);
             }
         }
 
@@ -376,7 +377,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 () =>
                 {
                     writeLocks[path] = false;
-                    virtualStore[path] = Encoding.Default.GetString(buffer);
+                    // trim \0 otherwise json fails to parse
+                    virtualStore[path] = Encoding.UTF8.GetString(buffer).TrimEnd('\0');
                 }
              );
         }

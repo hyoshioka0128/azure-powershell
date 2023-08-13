@@ -244,6 +244,11 @@ namespace Microsoft.Azure.Commands.Network
 
         [Parameter(
             Mandatory = false,
+            HelpMessage = "The list of VpnServerConfigurationPolicyGroups that this P2SVpnGateway needs to have.")]
+        public PSVpnServerConfigurationPolicyGroup[] ConfigurationPolicyGroup { get; set; }
+
+        [Parameter(
+            Mandatory = false,
             HelpMessage = "A hashtable which represents resource tags.")]
         public Hashtable Tag { get; set; }
 
@@ -294,6 +299,13 @@ namespace Microsoft.Azure.Commands.Network
             if (this.VpnClientIpsecPolicy != null && VpnClientIpsecPolicy.Length != 0)
             {
                 vpnServerConfigurationToUpdate.VpnClientIpsecPolicies = new List<PSIpsecPolicy>(this.VpnClientIpsecPolicy);
+            }
+
+            // Modify the vpnServerConfigurationPolicyGroups
+            if (this.ConfigurationPolicyGroup != null)
+            {
+                vpnServerConfigurationToUpdate.ConfigurationPolicyGroups = new List<PSVpnServerConfigurationPolicyGroup>();
+                vpnServerConfigurationToUpdate.ConfigurationPolicyGroups.AddRange(this.ConfigurationPolicyGroup);
             }
 
             // VpnAuthenticationType = Certificate related validations.
@@ -445,6 +457,25 @@ namespace Microsoft.Azure.Commands.Network
                     if (this.AadIssuer != null)
                     {
                         vpnServerConfigurationToUpdate.AadAuthenticationParameters.AadIssuer = this.AadIssuer;
+                    }
+
+                    if (vpnServerConfigurationToUpdate.VpnProtocols != null &&
+                        vpnServerConfigurationToUpdate.VpnProtocols.Contains(MNM.VpnClientProtocol.IkeV2) &&
+                        vpnServerConfigurationToUpdate.VpnProtocols.Contains(MNM.VpnClientProtocol.OpenVPN) &&
+                        vpnServerConfigurationToUpdate.VpnProtocols.Count() == 2)
+                    {
+                        // In the case of multi-auth with OpenVPN and IkeV2, block user from configuring with just AAD since AAD is not supported for IkeV2
+                        if (vpnServerConfigurationToUpdate.VpnAuthenticationTypes.Count() == 1)
+                        {
+                            throw new ArgumentException(Properties.Resources.VpnMultiAuthIkev2OpenvpnOnlyAad);
+                        } 
+                        else if (vpnServerConfigurationToUpdate.VpnAuthenticationTypes.Count() > 1)
+                        {
+                            if (!ShouldContinue(Properties.Resources.VpnMultiAuthIkev2OpenvpnAadWarning, Properties.Resources.ConfirmMessage))
+                            {
+                                return;
+                            }
+                        }
                     }
                 }
                 else

@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.CosmosDB.dll-Help.xml
 Module Name: Az.CosmosDB
-online version: https://docs.microsoft.com/powershell/module/az.cosmosdb/get-azcosmosdbsqlrestorablecontainer
+online version: https://learn.microsoft.com/powershell/module/az.cosmosdb/get-azcosmosdbsqlrestorablecontainer
 schema: 2.0.0
 ---
 
@@ -15,7 +15,8 @@ Lists all the restorable Azure Cosmos DB SQL containers available for a specific
 ### ByNameParameterSet (Default)
 ```
 Get-AzCosmosDBSqlRestorableContainer -Location <String> -DatabaseAccountInstanceId <String>
- -DatabaseRId <String> [-DefaultProfile <IAzureContextContainer>] [<CommonParameters>]
+ -DatabaseRId <String> [-StartTime <String>] [-EndTime <String>] [-DefaultProfile <IAzureContextContainer>]
+ [<CommonParameters>]
 ```
 
 ### ByParentObjectParameterSet
@@ -34,10 +35,12 @@ For example, if user wants to restore the database account to a timestamp when a
 
 ### Example 1
 ```powershell
-PS C:\> Get-AzCosmosDBSqlRestorableContainer -Location {location} -DatabaseAccountInstanceId {DatabaseAccountInstanceIdInstanceId} -DatabaseRId {DatabaseRId}
+Get-AzCosmosDBSqlRestorableContainer -Location "location" -DatabaseAccountInstanceId "DatabaseAccountInstanceId" -DatabaseRId "DatabaseRId"
+```
 
+```output
 Id              : /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts
-                    /{DatabaseAccountInstanceIdInstanceId}/restorableSqlContainers/6a0cb3e4-7d2b-4363-b585-04a3b14ada8c
+                    /{DatabaseAccountInstanceId}/restorableSqlContainers/6a0cb3e4-7d2b-4363-b585-04a3b14ada8c
 Name            : 6a0cb3e4-7d2b-4363-b585-04a3b14ada8c
 Type            : Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableSqlContainers
 _rid            : qsLuzwAAAA==
@@ -48,7 +51,7 @@ OwnerResourceId : Ts0YAPGKTvw=
 Container       : Microsoft.Azure.Management.CosmosDB.Models.PSRestorableSqlContainerPropertiesResourceContainer
 
 Id              : /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts
-                    /{DatabaseAccountInstanceIdInstanceId}/restorableSqlContainers/ff36d1d3-f9dc-40a0-a003-60fe349abcfb
+                    /{DatabaseAccountInstanceId}/restorableSqlContainers/ff36d1d3-f9dc-40a0-a003-60fe349abcfb
 Name            : ff36d1d3-f9dc-40a0-a003-60fe349abcfb
 Type            : Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableSqlContainers
 _rid            : Ngu72QAAAA==
@@ -59,7 +62,7 @@ OwnerResourceId : Ts0YAP+RbG0=
 Container       : Microsoft.Azure.Management.CosmosDB.Models.PSRestorableSqlContainerPropertiesResourceContainer
 
 Id              : /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts
-                    /{DatabaseAccountInstanceIdInstanceId}/restorableSqlContainers/2afb35ba-1755-4fbc-85be-ae175dd0668f
+                    /{DatabaseAccountInstanceId}/restorableSqlContainers/2afb35ba-1755-4fbc-85be-ae175dd0668f
 Name            : 2afb35ba-1755-4fbc-85be-ae175dd0668f
 Type            : Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableSqlContainers
 _rid            : lSuf5gAAAA==
@@ -90,6 +93,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -DatabaseRId
+ResourceId of the database.
+
+```yaml
+Type: System.String
+Parameter Sets: ByNameParameterSet
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -DefaultProfile
 The credentials, account, tenant, and subscription used for communication with Azure.
 
@@ -105,15 +123,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -DatabaseRId
-ResourceId of the database.
+### -EndTime
+Restorable Sql containers event feed end time.
 
 ```yaml
 Type: System.String
 Parameter Sets: ByNameParameterSet
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -144,6 +162,21 @@ Parameter Sets: ByNameParameterSet
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -StartTime
+Restorable Sql containers event feed start time.
+
+```yaml
+Type: System.String
+Parameter Sets: ByNameParameterSet
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

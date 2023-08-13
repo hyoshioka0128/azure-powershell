@@ -297,6 +297,7 @@ function Test-CreateNewWebAppSlot
 	$planName = Get-WebHostPlanName
 	$tier = "Standard"
 	$resourceType = "Microsoft.Web/sites"
+	$tag= @{"TagKey" = "TagValue"}
 	try
 	{
 		#Setup
@@ -318,7 +319,7 @@ function Test-CreateNewWebAppSlot
 		Assert-AreEqual $serverFarm.Id $result.ServerFarmId
 
 		# Create deployment slot
-		$job = New-AzWebAppSlot -ResourceGroupName $rgname -Name $appname -Slot $slotname -AsJob
+		$job = New-AzWebAppSlot -ResourceGroupName $rgname -Name $appname -Slot $slotname -Tag $tag -AsJob
 		$job | Wait-Job
 		$slot1 = $job | Receive-Job
 
@@ -327,6 +328,8 @@ function Test-CreateNewWebAppSlot
 		# Assert
 		Assert-AreEqual $appWithSlotName $slot1.Name
 		Assert-AreEqual $serverFarm.Id $slot1.ServerFarmId
+		Assert-AreEqual $tag.Keys $slot1.Tags.Keys
+        	Assert-AreEqual $tag.Values $slot1.Tags.Values
 	}
 	finally
 	{
@@ -436,14 +439,14 @@ function Test-SetWebAppSlot
 		Assert-AreEqual $serverFarm1.Id $webApp.ServerFarmId
 
 		# Create deployment slot
-		$slot = New-AzWebAppSlot -ResourceGroupName $rgname -Name $appname -Slot $slotname -AppServicePlan $planName1
+		$slot = New-AzWebAppSlot -ResourceGroupName $rgname -Name $appname -Slot $slotname -AppServicePlan $planName1 -CopyIdentity
 		$appWithSlotName = "$appname/$slotname"
 
 		# Assert
 		Assert-AreEqual $appWithSlotName $slot.Name
 		Assert-AreEqual $serverFarm1.Id $slot.ServerFarmId
         Assert-Null $webApp.Identity
-		Assert-AreEqual "AllAllowed" $slot.SiteConfig.FtpsState
+		Assert-AreEqual "FtpsOnly" $slot.SiteConfig.FtpsState
 		
 		# Change service plan & set site and SiteConfig properties
 		$job = Set-AzWebAppSlot -ResourceGroupName $rgname -Name $appname -Slot $slotname -AppServicePlan $planName2 -HttpsOnly $true -AlwaysOn $true -AsJob
@@ -459,8 +462,9 @@ function Test-SetWebAppSlot
 		# Set config properties
 		$slot.SiteConfig.HttpLoggingEnabled = $true
 		$slot.SiteConfig.RequestTracingEnabled = $true
-		$slot.SiteConfig.FtpsState = "FtpsOnly"
+		$slot.SiteConfig.FtpsState = "AllAllowed"
 		$slot.SiteConfig.MinTlsVersion = "1.0"
+		$slot.SiteConfig.HealthCheckPath = "/api/path"
 
 		$slot = $slot | Set-AzWebAppSlot
 
@@ -469,8 +473,9 @@ function Test-SetWebAppSlot
 		Assert-AreEqual $serverFarm2.Id $slot.ServerFarmId
 		Assert-AreEqual $true $slot.SiteConfig.HttpLoggingEnabled
 		Assert-AreEqual $true $slot.SiteConfig.RequestTracingEnabled
-		Assert-AreEqual "FtpsOnly" $slot.SiteConfig.FtpsState
+		Assert-AreEqual "AllAllowed" $slot.SiteConfig.FtpsState
 		Assert-AreEqual "1.0" $slot.SiteConfig.MinTlsVersion
+		Assert-AreEqual "/api/path" $slot.SiteConfig.HealthCheckPath
 
 		# set app settings and connection strings
 		$appSettings = @{ "setting1" = "valueA"; "setting2" = "valueB"}
@@ -481,7 +486,7 @@ function Test-SetWebAppSlot
         # Assert
         Assert-NotNull  $slot.Identity
         Assert-AreEqual ($appSettings.Keys.Count) $slot.SiteConfig.AppSettings.Count
-		Assert-AreEqual "1.0" $slot.SiteConfig.MinTlsVersion
+		Assert-AreEqual "1.2" $slot.SiteConfig.MinTlsVersion
 
         $slot = Set-AzWebAppSlot -ResourceGroupName $rgname -Name $appname -Slot $slotname -AppSettings $appSettings -ConnectionStrings $connectionStrings -numberofworkers $numberOfWorkers
 
@@ -519,7 +524,7 @@ function Test-SetWebAppSlot
 		# Assert
 		Assert-AreEqual $appWithSlotName $slot.Name
 		Assert-Null $webApp.Identity
-		Assert-AreEqual "AllAllowed" $slot.SiteConfig.FtpsState
+		Assert-AreEqual "FtpsOnly" $slot.SiteConfig.FtpsState
 
 		# Get the deployment slot
 		
@@ -528,7 +533,7 @@ function Test-SetWebAppSlot
 		# Set config properties
 		$slot.SiteConfig.HttpLoggingEnabled = $true
 		$slot.SiteConfig.RequestTracingEnabled = $true
-		$slot.SiteConfig.FtpsState = "FtpsOnly"
+		$slot.SiteConfig.FtpsState = "AllAllowed"
 		$slot.SiteConfig.MinTlsVersion = "1.0"
 
 		$slot = $slot | Set-AzWebAppSlot
@@ -537,7 +542,7 @@ function Test-SetWebAppSlot
 		Assert-AreEqual $appWithSlotName $slot.Name
 		Assert-AreEqual $true $slot.SiteConfig.HttpLoggingEnabled
 		Assert-AreEqual $true $slot.SiteConfig.RequestTracingEnabled
-		Assert-AreEqual "FtpsOnly" $slot.SiteConfig.FtpsState
+		Assert-AreEqual "AllAllowed" $slot.SiteConfig.FtpsState
 		Assert-AreEqual "1.0" $slot.SiteConfig.MinTlsVersion
 	}
 	finally

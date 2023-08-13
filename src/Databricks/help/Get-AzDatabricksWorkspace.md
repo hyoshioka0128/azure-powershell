@@ -1,7 +1,7 @@
 ---
 external help file:
 Module Name: Az.Databricks
-online version: https://docs.microsoft.com/powershell/module/az.databricks/get-azdatabricksworkspace
+online version: https://learn.microsoft.com/powershell/module/az.databricks/get-azdatabricksworkspace
 schema: 2.0.0
 ---
 
@@ -39,37 +39,45 @@ Gets the workspace.
 
 ## EXAMPLES
 
-### Example 1: Get a Databricks workspace with name
+### Example 1: Get a Databricks workspace with name.
 ```powershell
-PS C:\> Get-AzDatabricksWorkspace -Name databricks-test -ResourceGroupName testgroup
+Get-AzDatabricksWorkspace -ResourceGroupName azps_test_gp_db -Name azps-databricks-workspace-t3
+```
 
-Location Name            Type
--------- ----            ----
-eastus   databricks-test Microsoft.Databricks/workspaces
+```output
+Name                         ResourceGroupName Location Managed Resource Group ID
+----                         ----------------- -------- -------------------------
+azps-databricks-workspace-t3 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t3
 ```
 
 This command gets a Databricks workspace in a resource group.
 
-### Example 2: List all Databricks workspaces in a subscription
+### Example 2: List all Databricks workspaces in a subscription.
 ```powershell
-PS C:\> Get-AzDatabricksWorkspace
+Get-AzDatabricksWorkspace
+```
 
-Location Name                           Type
--------- ----                           ----
-eastus   databricks-test                Microsoft.Databricks/workspaces
-eastus   databricks-test-with-custom-vn Microsoft.Databricks/workspaces
+```output
+Name                         ResourceGroupName Location Managed Resource Group ID
+----                         ----------------- -------- -------------------------
+azps-databricks-workspace-t1 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t1
+azps-databricks-workspace-t2 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t2
+azps-databricks-workspace-t3 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t3
 ```
 
 This command lists all Databricks workspaces in a subscription.
 
-### Example 3: List all Databricks workspaces in a resource group
+### Example 3: List all Databricks workspaces in a resource group.
 ```powershell
-PS C:\> Get-AzDatabricksWorkspace -ResourceGroupName testgroup
+Get-AzDatabricksWorkspace -ResourceGroupName azps_test_gp_db
+```
 
-Location Name                           Type
--------- ----                           ----
-eastus   databricks-test                Microsoft.Databricks/workspaces
-eastus   databricks-test-with-custom-vn Microsoft.Databricks/workspaces
+```output
+Name                         ResourceGroupName Location Managed Resource Group ID
+----                         ----------------- -------- -------------------------
+azps-databricks-workspace-t1 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t1
+azps-databricks-workspace-t2 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t2
+azps-databricks-workspace-t3 azps_test_gp_db   eastus   /subscriptions/{subId}/resourceGroups/azps_test_gp_kv_t3
 ```
 
 This command lists all Databricks workspaces in a resource group.
@@ -77,7 +85,8 @@ This command lists all Databricks workspaces in a resource group.
 ## PARAMETERS
 
 ### -DefaultProfile
-The credentials, account, tenant, and subscription used for communication with Azure.
+The DefaultProfile parameter is not functional.
+Use the SubscriptionId parameter when available if executing the cmdlet against a different subscription.
 
 ```yaml
 Type: System.Management.Automation.PSObject
@@ -162,7 +171,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.PowerShell.Cmdlets.Databricks.Models.Api20180401.IWorkspace
+### Microsoft.Azure.PowerShell.Cmdlets.Databricks.Models.Api20230201.IWorkspace
 
 ## NOTES
 
@@ -173,9 +182,12 @@ COMPLEX PARAMETER PROPERTIES
 To create the parameters described below, construct a hash table containing the appropriate properties. For information on hash tables, run Get-Help about_Hash_Tables.
 
 
-INPUTOBJECT <IDatabricksIdentity>: Identity Parameter
+`INPUTOBJECT <IDatabricksIdentity>`: Identity Parameter
+  - `[ConnectorName <String>]`: The name of the azure databricks accessConnector.
+  - `[GroupId <String>]`: The name of the private link resource
   - `[Id <String>]`: Resource identity path
   - `[PeeringName <String>]`: The name of the workspace vNet peering.
+  - `[PrivateEndpointConnectionName <String>]`: The name of the private endpoint connection
   - `[ResourceGroupName <String>]`: The name of the resource group. The name is case insensitive.
   - `[SubscriptionId <String>]`: The ID of the target subscription.
   - `[WorkspaceName <String>]`: The name of the workspace.

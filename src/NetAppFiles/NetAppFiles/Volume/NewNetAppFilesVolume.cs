@@ -22,6 +22,8 @@ using Microsoft.Azure.Management.NetApp;
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Commands.Common.CustomAttributes;
 using System;
+using Microsoft.Azure.Management.NetApp.Models;
+using System.Linq;
 
 namespace Microsoft.Azure.Commands.NetAppFiles.Volume
 {
@@ -84,7 +86,7 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Volume
 
         [Parameter(
             Mandatory = true,
-            HelpMessage = "The maximum storage quota allowed for a file system in bytes")]
+            HelpMessage = "Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB, 500 GiB for large volumes. Upper limit is 100TiB. Specified in bytes.")]
         [ValidateNotNullOrEmpty]
         public long UsageThreshold { get; set; }
 
@@ -143,7 +145,6 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Volume
             Mandatory = false,
             HelpMessage = "A hashtable array which represents the snapshot object")]
         [ValidateNotNullOrEmpty]
-        [CmdletParameterBreakingChange("Snapshot", ChangeDescription = "Snapshot invalid and preserved for compatibility. Parameter SnapshotPolicyId should be used instead")]
         public PSNetAppFilesVolumeSnapshot Snapshot { get; set; }
 
         [Parameter(
@@ -184,7 +185,7 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Volume
 
         [Parameter(
             Mandatory = false,
-            HelpMessage = "Maximum throughput in Mibps that can be achieved by this volume")]
+            HelpMessage = "Maximum throughput in MiB/s that can be achieved by this volume, this will be accepted as input only for manual qosType volume")]
         public double? ThroughputMibps { get; set; }
 
         [Parameter(
@@ -220,7 +221,8 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Volume
         [Parameter(
             Mandatory = false,
             HelpMessage = "UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and read/execute to group and other users.")]
-        public string UnixPermissions { get; set; }
+        [Alias("UnixPermissions")]
+        public string UnixPermission { get; set; }
 
         [Parameter(
             Mandatory = false,
@@ -249,12 +251,72 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Volume
         [PSArgumentCompleter("Basic", "Standard")]
         public string NetworkFeature { get; set; }
 
-        [Parameter(
-            ParameterSetName = FieldsParameterSet,
+        [Parameter(            
             Mandatory = false,
-            HelpMessage = "Network Sibling Set ID (GUID) for the group of volumes sharing networking resources example (9760acf5-4638-11e7-9bdb-020073ca3333).")]
+            HelpMessage = "Pool Resource Id used in case of creating a volume through volume group.")]
         [ValidateNotNullOrEmpty]
-        public string NetworkSiblingSetId { get; set; }
+        public string CapacityPoolResourceId { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "Proximity placement group associated with the volume.")]
+        [ValidateNotNullOrEmpty]
+        public string ProximityPlacementGroup { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "Volume spec name is the application specific designation or identifier for the particular volume in a volume group for e.g. data, log.")]
+        [ValidateNotNullOrEmpty]
+        public string VolumeSpecName { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "Application specific placement rules for the particular volume.")]
+        [ValidateNotNullOrEmpty]
+        public IList<PSKeyValuePairs> PlacementRule { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "Flag indicating whether subvolume operations are enabled on the volume (Enabled, Disabled)")]        
+        public SwitchParameter EnableSubvolume { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "A list of Availability Zones")]
+        public string[] Zone { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource = 'Microsoft.KeyVault'. Possible values are: 'Microsoft.NetApp, Microsoft.KeyVault'")]
+        [PSArgumentCompleter("Microsoft.NetApp", "Microsoft.KeyVault")]
+        public string EncryptionKeySource { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'")]
+        public string KeyVaultPrivateEndpointResourceId { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "If enabled (true) the snapshot the volume was created from will be automatically deleted after the volume create operation has finished.  Defaults to false")]
+        public SwitchParameter DeleteBaseSnapshot { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume")]
+        [PSArgumentCompleter("Disabled", "Enabled")]
+        public string SmbAccessBasedEnumeration { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume")]
+        [PSArgumentCompleter("Disabled", "Enabled")]
+        public string SmbNonBrowsable { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "Specifies whether volume is a Large Volume or Regular Volume. Defaults to false")]
+        public SwitchParameter IsLargeVolume { get; set; }
 
         [Parameter(
             Mandatory = false,
@@ -317,7 +379,7 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Volume
                 VolumeType = VolumeType,
                 ProtocolTypes = ProtocolType,
                 Tags = tagPairs,
-                SnapshotId = SnapshotId,
+                SnapshotId = SnapshotId,                
                 SnapshotDirectoryVisible = SnapshotDirectoryVisible,
                 SecurityStyle = SecurityStyle,
                 BackupId = BackupId,
@@ -328,15 +390,29 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Volume
                 LdapEnabled = LdapEnabled,
                 CoolAccess = CoolAccess,
                 CoolnessPeriod = CoolnessPeriod,
-                UnixPermissions = UnixPermissions,
+                UnixPermissions = UnixPermission,
                 AvsDataStore = AvsDataStore,
                 IsDefaultQuotaEnabled = IsDefaultQuotaEnabled,
                 DefaultUserQuotaInKiBs = DefaultUserQuotaInKiB,
                 DefaultGroupQuotaInKiBs = DefaultGroupQuotaInKiB,
-                NetworkFeatures = NetworkFeature
+                NetworkFeatures = NetworkFeature,
+                CapacityPoolResourceId = CapacityPoolResourceId,
+                ProximityPlacementGroup = ProximityPlacementGroup,
+                VolumeSpecName = VolumeSpecName,
+                PlacementRules = PlacementRule?.ToPlacementKeyValuePairs(),
+                EnableSubvolumes = EnableSubvolume.IsPresent ? EnableSubvolumes.Enabled : EnableSubvolumes.Disabled,
+                EncryptionKeySource = EncryptionKeySource,
+                KeyVaultPrivateEndpointResourceId = KeyVaultPrivateEndpointResourceId,
+                DeleteBaseSnapshot = DeleteBaseSnapshot,
+                SmbAccessBasedEnumeration = SmbAccessBasedEnumeration,
+                SmbNonBrowsable = SmbNonBrowsable,
+                IsLargeVolume = IsLargeVolume                
             };
-
-            if (ShouldProcess(Name, string.Format(PowerShell.Cmdlets.NetAppFiles.Properties.Resources.CreateResourceMessage, ResourceGroupName)))
+            if (this.Zone != null)
+            {
+                volumeBody.Zones = this.Zone?.ToList();
+            }
+            if (ShouldProcess(PoolName, string.Format(PowerShell.Cmdlets.NetAppFiles.Properties.Resources.CreateResourceMessage, Name)))
             {
                 var anfVolume = AzureNetAppFilesManagementClient.Volumes.CreateOrUpdate(volumeBody, ResourceGroupName, AccountName, PoolName, Name);
                 WriteObject(anfVolume.ToPsNetAppFilesVolume());

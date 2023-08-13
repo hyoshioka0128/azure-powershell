@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Network.dll-Help.xml
 Module Name: Az.Network
-online version: https://docs.microsoft.com/powershell/module/az.network/new-azapplicationgatewaysslprofile
+online version: https://learn.microsoft.com/powershell/module/az.network/new-azapplicationgatewaysslprofile
 schema: 2.0.0
 ---
 
@@ -26,10 +26,11 @@ The **New-AzApplicationGatewaySslProfile** cmdlet creates SSL profile for an app
 
 ### Example 1
 ```powershell
-PS C:\> $sslPolicy = New-AzApplicationGatewaySslPolicy -PolicyType Custom -MinProtocolVersion TLSv1_1 -CipherSuite "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "TLS_RSA_WITH_AES_128_GCM_SHA256"
-PS C:\> $trustedClient01 = New-AzApplicationGatewayTrustedClientCertificate -Name "ClientCert01" -CertificateFile "C:\clientCAChain1.cer"
-PS C:\> $profile = New-AzApplicationGatewaySslProfile -Name $sslProfile01Name -SslPolicy $sslPolicy -TrustedClientCertificates $trustedClient01
+$sslPolicy = New-AzApplicationGatewaySslPolicy -PolicyType Custom -MinProtocolVersion TLSv1_1 -CipherSuite "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "TLS_RSA_WITH_AES_128_GCM_SHA256"
+$trustedClient01 = New-AzApplicationGatewayTrustedClientCertificate -Name "ClientCert01" -CertificateFile "C:\clientCAChain1.cer"
+$profile = New-AzApplicationGatewaySslProfile -Name $sslProfile01Name -SslPolicy $sslPolicy -TrustedClientCertificates $trustedClient01
 ```
+
 The first command creates a new SSL policy and stores it in the $sslPolicy variable.
 The second command creates a trusted client CA certificate chains and stores them in the $ClientCert01 variable.
 The third command create a new SSL profile with the the ssl policy and trusted client CA certificate chain.
@@ -40,7 +41,7 @@ The third command create a new SSL profile with the the ssl policy and trusted c
 Client authentication configuration settings
 
 ```yaml
-Type: PSApplicationGatewayClientAuthConfiguration
+Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewayClientAuthConfiguration
 Parameter Sets: (All)
 Aliases:
 
@@ -55,7 +56,7 @@ Accept wildcard characters: False
 The credentials, account, tenant, and subscription used for communication with Azure.
 
 ```yaml
-Type: IAzureContextContainer
+Type: Microsoft.Azure.Commands.Common.Authentication.Abstractions.Core.IAzureContextContainer
 Parameter Sets: (All)
 Aliases: AzContext, AzureRmContext, AzureCredential
 
@@ -70,7 +71,7 @@ Accept wildcard characters: False
 The name of the SSL profile
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -85,7 +86,7 @@ Accept wildcard characters: False
 SSL policy
 
 ```yaml
-Type: PSApplicationGatewaySslPolicy
+Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewaySslPolicy
 Parameter Sets: (All)
 Aliases:
 
@@ -100,7 +101,7 @@ Accept wildcard characters: False
 The trusted client CA certificate chains
 
 ```yaml
-Type: PSApplicationGatewayTrustedClientCertificate[]
+Type: Microsoft.Azure.Commands.Network.Models.PSApplicationGatewayTrustedClientCertificate[]
 Parameter Sets: (All)
 Aliases:
 

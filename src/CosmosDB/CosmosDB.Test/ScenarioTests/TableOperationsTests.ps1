@@ -150,8 +150,8 @@ Test Table throughput cmdlets using all parameter sets
 #>
 function Test-TableThroughputCmdlets
 {
-  $AccountName = "table-30"
-  $rgName = "CosmosDBResourceGroup34"
+  $AccountName = "table-db2527"
+  $rgName = "CosmosDBResourceGroup35"
   $TableName = "tableName3"
   $apiKind = "Table"
   $consistencyLevel = "Session"
@@ -194,7 +194,7 @@ Test Cassandra migrate throughput cmdlets
 #>
 function Test-TableMigrateThroughputCmdlets
 {
-  $AccountName = "table-30"
+  $AccountName = "table-db2529"
   $rgName = "CosmosDBResourceGroup34"
   $TableName = "tableName4"
   $apiKind = "Table"

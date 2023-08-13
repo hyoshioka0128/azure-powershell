@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,9 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
     using System.Security.Permissions;
     using global::Azure.Storage.Sas;
     using global::Azure.Storage;
+    using Microsoft.WindowsAzure.Commands.Common.CustomAttributes;
 
+    [GenericBreakingChangeWithVersion("The leading question mark '?' of the created SAS token will be removed in a future release.", "11.0.0", "6.0.0")]
     [Cmdlet("New", Azure.Commands.ResourceManager.Common.AzureRMConstants.AzurePrefix + "StorageAccountSASToken"), OutputType(typeof(String))]
     public class NewAzureStorageAccountSasTokenCommand : StorageCloudBlobCmdletBase
     {
@@ -50,6 +52,10 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         [Parameter(Mandatory = false, HelpMessage = "Expiry Time")]
         [ValidateNotNull]
         public DateTime? ExpiryTime { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "Encryption scope to use when sending requests authorized with this SAS URI.")]
+        [ValidateNotNullOrEmpty]
+        public string EncryptionScope { get; set; }
 
         // Overwrite the useless parameter
         public override int? ServerTimeoutPerRequest { get; set; }
@@ -86,6 +92,11 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
+            if (Channel != null && Channel.StorageContext != null && Channel.StorageContext.StorageAccount != null 
+                && Channel.StorageContext.StorageAccount.Credentials != null && !Channel.StorageContext.StorageAccount.Credentials.IsSharedKey)
+            {
+                throw new ArgumentException("Storage account SAS token must be secured with the storage account key.", "Context");
+            }
             if (!UseTrack2Sdk()) // Track1
             {
                 var sharedAccessPolicy = new SharedAccessAccountPolicy()
@@ -108,7 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
             }
             else
             {
-                AccountSasBuilder sasBuilder = SasTokenHelper.SetAccountSasBuilder(this.Service, this.ResourceType, Permission, this.StartTime, this.ExpiryTime, this.IPAddressOrRange, this.Protocol);
+                AccountSasBuilder sasBuilder = SasTokenHelper.SetAccountSasBuilder(this.Service, this.ResourceType, Permission, this.StartTime, this.ExpiryTime, this.IPAddressOrRange, this.Protocol, this.EncryptionScope);
                 string sasToken = sasBuilder.ToSasQueryParameters(new StorageSharedKeyCredential(Channel.StorageContext.StorageAccountName, Channel.StorageContext.StorageAccount.Credentials.ExportBase64EncodedKey())).ToString();
                 if (sasToken[0] != '?')
                 {
@@ -116,13 +127,12 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
                 }
                 this.WriteObject(sasToken);
             }
-        
+
         }
 
         /// <summary>
         /// Set up access policy permission
         /// </summary>
-        /// <param name="policy">SharedAccessBlobPolicy object</param>
         /// <param name="permission">Permisson</param>
         internal SharedAccessAccountPermissions SetupAccessPolicyPermission(string permission)
         {

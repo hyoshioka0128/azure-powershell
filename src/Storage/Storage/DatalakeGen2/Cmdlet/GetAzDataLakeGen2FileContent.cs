@@ -104,6 +104,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
         /// <summary>
         /// Download blob to local file
         /// </summary>
+        /// <param name="taskId">Task id</param>
+        /// <param name="localChannel">IStorageBlobManagement channel object</param>
         /// <param name="blob">Source blob object</param>
         /// <param name="filePath">Destination file path</param>
         internal virtual async Task DownloadBlob(long taskId, IStorageBlobManagement localChannel, CloudBlob blob, string filePath)
@@ -262,7 +264,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
             {
                 if (!InputObject.IsDirectory)
                 {
-                    if (Channel.StorageContext.StorageAccount.Credentials.IsSAS)
+                    if (Channel.StorageContext.StorageAccount != null &&
+                        Channel.StorageContext.StorageAccount.Credentials != null && Channel.StorageContext.StorageAccount.Credentials.IsSAS)
                     {
                         // For SAS, the Uri already contains the sas token, so can't repeatedly inout the credential
                         blob = new CloudBlockBlob(InputObject.File.Uri);

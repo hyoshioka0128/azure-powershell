@@ -2,7 +2,7 @@
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Network.dll-Help.xml
 Module Name: Az.Network
 ms.assetid: 8D84F81A-F6B5-413D-B349-50947FCD5CFC
-online version: https://docs.microsoft.com/powershell/module/az.network/new-azpublicipaddress
+online version: https://learn.microsoft.com/powershell/module/az.network/new-azpublicipaddress
 schema: 2.0.0
 ---
 
@@ -15,10 +15,11 @@ Creates a public IP address.
 
 ```
 New-AzPublicIpAddress [-Name <String>] -ResourceGroupName <String> [-Location <String>] [-EdgeZone <String>]
- [-Sku <String>] [-Tier <String>] -AllocationMethod <String> [-IpAddressVersion <String>] [-IpAddress <String>]
- [-DomainNameLabel <String>] [-IpTag <PSPublicIpTag[]>] [-PublicIpPrefix <PSPublicIpPrefix>]
- [-ReverseFqdn <String>] [-IdleTimeoutInMinutes <Int32>] [-Zone <String[]>] [-Tag <Hashtable>] [-Force]
- [-AsJob] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-Sku <String>] [-Tier <String>] -AllocationMethod <String> [-IpAddressVersion <String>]
+ [-DomainNameLabel <String>] [-DomainNameLabelScope <String>][-IpTag <PSPublicIpTag[]>] [-PublicIpPrefix <PSPublicIpPrefix>]
+ [-DdosProtectionMode <String>] [-DdosProtectionPlanId <String>] [-ReverseFqdn <String>]
+ [-IdleTimeoutInMinutes <Int32>] [-Zone <String[]>] [-IpAddress <String>] [-Tag <Hashtable>] [-Force] [-AsJob]
+ [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -93,6 +94,15 @@ $dnsPrefix.$location.cloudapp.azure.com pointing to the public IP address of thi
 global public IP address is immediately allocated to this resource.
 This option is only supported for the 'Standard' Sku and 'Static' AllocationMethod.
 
+### Example 7: Create a public IP address with a DomainNameLabelScope
+```powershell
+$publicIp = New-AzPublicIpAddress -Name $publicIpName -ResourceGroupName $rgName -AllocationMethod Static -DomainNameLabel $dnsPrefix -DomainNameLabelScope $hasedReusePolicy -Location $location
+```
+
+This command creates a new public IP address resource. With the -DomainNameLabelScope parameter, Azure
+creates a DNS record with a hashed value in FQDN for the public IP address allocated to this resource 
+with the policy suggested by $hasedReusePolicy.
+
 ## PARAMETERS
 
 ### -AllocationMethod
@@ -127,6 +137,37 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -DdosProtectionMode
+The DdosProtectionMode to use for Public IP address
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+Accepted values: VirtualNetworkInherited, Enabled, Disabled
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -DdosProtectionPlanId
+The DdosProtectionPlan id to attach to the Public IP address
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -DefaultProfile
 The credentials, account, tenant, and subscription used for communication with azure.
 
@@ -149,6 +190,22 @@ Specifies the relative DNS name for a public IP address.
 Type: System.String
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -DomainNameLabelScope
+Specifies the HashedReusePolicy for DNS name for a public IP address.
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+Accepted values: TenantReuse, SubscriptionReuse, ResourceGroupReuse, NoReuse
 
 Required: False
 Position: Named
@@ -192,6 +249,21 @@ Specifies the idle time-out, in minutes.
 
 ```yaml
 Type: System.Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -IpAddress
+Specifies the IP address when creating a BYOIP publicIpAddress.
+
+```yaml
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -268,21 +340,6 @@ Specifies the PSPublicIpPrefix from which to allocate the public IP address.
 
 ```yaml
 Type: Microsoft.Azure.Commands.Network.Models.PSPublicIpPrefix
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -IpAddress
-Specifies the IP address when creating a BYOIP publicIpAddress.
-
-```yaml
-Type: System.String
 Parameter Sets: (All)
 Aliases:
 

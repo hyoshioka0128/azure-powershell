@@ -1,7 +1,7 @@
 ---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Network.dll-Help.xml
 Module Name: Az.Network
-online version: https://docs.microsoft.com/powershell/module/az.network/add-azvirtualhubroutetable
+online version: https://learn.microsoft.com/powershell/module/az.network/add-azvirtualhubroutetable
 schema: 2.0.0
 ---
 
@@ -25,9 +25,11 @@ be attached to and is used to route traffic in a Virtual Hub.
 
 ### Example 1
 ```powershell
-PS C:\> $route1 = Add-AzVirtualHubRoute -DestinationType "CIDR" -Destination @("10.4.0.0/16", "10.5.0.0/16") -NextHopType "IPAddress" -NextHop @("10.0.0.68")
-PS C:\> Add-AzVirtualHubRouteTable -Route @($route1) -Connection @("All_Vnets") -Name "routeTable1"
+$route1 = Add-AzVirtualHubRoute -DestinationType "CIDR" -Destination @("10.4.0.0/16", "10.5.0.0/16") -NextHopType "IPAddress" -NextHop @("10.0.0.68")
+Add-AzVirtualHubRouteTable -Route @($route1) -Connection @("All_Vnets") -Name "routeTable1"
+```
 
+```output
 Name                : routeTable1
 Id                  :
 Routes              : {Microsoft.Azure.Commands.Network.Models.PSVirtualHubRoute}
@@ -43,7 +45,7 @@ The above command will create a Virtual Hub Route Table resource from the routes
 List of connections this route table is attached to.
 
 ```yaml
-Type: String[]
+Type: System.String[]
 Parameter Sets: (All)
 Aliases:
 
@@ -58,7 +60,7 @@ Accept wildcard characters: False
 The credentials, account, tenant, and subscription used for communication with Azure.
 
 ```yaml
-Type: IAzureContextContainer
+Type: Microsoft.Azure.Commands.Common.Authentication.Abstractions.Core.IAzureContextContainer
 Parameter Sets: (All)
 Aliases: AzContext, AzureRmContext, AzureCredential
 
@@ -73,7 +75,7 @@ Accept wildcard characters: False
 Name of the route table.
 
 ```yaml
-Type: String
+Type: System.String
 Parameter Sets: (All)
 Aliases:
 
@@ -88,7 +90,7 @@ Accept wildcard characters: False
 List of virtual hub routes.
 
 ```yaml
-Type: PSVirtualHubRoute[]
+Type: Microsoft.Azure.Commands.Network.Models.PSVirtualHubRoute[]
 Parameter Sets: (All)
 Aliases:
 

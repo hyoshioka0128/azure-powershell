@@ -19,6 +19,87 @@
 -->
 ## Upcoming Release
 
+## Version 3.1.0
+* Added AppServicePlan management support for P0V3 and P*mv3 tiers
+
+## Version 3.0.1
+* Increased timeout for Publish-AzWebApp command
+* Fixed Set-AzWebApp issue with `Set-AzWebApp` when piping in Get-AzWebApp object [#21820]
+* Added support for the PremiumMV3 tier to `New-AzAppServicePlan` [#21933]
+
+## Version 3.0.0
+* Removed `New-AzWebAppContainerPSSession` and `Enter-AzWebAppContainerPSSession` cmdlets
+
+## Version 2.15.1
+* Used AAD Auth instead of Basic Auth for PublishAzureWebApps
+* Add support for OneDeploy API in PublishAzureWebApps while maintaining backwards compatibility with existing behavior
+
+## Version 2.15.0
+* Fixed Tag parameter issues with ASE for `New-AzWebApp`
+
+## Version 2.14.0
+* Fixed `Edit-AzWebAppBackupConfiguration` to pass backup configuration enabled or not
+* Added a new parameter `-SoftRestart` for `Restart-AzWebApp` and `Restart-AzWebApp` to perform a soft restart
+* Updated `Get-AzWebApp` and `Get-AzWebAppSlot` to expose `VirtualNetwork Integration Info` [#10665]
+* Set default value for `-RepositoryUrl` of `New-AzStaticWebApp` [#21202]
+
+## Version 2.13.0
+* Added a new parameter `-CopyIdentity` for `New-AzWebAppSlot` to copy the identity from the parent app to the slot.
+* Updated `New-AzWebAppSSLBinding` to support -WhatIf parameter
+
+## Version 2.12.1
+* Fixed `Import-AzWebAppKeyVaultCertificate` to use certificate naming convention same as portal [#19592]
+
+## Version 2.12.0
+* Added Tag parameter for `New-AzWebApp` and `New-AzWebAppSlot`
+* Fixed `Set-AzWebApp` and `Set-AZWebAppSlot` to rethrow exception when Service Principal/User doesn't have permission to list web app configuration. [#19942]
+
+## Version 2.11.5
+* Fixed `Publish-AzWebApp` to use latest publish API when deploying war package [#19791]
+## Version 2.11.4
+* Fixed `Import-AzWebAppKeyVaultCertificate` to use certificate naming convention same as Az-CLI
+
+## Version 2.11.3
+* Fixed `Publish-AzWebapp` to handle relative paths properly [#18028]
+
+## Version 2.11.2
+* Updated `Get-AzWebApp` and `Get-AzWebAppSlot` to expose `VirtualNetworkSubnetId` property [#18042]
+* Updated `Publish-AzWebApp` to avoid the false positive result when zip deploy is not reachable. 
+## Version 2.11.1
+* Updated 'New-AzWebAppContainerPSSession' with CmdletDeprecation Attribute [#16646]
+* Updated `Restore-AzDeletedWebApp` to fix issue that prevents the cmdlet from working on hosts with a locale is anything different from `en-US`
+
+## Version 2.11.0
+* Fixed `Set-AzWebAppSlot` to support MinTlsVersion version update [#17663]
+* Fixed `Set-AzAppServicePlan` to keep existing Tags when adding new Tags 
+* Fixed `Set-AzWebApp`,`Set-AzWebAppSlot`, `Get-AzWebApp` and `Get-AzWebAppSlot` to expose `VnetRouteAllEnabled` property in `SiteConfig` [#15663]
+* Fixed `Set-AzWebApp`, `Set-AzWebAppSlot`, `Get-AzWebApp` and `Get-AzWebAppSlot` to expose `HealthCheckPath` property in `SiteConfig` [#16325]
+* Fixed DateTime conversion issue caused by culture [#17253]
+* Added support for the web job feature [#661]
+    - Get-AzWebAppContinuousWebJob
+    - Get-AzWebAppSlotContinuousWebJob
+    - Get-AzWebAppSlotTriggeredWebJob
+    - Get-AzWebAppSlotTriggeredWebJobHistory
+    - Get-AzWebAppSlotWebJob
+    - Get-AzWebAppTriggeredWebJob
+    - Get-AzWebAppTriggeredWebJobHistory
+    - Get-AzWebAppWebJob
+    - Remove-AzWebAppContinuousWebJob
+    - Remove-AzWebAppSlotContinuousWebJob
+    - Remove-AzWebAppSlotTriggeredWebJob
+    - Remove-AzWebAppTriggeredWebJob
+    - Start-AzWebAppContinuousWebJob
+    - Start-AzWebAppSlotContinuousWebJob
+    - Start-AzWebAppSlotTriggeredWebJob
+    - Start-AzWebAppTriggeredWebJob
+    - Stop-AzWebAppContinuousWebJob
+    - Stop-AzWebAppSlotContinuousWebJob
+
+## Version 2.10.0
+* Updated `New-AzAppServicePlan`  to create an app service plan with host environment id #16094
+
+## Version 2.9.0
+* Updated the Microsoft.Azure.Management.Websites SDK to 3.1.2
 ## Version 2.8.3
 * Updated `Import-AzWebAppKeyVaultCertificate1` to set the default name with combination of keyvault name and cert name 
 

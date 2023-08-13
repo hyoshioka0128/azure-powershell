@@ -1,7 +1,7 @@
-﻿---
+---
 external help file: Microsoft.Azure.PowerShell.Cmdlets.Network.dll-Help.xml
 Module Name: Az.Network
-online version: https://docs.microsoft.com/powershell/module/az.network/new-azapplicationgatewayfirewallpolicyexclusionmanagedrulegroup
+online version: https://learn.microsoft.com/powershell/module/az.network/new-azapplicationgatewayfirewallpolicyexclusionmanagedrulegroup
 schema: 2.0.0
 ---
 
@@ -13,7 +13,7 @@ Creates ExclusionManagedRuleGroup entry in ExclusionManagedRuleSets for the fire
 ## SYNTAX
 
 ```
-New-AzApplicationGatewayFirewallPolicyExclusionManagedRuleGroup -RuleGroupName <String>
+New-AzApplicationGatewayFirewallPolicyExclusionManagedRuleGroup -Name <String>
  [-Rule <PSApplicationGatewayFirewallPolicyExclusionManagedRule[]>] [-DefaultProfile <IAzureContextContainer>]
  [<CommonParameters>]
 ```
@@ -25,14 +25,14 @@ The **New-AzApplicationGatewayFirewallPolicyExclusionManagedRuleGroup** creates 
 
 ### Example 1
 ```powershell
-PS C:\> $ruleGroupEntry = New-AzApplicationGatewayFirewallPolicyExclusionManagedRuleGroup -RuleGroupName $ruleName -Rules $rule1,$rule2
+$ruleGroupEntry = New-AzApplicationGatewayFirewallPolicyExclusionManagedRuleGroup -RuleGroupName $ruleName -Rule $rule1,$rule2
 ```
 
 Creates an ExclusionManagedRuleGroup entry with group name as $ruleName and Rules as $rule1, $rule2. Assigns the same to $ruleGroupEntry
 
 ### Example 2
 ```powershell
-PS C:\> $ruleGroupEntry = New-AzApplicationGatewayFirewallPolicyExclusionManagedRuleGroup -RuleGroupName $ruleName
+$ruleGroupEntry = New-AzApplicationGatewayFirewallPolicyExclusionManagedRuleGroup -RuleGroupName $ruleName
 ```
 
 Creates an ExclusionManagedRuleGroup entry with group name as $ruleName. Assigns the same to $ruleGroupEntry
@@ -54,6 +54,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Name
+Rule Group Name.
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases: RuleGroupName
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Rule
 List of Rules.
 
@@ -63,21 +78,6 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -RuleGroupName
-Specify the ruleGroupName in a exclusion RuleGroup entry.
-
-```yaml
-Type: System.String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

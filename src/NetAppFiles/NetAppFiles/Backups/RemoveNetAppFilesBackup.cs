@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Backup
         "Remove",
         ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "NetAppFilesBackup",
         SupportsShouldProcess = true,
-        DefaultParameterSetName = FieldsParameterSet), OutputType(typeof(PSNetAppFilesBackupPolicy))]
+        DefaultParameterSetName = FieldsParameterSet), OutputType(typeof(PSNetAppFilesBackup))]
     [Alias("Remove-AnfBackup")]
     public class RemoveAzureRmNetAppFilesBackup : AzureNetAppFilesCmdletBase
     {
@@ -206,7 +206,7 @@ namespace Microsoft.Azure.Commands.NetAppFiles.Backup
                 Name = AccountBackupName;
             }
 
-            if (ShouldProcess(Name, string.Format(PowerShell.Cmdlets.NetAppFiles.Properties.Resources.CreateResourceMessage, ResourceGroupName)))
+            if (ShouldProcess(Name, string.Format(PowerShell.Cmdlets.NetAppFiles.Properties.Resources.RemoveResourceMessage, ResourceGroupName)))
             {                
                 if (accountBackup)
                 {
